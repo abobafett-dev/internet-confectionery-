@@ -14,13 +14,13 @@ class CreateConfectioneryTables extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('gender',10)->after('password')->nullable();
-            $table->timestamp('birthday')->after('gender')->nullable();
-            $table->string('from')->after('birthday')->nullable();
-            $table->string('phone')->after('from');
-            $table->string('avatar')->after('phone')->nullable();
-            $table->double('bonus')->after('avatar')->default(0);
-            $table->string('status')->after('bonus')->default(0);
+            $table->string('gender',10)->nullable();
+            $table->timestamp('birthday')->nullable();
+            $table->string('from')->nullable();
+            $table->string('phone');
+            $table->string('avatar')->nullable();
+            $table->double('bonus')->default(0);
+            $table->string('status')->default(1);
         });
 
         Schema::create('order_status', function(Blueprint $table){
@@ -33,8 +33,8 @@ class CreateConfectioneryTables extends Migration
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('id_status')->constrained('order_status')->onUpdate('cascade')->onDelete('restrict');
-            $table->timestamp('cooked_at');
-            $table->string('address');
+            $table->timestamp('will_cooked_at');
+            $table->string('address')->nullable();
             $table->text('review_text')->nullable();
             $table->string('review_photo')->nullable();
             $table->timestamps();
@@ -133,17 +133,16 @@ class CreateConfectioneryTables extends Migration
             $table->time('start');
             $table->time('end');
             $table->integer('orders_count');
-            $table->timestamp('purchased_at');
             $table->timestamps();
         });
 
         Schema::create('schedule_update', function(Blueprint $table){
             $table->id();
+            $table->date('schedule_will_updated_at');
             $table->time('start');
             $table->time('end');
             $table->boolean('access')->default(0);
             $table->integer('orders_count_update')->default(0);
-            $table->timestamp('purchased_at');
             $table->timestamps();
         });
 
@@ -224,7 +223,5 @@ class CreateConfectioneryTables extends Migration
         Schema::dropIfExists('schedule_standard');
 
         Schema::dropIfExists('schedule_update');
-
-
     }
 }
