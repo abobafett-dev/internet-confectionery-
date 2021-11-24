@@ -17,11 +17,7 @@ class CreateConfectioneryTables extends Migration
             $table->string('gender',10)->nullable();
             $table->timestamp('birthday')->nullable();
             $table->string('from')->nullable();
-
-            //поменять на обязательный
-            $table->string('phone');
-            //поменять на обязательный
-
+            $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
             $table->double('bonus')->default(0);
             $table->string('status')->default(1);

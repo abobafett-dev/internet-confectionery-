@@ -29,7 +29,7 @@
             <!-- Phone -->
             <div class="mt-4">
                 <x-label for="phone" value="{{ __('Номер телефона') }}" />
-                <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" placeholder="79XXXXXXXXX"/>
+                <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" placeholder="88005553535"/>
             </div>
 
             <!-- Password -->
