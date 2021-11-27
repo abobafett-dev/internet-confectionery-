@@ -20,7 +20,7 @@
                             <input type="text" value="{{$user->name}}" name="name">
                             <select name="gender" value="{{$user->gender}}">
                                 @if($user->gender == null)
-                                <option disabled selected></option>
+                                    <option disabled selected></option>
                                 @endif
                                 <option @if($user->gender == 'M') selected @endif value="M">Мужской</option>
                                 <option @if($user->gender == 'F') selected @endif value="F">Женский</option>
@@ -50,6 +50,51 @@
                     </div>
                     <div>
                         Бонусов - {{ $user->bonus }}
+                    </div>
+
+                    <div>
+                        @empty($orders)
+                            <div>
+                                @foreach($orders as $order)
+                                    <div>{{$order}}</div>
+                                @endforeach
+                            </div>
+                        @endempty
+                        @empty($intervals)
+                            <div>
+                                @foreach($intervals as $interval)
+                                    <div>{{$interval}}</div>
+                                @endforeach
+                            </div>
+                        @endempty
+                        @empty($schedule_standards)
+                            <div>
+                                @foreach($schedule_standards as $schedule_standard)
+                                    <div>{{$schedule_standard}}</div>
+                                @endforeach
+                            </div>
+                        @endempty
+                        @empty($order_statuses)
+                            <div>
+                                @foreach($order_statuses as $order_status)
+                                    <div>{{$order_status}}</div>
+                                @endforeach
+                            </div>
+                        @endempty
+                        @empty($order_productes)
+                            <div>
+                                @foreach($order_productes as $order_product)
+                                    <div>{{$order_product}}</div>
+                                @endforeach
+                            </div>
+                        @endempty
+                        @empty($products)
+                            <div>
+                                @foreach($products as $product)
+                                    <div>{{$product}}</div>
+                                @endforeach
+                            </div>
+                        @endempty
                     </div>
                 </div>
             </div>
