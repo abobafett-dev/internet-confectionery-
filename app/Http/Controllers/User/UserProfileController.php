@@ -16,7 +16,7 @@ class UserProfileController extends Controller
         $userStatus = User_status::find(Auth::user()->id_user_status);
         $user = Auth::user();
         if($user['avatar'] != null)
-            $user['avatar'] = Storage::url($user['avatar']);
+            $user['avatar'] = Storage::url($user['avatar']) . "?r=" . rand(0,1000);
         if($user['birthday'] != null)
             $user['birthday'] = date("Y-m-d", strtotime($user['birthday']));
 
