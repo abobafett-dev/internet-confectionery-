@@ -9,6 +9,8 @@ class Purchase extends Model
 {
     use HasFactory;
 
+    protected $table = 'purchase';
+
     protected $fillable = [
         'seller',
         'purchased_at'

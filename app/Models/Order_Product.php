@@ -9,6 +9,8 @@ class Order_Product extends Model
 {
     use HasFactory;
 
+    protected $table = 'order-product';
+
     protected $fillable = [
         'id_order',
         'id_product',

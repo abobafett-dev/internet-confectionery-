@@ -9,6 +9,8 @@ class Schedule_Interval extends Model
 {
     use HasFactory;
 
+    protected $table = 'schedule_interval';
+
     protected $fillable = [
         'start',
         'end'
