@@ -13,8 +13,10 @@ class UserProfileController extends Controller
 {
     public function create(){
         $userStatus = User_status::find(Auth::user()->id_user_status);
+        $user = Auth::user();
+        $user['avatar'] = Storage::url($user['avatar']);
 
-        return view('dashboard')->with(['userStatus'=>$userStatus]);
+        return view('dashboard')->with(['user'=> $user, 'userStatus'=>$userStatus]);
     }
 
     public function update(Request $request){
