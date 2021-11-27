@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\User_status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
@@ -16,6 +17,8 @@ class UserProfileController extends Controller
         $user = Auth::user();
         if($user['avatar'] != null)
             $user['avatar'] = Storage::url($user['avatar']);
+        if($user['birthday'] != null)
+            $user['birthday'] = date("Y-m-d", strtotime($user['birthday']));
 
         return view('dashboard')->with(['user'=> $user, 'userStatus'=>$userStatus]);
     }
@@ -23,23 +26,22 @@ class UserProfileController extends Controller
     public function update(Request $request){
         $validated = $request->validate([
             'name' => ['filled', 'string', 'max:255'],
-            'email' => ['filled', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['filled', 'string', 'regex:/^8\d{10,10}$/'],
-            'password' => ['filled', 'confirmed', Rules\Password::defaults()],
             'gender' => ['filled','string'],
             'birthday' => ['filled', 'date'],
             'from' => ['filled', 'string'],
-            'avatar' => ['filled', 'image'],
+            'avatarFile' => ['filled', 'image','mimes:jpeg,jpg,png','max:5500'],
         ]);
 
-        if(isset($validated['avatar'])){
-            $path = Storage::putFileAs('userAvatar', $validated->file('avatar'), Auth::user()->id);
-            $validated->avatar = $path;
+        if(isset($validated['avatarFile'])){
+            $path = Storage::putFileAs('public/userAvatar', $validated['avatarFile'], Auth::user()->id . ".png");
+            unset($validated['avatarFile']);
+            $validated['avatar'] = $path;
         }
 
         User::find(Auth::user()->id)->update($validated);
 
-        return redirect()->route('dashboard', ['was_updated'=>'Изменения прошли успешно!']);
+        return redirect('dashboard')->with(['was_updated'=>'Изменения прошли успешно!']);
     }
 
     public function delete(){

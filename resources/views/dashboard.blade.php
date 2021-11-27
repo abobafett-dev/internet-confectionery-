@@ -10,12 +10,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     Вы успешно авторизованы!
+                    @if(session()->exists('was_updated'))
+                        {{session('was_updated')}}
+                    @endif
                     <div>
+                        <img src="{{asset($user->avatar)}}" alt="Ваша аватарка">
                         <form action="{{route('updateProfileUser')}}" method="POST" enctype="multipart/form-data">
-                            <img src="{{$user->avatar}}" alt="Ваша аватарка">
-                            <input type="file" name="avatar">
+                            <input type="file" name="avatarFile">
                             <input type="text" value="{{$user->name}}" name="name">
-                            <input type="text" value="{{$user->email}}" name="email">
                             <select name="gender" value="{{$user->gender}}">
                                 @if($user->gender == null)
                                 <option disabled selected></option>
@@ -26,9 +28,21 @@
                             <input type="date" value="{{$user->birthday}}" name="birthday">
                             <input type="text" value="{{$user->phone}}" name="phone">
                             <input type="text" value="{{$user->from}}" name="from">
-                            <button>Изменить данные</button>
+                            <button type="submit">Изменить данные</button>
                             {{ csrf_field() }}
+                            {{$user}}
                         </form>
+
+                        @if(count($errors)>0)
+                            <div class="error" style="color:red">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{$error}}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                     </div>
 
                     <div>
