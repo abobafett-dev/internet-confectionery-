@@ -31,7 +31,7 @@ class UserProfileController extends Controller
 
         if(isset($validated['avatar'])){
             $path = Storage::putFileAs('userAvatar', $validated->file('avatar'), Auth::user()->id);
-            $validated->avatars = $path;
+            $validated->avatar = $path;
         }
 
         User::find(Auth::user()->id)->update($validated);
