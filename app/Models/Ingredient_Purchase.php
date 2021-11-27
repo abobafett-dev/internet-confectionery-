@@ -9,6 +9,8 @@ class Ingredient_Purchase extends Model
 {
     use HasFactory;
 
+    protected $table = 'ingredient-purchase';
+
     protected $fillable = [
         'id_ingredient',
         'id_purchase',

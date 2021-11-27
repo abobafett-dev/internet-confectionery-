@@ -9,6 +9,8 @@ class Schedule_Standard extends Model
 {
     use HasFactory;
 
+    protected $table = 'schedule_standard';
+
     protected $fillable = [
         'weekday',
         'start',

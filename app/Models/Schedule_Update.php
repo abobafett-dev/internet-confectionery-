@@ -9,6 +9,8 @@ class Schedule_Update extends Model
 {
     use HasFactory;
 
+    protected $table = 'schedule_update';
+
     protected $fillable = [
         'schedule_will_updated_at',
         'access',

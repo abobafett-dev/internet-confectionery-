@@ -9,6 +9,8 @@ class User_Status extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_status';
+
     protected $fillable = [
         'name',
         'percent',
