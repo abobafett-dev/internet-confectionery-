@@ -14,9 +14,7 @@ use App\Http\Controllers;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('main');
+Route::get('/', [Controllers\User\UserMainPageController::class, 'createProducts'])->name('main');
 
 Route::get('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
     ->middleware(['auth'])->name('dashboard');
