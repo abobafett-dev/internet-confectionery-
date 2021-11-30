@@ -81,10 +81,10 @@
                                 @endforeach
                             </div>
                         @endempty
-                        @empty($order_productes)
+                        @empty($orders_productes)
                             <div>
-                                @foreach($order_productes as $order_product)
-                                    <div>{{$order_product}}</div>
+                                @foreach($orders_productes as $order_productes)
+                                    <div>{{$order_productes}}</div>
                                 @endforeach
                             </div>
                         @endempty

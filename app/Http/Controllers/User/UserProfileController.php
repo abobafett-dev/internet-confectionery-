@@ -29,7 +29,7 @@ class UserProfileController extends Controller
         $intervals = [];
         $schedule_standards = [];
         $order_statuses = [];
-        $order_productes = [];
+        $orders_productes = [];
         $products = [];
 
         $orders = Order::where(['id_user',$user['id']]);
@@ -37,24 +37,21 @@ class UserProfileController extends Controller
             $intervals[$order['id']] = Schedule_Interval::find($order['id_schedule_interval']);
             $schedule_standards[$order['id']] = Schedule_Standard::find($order['id_schedule_standard']);
             $order_statuses[$order['id']] = Order_Status::find($order['id_order_status']);
-            $order_productes[$order['id']] = Order_Product::where('id_order', $order['id_order']);
+            $orders_productes[$order['id']] = Order_Product::where('id_order', $order['id_order']);
         }
-        $intervals = array_unique($intervals);
-        $schedule_standards = array_unique($schedule_standards);
-        $order_statuses = array_unique($order_statuses);
-        $order_productes = array_unique($order_productes);
 
-        foreach($order_productes as $order_product){
-            $products[$order_product['id_order'] . $order_product['id_product']] = Product::where($order_product['id_product'])->get();
+        foreach($orders_productes as $order_productes){
+            foreach($order_productes as $order_product){
+                $products[$order_product['id_product']] = Product::find($order_product['id_product']);
+            }
         }
-        $products = array_unique($products);
 
         return view('dashboard')
             ->with(['user'=> $user, 'userStatus'=>$userStatus,
                 'orders'=>$orders, 'intervals'=>$intervals,
                 'schedule_standards'=>$schedule_standards,
                 'order_statuses'=>$order_statuses,
-                'order_productes'=>$order_productes,
+                'orders_productes'=>$orders_productes,
                 'products'=>$products]);
     }
 

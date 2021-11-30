@@ -41,8 +41,6 @@ class UserMainPageController extends Controller
             array_multisort($productWithTypesAndCount['count'], SORT_DESC, SORT_NUMERIC);
         }
 
-        var_dump($productsWithTypesAndCount);
-
         return view('welcome')->with(['productsWithTypesAndCount'=>$productsWithTypesAndCount]);
     }
 }
