@@ -34,7 +34,6 @@ class UserProfileController extends Controller
         $products = [];
 
         $orders = Order::where('id_user',$user['id'])->get();
-        //var_dump($orders);
         foreach($orders as $order){
             $intervals[$order['id']] = Schedule_Interval::find($order['id_schedule_interval']);
             $schedule_standards[$order['id']] = Schedule_Standard::find($order['id_schedule_standard']);
@@ -44,8 +43,13 @@ class UserProfileController extends Controller
 
         foreach($orders_productes as $order_productes){
             foreach($order_productes as $order_product){
-                $products[$order_product['id_product']] = Product::find($order_product['id_product']);
-                $products[$order_product['id_product']]['photo'] = Storage::url($products[$order_product['id_product']]['photo']) . "?r=" . rand(0,1000);
+                if(!isset($products[$order_product['id_order']])){
+                    $products[$order_product['id_order']] = [];
+                    $products[$order_product['id_order']][count($products[$order_product['id_order']])] = Product::find($order_product['id_product']);
+                } else
+                    $products[$order_product['id_order']][count($products[$order_product['id_order']])] = Product::find($order_product['id_product']);
+                $products[$order_product['id_order']][count($products[$order_product['id_order']]) - 1]['photo'] =
+                    Storage::url($products[$order_product['id_order']][count($products[$order_product['id_order']]) - 1]['photo']) . "?r=" . rand(0,1000);
             }
         }
 
@@ -54,7 +58,6 @@ class UserProfileController extends Controller
                 'orders'=>$orders, 'intervals'=>$intervals,
                 'schedule_standards'=>$schedule_standards,
                 'order_statuses'=>$order_statuses,
-                'orders_productes'=>$orders_productes,
                 'products'=>$products]);
     }
 

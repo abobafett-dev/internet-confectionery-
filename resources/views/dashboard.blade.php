@@ -53,35 +53,17 @@
                     </div>
 
                     @empty(!$orders)
-                        <div>
+                        <div style="background-color: #87ecd4">
                             @foreach($orders as $order)
                                 <div>{{$order}}</div>
-                            @endforeach
-                            <div>
-                                @foreach($intervals as $interval)
-                                    <div>{{$interval}}</div>
-                                @endforeach
-                            </div>
-                            <div>
-                                @foreach($schedule_standards as $schedule_standard)
-                                    <div>{{$schedule_standard}}</div>
-                                @endforeach
-                            </div>
-                            <div>
-                                @foreach($order_statuses as $order_status)
-                                    <div>{{$order_status}}</div>
-                                @endforeach
-                            </div>
-                            <div>
-                                @foreach($orders_productes as $order_productes)
-                                    <div>{{$order_productes}}</div>
-                                @endforeach
-                            </div>
-                            <div>
-                                @foreach($products as $product)
+                                <div>{{$intervals[$order['id']]}}</div>
+                                <div>{{$schedule_standards[$order['id']]}}</div>
+                                <div>{{$order_statuses[$order['id']]}}</div>
+                                @foreach($products[$order['id']] as $product)
                                     <div>{{$product}}</div>
+{{--                                    <img src="{{asset($product->photo)}}">--}}
                                 @endforeach
-                            </div>
+                            @endforeach
                         </div>
                     @endempty
 

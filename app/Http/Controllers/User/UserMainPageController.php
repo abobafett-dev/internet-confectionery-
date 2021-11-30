@@ -44,7 +44,7 @@ class UserMainPageController extends Controller
 
         }
 
-        function sortByCount($firstObj, $secondObj): int
+        function sortByCountDesc($firstObj, $secondObj): int
         {
             if ($firstObj['count'] == $secondObj['count'])
                 return 0;
@@ -52,7 +52,7 @@ class UserMainPageController extends Controller
         }
 
         foreach ($productsWithTypesAndCount as $productWithTypesAndCount) {
-            usort($productWithTypesAndCount, "App\Http\Controllers\user\sortByCount");
+            usort($productWithTypesAndCount, "App\Http\Controllers\user\sortByCountDesc");
         }
 
         return view('welcome')->with(['productsWithTypesAndCount' => $productsWithTypesAndCount]);
