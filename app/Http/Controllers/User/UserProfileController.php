@@ -14,6 +14,7 @@ use App\Models\User_status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
@@ -32,17 +33,19 @@ class UserProfileController extends Controller
         $orders_productes = [];
         $products = [];
 
-        $orders = Order::where(['id_user',$user['id']]);
+        $orders = Order::where('id_user',$user['id'])->get();
+        //var_dump($orders);
         foreach($orders as $order){
             $intervals[$order['id']] = Schedule_Interval::find($order['id_schedule_interval']);
             $schedule_standards[$order['id']] = Schedule_Standard::find($order['id_schedule_standard']);
-            $order_statuses[$order['id']] = Order_Status::find($order['id_order_status']);
-            $orders_productes[$order['id']] = Order_Product::where('id_order', $order['id_order']);
+            $order_statuses[$order['id']] = Order_Status::find($order['id_status']);
+            $orders_productes[$order['id']] = Order_Product::where('id_order', $order['id'])->get();
         }
 
         foreach($orders_productes as $order_productes){
             foreach($order_productes as $order_product){
                 $products[$order_product['id_product']] = Product::find($order_product['id_product']);
+                $products[$order_product['id_product']]['photo'] = Storage::url($products[$order_product['id_product']]['photo']) . "?r=" . rand(0,1000);
             }
         }
 

@@ -52,50 +52,39 @@
                         Бонусов - {{ $user->bonus }}
                     </div>
 
-                    <div>
-                        @empty($orders)
-                            <div>
-                                @foreach($orders as $order)
-                                    <div>{{$order}}</div>
-                                @endforeach
-                            </div>
-                        @endempty
-                        @empty($intervals)
+                    @empty(!$orders)
+                        <div>
+                            @foreach($orders as $order)
+                                <div>{{$order}}</div>
+                            @endforeach
                             <div>
                                 @foreach($intervals as $interval)
                                     <div>{{$interval}}</div>
                                 @endforeach
                             </div>
-                        @endempty
-                        @empty($schedule_standards)
                             <div>
                                 @foreach($schedule_standards as $schedule_standard)
                                     <div>{{$schedule_standard}}</div>
                                 @endforeach
                             </div>
-                        @endempty
-                        @empty($order_statuses)
                             <div>
                                 @foreach($order_statuses as $order_status)
                                     <div>{{$order_status}}</div>
                                 @endforeach
                             </div>
-                        @endempty
-                        @empty($orders_productes)
                             <div>
                                 @foreach($orders_productes as $order_productes)
                                     <div>{{$order_productes}}</div>
                                 @endforeach
                             </div>
-                        @endempty
-                        @empty($products)
                             <div>
                                 @foreach($products as $product)
                                     <div>{{$product}}</div>
                                 @endforeach
                             </div>
-                        @endempty
-                    </div>
+                        </div>
+                    @endempty
+
                 </div>
             </div>
         </div>
