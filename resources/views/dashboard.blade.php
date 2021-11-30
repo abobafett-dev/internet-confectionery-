@@ -17,17 +17,27 @@
                         <img src="{{asset($user->avatar)}}" alt="Ваша аватарка">
                         <form action="{{route('updateProfileUser')}}" method="POST" enctype="multipart/form-data">
                             <input type="file" name="avatarFile">
-                            <input type="text" value="{{$user->name}}" name="name">
-                            <select name="gender" value="{{$user->gender}}">
-                                @if($user->gender == null)
-                                    <option disabled selected></option>
-                                @endif
-                                <option @if($user->gender == 'M') selected @endif value="M">Мужской</option>
-                                <option @if($user->gender == 'F') selected @endif value="F">Женский</option>
-                            </select>
-                            <input type="date" value="{{$user->birthday}}" name="birthday">
-                            <input type="text" value="{{$user->phone}}" name="phone">
-                            <input type="text" value="{{$user->from}}" name="from">
+                            <label>
+                                <input type="text" value="{{$user->name}}" name="name">
+                            </label>
+                            <label>
+                                <select name="gender">
+                                    @if($user->gender == null)
+                                        <option disabled selected></option>
+                                    @endif
+                                    <option @if($user->gender == 'M') selected @endif value="M">Мужской</option>
+                                    <option @if($user->gender == 'F') selected @endif value="F">Женский</option>
+                                </select>
+                            </label>
+                            <label>
+                                <input type="date" value="{{$user->birthday}}" name="birthday">
+                            </label>
+                            <label>
+                                <input type="text" value="{{$user->phone}}" name="phone">
+                            </label>
+                            <label>
+                                <input type="text" value="{{$user->from}}" name="from">
+                            </label>
                             <button type="submit">Изменить данные</button>
                             {{ csrf_field() }}
                             {{$user}}
