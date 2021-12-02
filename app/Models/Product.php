@@ -15,7 +15,9 @@ class Product extends Model
         'id_product_type',
         'name',
         'description',
-        'weight',
-        'photo'
+        'price',
+        'photo',
+        'bonus_coefficient',
+        'isActive'
     ];
 }

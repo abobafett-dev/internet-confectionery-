@@ -9,6 +9,7 @@ use App\Models\Order_Status;
 use App\Models\Product;
 use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
+use App\Models\Source;
 use App\Models\User;
 use App\Models\User_status;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,8 @@ class UserProfileController extends Controller
             $user['avatar'] = Storage::url($user['avatar']) . "?r=" . rand(0,1000);
         if($user['birthday'] != null)
             $user['birthday'] = date("Y-m-d", strtotime($user['birthday']));
+        if($user['id_source'] != null)
+            $user['id_source'] = Source::find($user['id_source']);
 
         $intervals = [];
         $schedule_standards = [];

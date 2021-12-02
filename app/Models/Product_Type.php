@@ -12,6 +12,9 @@ class Product_Type extends Model
     protected $table = 'product_type';
 
     protected $fillable = [
-        'name'
+        'name',
+        'weight_min',
+        'weight_initial',
+        'weight_max'
     ];
 }

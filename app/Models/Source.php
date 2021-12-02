@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product_Component extends Model
+class Source extends Model
 {
     use HasFactory;
 
-    protected $table = 'product-component';
+    protected $table = 'source';
 
     protected $fillable = [
-        'id_product',
-        'id_component'
+        'source'
     ];
 }

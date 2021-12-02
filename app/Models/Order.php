@@ -19,6 +19,7 @@ class Order extends Model
         'review_text',
         'review_photo',
         'id_schedule_standard',
-        'id_schedule_interval'
+        'id_schedule_interval',
+        'paidByPoints'
     ];
 }
