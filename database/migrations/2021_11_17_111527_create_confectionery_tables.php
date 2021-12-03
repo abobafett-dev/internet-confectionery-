@@ -19,7 +19,7 @@ class CreateConfectioneryTables extends Migration
             $table->string('from')->nullable();
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
-            $table->double('bonus')->default(0);
+            $table->double('bonus')->default(-1);
             $table->string('status')->default(1);
         });
 

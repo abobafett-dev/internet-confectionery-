@@ -70,7 +70,7 @@ class UserProfileController extends Controller
             'phone' => ['filled', 'string', 'regex:/^8\d{10,10}$/'],
             'gender' => ['filled','string'],
             'birthday' => ['filled', 'date'],
-            'from' => ['filled', 'string'],
+            'id_source' => ['filled', 'integer'],
             'avatarFile' => ['filled', 'image','mimes:jpeg,jpg,png','max:5500'],
         ]);
 
@@ -81,6 +81,15 @@ class UserProfileController extends Controller
         }
 
         User::find(Auth::user()->id)->update($validated);
+
+        $updatedUser = User::find(Auth::user()->id);
+
+        if($updatedUser->bonus == -1
+            && $updatedUser->name != null && $updatedUser->gender != null
+            && $updatedUser->birthday != null && $updatedUser->phone != null
+            && $updatedUser->avatar != null && $updatedUser->id_source != null){
+            User::find(Auth::user()->id)->update(['bonus' => 0]);
+        }
 
         return redirect('dashboard')->with(['was_updated'=>'Изменения прошли успешно!']);
     }
