@@ -15,6 +15,7 @@ class Product_Type extends Model
         'name',
         'weight_min',
         'weight_initial',
-        'weight_max'
+        'weight_max',
+        ''
     ];
 }

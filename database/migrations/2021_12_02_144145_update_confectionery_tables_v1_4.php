@@ -25,7 +25,11 @@ class UpdateConfectioneryTablesV14 extends Migration
 
         Schema::table('users', function(Blueprint $table){
            $table->dropColumn('from');
-           $table->foreignId('id_source')->nullable()->constrained('source')->onUpdate('cascade')->onDelete('cascade');
+           $table->foreignId('id_source')->nullable()->constrained('source')->onUpdate('cascade')->onDelete('restrict');
+        });
+
+        Schema::table('product_type', function(Blueprint $table){
+            $table->boolean('isConstructor')->default(false);
         });
     }
 
@@ -47,5 +51,9 @@ class UpdateConfectioneryTablesV14 extends Migration
         });
 
         Schema::dropIfExists('source');
+
+        Schema::table('product_type', function(Blueprint $table){
+            $table->dropColumn('isConstructor');
+        });
     }
 }
