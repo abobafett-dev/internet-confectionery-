@@ -22,6 +22,7 @@ class UserProfileController extends Controller
 {
     public function create(){
         $userStatus = User_status::find(Auth::user()->id_user_status);
+        $sources = Source::all();
         $user = Auth::user();
         if($user['avatar'] != null)
             $user['avatar'] = Storage::url($user['avatar']) . "?r=" . rand(0,1000);
@@ -61,7 +62,8 @@ class UserProfileController extends Controller
                 'orders'=>$orders, 'intervals'=>$intervals,
                 'schedule_standards'=>$schedule_standards,
                 'order_statuses'=>$order_statuses,
-                'products'=>$products]);
+                'products'=>$products,
+                'sources'=>$sources]);
     }
 
     public function update(Request $request){
