@@ -29,6 +29,10 @@ div.order{
 div#history{
 
 }
+div#profile{
+    background-color: #e0e0e0;
+    padding: 0 15px 15px 15px;
+}
 div#nav{
     border-bottom: 1px solid #A2A2A2FF; margin-bottom: 10px; padding: 0 0 5px 10px; display: flex;
 }

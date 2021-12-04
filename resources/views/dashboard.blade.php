@@ -35,34 +35,34 @@
                                     <div class="order">
                                         <a href="">
                                             <div class="info">
+                                                <div style="background-color:
+                                                @switch($order_statuses[$order['id']]->status)
+                                                @case('В корзине')
+                                                    #979595;
+                                                @break
+                                                @case('Принят')
+                                                    #edab23;
+                                                @break
+                                                @case('Готовится')
+                                                    #88d792;
+                                                @break
+                                                @case('Готов')
+                                                    #52b7ff;
+                                                @break
+                                                @case('Оплачен')
+                                                    #ffbdb5;
+                                                @break
+                                                @case('Выдан')
+                                                    #24d53a;
+                                                @break
+                                                @case('Отменён')
+                                                    #df3535;
+                                                @break
+                                                @default
+                                                    red;
+                                                @endswitch
+                                                    font-family: sans-serif;border-radius:10px 10px 0px 0px;">{{$order_statuses[$order['id']]->status}}</div>
                                                 @foreach($products[$order['id']] as $product)
-                                                    <div style="background-color:
-                                                    @switch($order_statuses[$order['id']]->status)
-                                                        @case('В корзине')
-                                                            #979595;
-                                                            @break
-                                                        @case('Принят')
-                                                            #edab23;
-                                                            @break
-                                                        @case('Готовится')
-                                                            #88d792;
-                                                            @break
-                                                        @case('Готов')
-                                                            #52b7ff;
-                                                            @break
-                                                        @case('Оплачен')
-                                                            #ffbdb5;
-                                                            @break
-                                                        @case('Выдан')
-                                                            #24d53a;
-                                                            @break
-                                                        @case('Отменён')
-                                                            #df3535;
-                                                            @break
-                                                            @default
-                                                            red;
-                                                    @endswitch
-                                                        font-family: sans-serif;border-radius:10px 10px 0px 0px;">{{$order_statuses[$order['id']]->status}}</div>
                                                     <img src="{{asset($product->photo)}}" style="width:10em;">
                                                     <span>{{$product->name}}<br></span>
                                                     <span>
@@ -82,7 +82,7 @@
                             <div>Вы ещё не совершали заказов</div>
                         @endif
                     </div>
-                    <div id="profile" style="background-color: #e0e0e0; padding: 0 15px;">
+                    <div id="profile">
                         @if(count($errors)>0)
                             <div class="error" style="color:red; text-align: center;">
                                 <ul>
@@ -134,15 +134,15 @@
                                         @endforeach
                                     </select>
                                 </label>
+                                @if($user->bonus > -1)
+                                    <div id="status">Ваш статус - <span style="text-decoration:underline;">{{ $userStatus->name }}</span>
+                                    </div>
+                                    <div id="bonus">Ваши бонусы - <span style="text-decoration:underline;">{{ $user->bonus }}</span>
+                                    </div>
+                                @endif
                                 <button type="submit" style="border:1px solid black;all: revert; display:none;" id="SaveChanges">Сохранить изменения</button>
                                 {{ csrf_field() }}
                             </form>
-                            @if($user->bonus > -1)
-                                <div id="status">Ваш статус - <span style="text-decoration:underline;">{{ $userStatus->name }}</span>
-                                </div>
-                                <div id="bonus">Ваши бонусы - <span style="text-decoration:underline;">{{ $user->bonus }}</span>
-                                </div>
-                            @endif
                     </div>
 
 
@@ -156,8 +156,6 @@
 </x-app-layout>
 <script>
     function fixProfile(){
-        document.getElementById('SaveChanges').setAttribute('style', 'border:1px solid black;all: revert;padding:8px;');
-        document.getElementById('bonus').setAttribute('style', 'display:none');
-        document.getElementById('status').setAttribute('style', 'display:none');
+        document.getElementById('SaveChanges').setAttribute('style', 'border:1px solid black;all: revert;padding:8px;')
     }
 </script>
