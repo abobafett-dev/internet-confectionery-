@@ -1,0 +1,53 @@
+div#history, div#profile{
+    display: inline-block;
+    vertical-align: top;
+    width: 74%;
+}
+div#profile{
+    width: 25%;
+}
+img#avatar{
+    width: 15em;
+    margin: 0px auto;
+    border: 1px solid #070404;
+}
+label.block{
+    margin: 10px 0;
+}
+body {
+    font-family: 'Nunito', sans-serif;
+}
+div.info{
+    width: 10em;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 11px 11px;
+}
+div.order{
+
+}
+div#history{
+
+}
+div#nav{
+    border-bottom: 1px solid #A2A2A2FF; margin-bottom: 10px; padding: 0 0 5px 10px; display: flex;
+}
+div#filter{
+    margin-left: auto;
+}
+div#filter>label>input[type='date']{
+    width: 150px;
+}
+*{
+    box-sizing: border-box;
+}
+div.sociallinks{
+    margin-left: 15px;
+}
+div#links{
+    margin-left: 55px;
+}
+div.sale-basket-icons-item-wrapper{
+    margin: 0px 35px;
+}
+
