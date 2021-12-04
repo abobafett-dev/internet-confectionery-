@@ -29,7 +29,7 @@
                                 </label>
                             </div>
                         </div>
-                        @if(empty(!$orders))
+                        @if(count($orders) > 0)
                             <div style="display: flex">
                                 @foreach($orders as $order)
                                     <div class="order">
@@ -38,30 +38,30 @@
                                                 <div style="background-color:
                                                 @switch($order_statuses[$order['id']]->status)
                                                 @case('В корзине')
-                                                    #979595;
+                                                    #979595
                                                 @break
                                                 @case('Принят')
-                                                    #edab23;
+                                                    #edab23
                                                 @break
                                                 @case('Готовится')
-                                                    #88d792;
+                                                    #88d792
                                                 @break
                                                 @case('Готов')
-                                                    #52b7ff;
+                                                    #52b7ff
                                                 @break
                                                 @case('Оплачен')
-                                                    #ffbdb5;
+                                                    #ffbdb5
                                                 @break
                                                 @case('Выдан')
-                                                    #24d53a;
+                                                    #24d53a
                                                 @break
                                                 @case('Отменён')
-                                                    #df3535;
+                                                    #df3535
                                                 @break
                                                 @default
-                                                    red;
+                                                    red
                                                 @endswitch
-                                                    font-family: sans-serif;border-radius:10px 10px 0px 0px;">{{$order_statuses[$order['id']]->status}}</div>
+                                                    ;font-family: sans-serif;border-radius:10px 10px 0px 0px;">{{$order_statuses[$order['id']]->status}}</div>
                                                 @foreach($products[$order['id']] as $product)
                                                     <img src="{{asset($product->photo)}}" style="width:10em;">
                                                     <span>{{$product->name}}<br></span>
@@ -121,13 +121,13 @@
                                 </label>
                                 <label class="block">Откуда узнали о нас?
                                     <select name="id_source">
-                                        @if($user->id_source->id == null)
+                                        @if($user->id_source == null)
                                             <option disabled selected></option>
                                         @else
                                             <option value="{{$user->id_source->id}}" selected>{{$user->id_source->source}}</option>
                                         @endif
                                         @foreach($sources as $fr)
-                                            @if($user->id_source->id == $fr->id)
+                                            @if(isset($user->id_source->id) && $user->id_source->id == $fr->id)
                                                 @continue
                                             @endif
                                             <option value="{{$fr->id}}">{{$fr->source}}</option>
