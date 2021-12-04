@@ -4,7 +4,7 @@
             {{ __('Личный кабинет') }}
         </h2>
         @if(session()->exists('was_updated'))
-            <div style="padding: 0px 10px; margin:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}</div>
+            <div style="padding: 0px 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}</div>
         @endif
     </x-slot>
 
