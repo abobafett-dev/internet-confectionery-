@@ -35,26 +35,54 @@
             @endauth
         </div>
     @endif
+</div>
 
 
-    @if(count($productsWithTypesAndCount) > 0)
-        <div class="abcd">
-            @foreach($productsWithTypesAndCount as $type => $productsOfType)
-                <div>
-                    {{$type}}
-                    @foreach($productsOfType as $productOfType)
+{{--    вывод продуктов с количеством по типу--}}
+@if(count($productsWithTypesAndCount) > 0)
+    <div>
+        @foreach($productsWithTypesAndCount as $type => $productsOfType)
+            <div>
+                {{$type}}
+                @foreach($productsOfType as $productOfType)
+                    <div>
+                        {{$productOfType->name}}
                         <div>
-                            {{$productOfType->name}}
-                            <div>
-                                {{$productOfType}}
-                            </div>
+                            {{$productOfType}}
                         </div>
-                    @endforeach
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
+    </div>
+@endif
+
+{{--    вывод конструктора - по типу продукта --}}
+@if(count($componentsWithProductTypesForConstructor) > 0)
+    @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
+        <div style="background-color: #f39b9b">
+            {{$product_type}}
+            <div>
+            {{$componentsWithType[0]['weight_min']}}
+            {{$componentsWithType[0]['weight_initial']}}
+            {{$componentsWithType[0]['weight_max']}}
+            </div>
+            @foreach($componentsWithType as $component_type => $components)
+                <div style="background-color: #ee5656; margin-left: 10px">
+                    @if($component_type != "0")
+                        {{$component_type}}
+                        @foreach($components as $component)
+                            <div style="background-color: #fa2121; margin-left: 20px">
+                                {{$component['name']}}
+                                {{var_dump($component)}}
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             @endforeach
         </div>
-    @endif
+    @endforeach
+@endif
 
-</div>
 </body>
 </html>
