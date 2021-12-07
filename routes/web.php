@@ -14,11 +14,22 @@ use App\Http\Controllers;
 |
 */
 
-Route::get('/', [Controllers\User\UserMainPageController::class, 'createProducts'])->name('main');
+Route::GET('/', [Controllers\User\UserMainPageController::class, 'createProducts'])
+    ->name('main');
 
-Route::get('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
+Route::GET('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
     ->middleware(['auth'])->name('dashboard');
 
-Route::POST('/dashboard',[Controllers\User\UserProfileController::class, 'update'])->name('updateProfileUser');
+Route::POST('/dashboard',[Controllers\User\UserProfileController::class, 'update'])
+    ->middleware(['auth'])->name('updateProfileUser');
+
+Route::GET('/catalog', [Controllers\User\UserCatalogController::class, 'create'])
+    ->name('catalog');
+
+Route::GET('/cart', [Controllers\User\UserCartController::class, 'create'])
+    ->middleware(['auth'])->name('cart');
+
+Route::GET('/order/{id}', [Controllers\User\UserOrderPageController::class, 'create'])
+    ->middleware(['auth'])->name('order');
 
 require __DIR__.'/auth.php';

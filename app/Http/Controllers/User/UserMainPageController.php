@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\user;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Component;
@@ -59,7 +59,7 @@ class UserMainPageController extends Controller
         }
 
         foreach ($productsWithTypesAndCount as $productWithTypesAndCount) {
-            usort($productWithTypesAndCount, "App\Http\Controllers\user\sortByCountDesc");
+            usort($productWithTypesAndCount, "App\Http\Controllers\User\sortByCountDesc");
         }
 
         $componentsWithProductTypesForConstructor = [];
