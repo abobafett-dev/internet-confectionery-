@@ -65,6 +65,9 @@ class UserMainPageController extends Controller
         $componentsWithProductTypesForConstructor = [];
         foreach ($product_types_components as $product_type_component) {
             $component = $components[array_search($product_type_component->id_component, $components_ids)];
+            if(!$component['isActive'])
+                continue;
+
             $component_type = $component_types[array_search($component['id_component_type'], $component_types_ids)];
             $product_type = $product_types[array_search($product_type_component->id_product_type, $product_types_ids)];
 
