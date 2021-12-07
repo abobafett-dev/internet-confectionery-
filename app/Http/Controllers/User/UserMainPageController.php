@@ -17,12 +17,17 @@ class UserMainPageController extends Controller
 {
     public function createProducts()
     {
-        $productsWhereIsActive = Product::where('isActive', true);
-        $products = $productsWhereIsActive->where('name', '<>', 'Конструктор')->get();
+        $products = Product::where('isActive', true)->where('name', '<>', 'Конструктор')->get();
         $product_types = Product_Type::all()->toArray();
         $products_orders = Order_Product::all();
 
+        $components = Component::all()->toArray();
+        $component_types = Component_Type::all()->toArray();
+        $product_types_components = Product_Type_Component::all();
+
         $product_types_ids = array_column($product_types, 'id');
+        $components_ids = array_column($components, 'id');
+        $component_types_ids = array_column($component_types, 'id');
 
         $countProductsInOrders = [];
         foreach ($products_orders as $product_order) {
@@ -57,15 +62,6 @@ class UserMainPageController extends Controller
             usort($productWithTypesAndCount, "App\Http\Controllers\user\sortByCountDesc");
         }
 
-        $components = Component::all()->toArray();
-        $component_types = Component_Type::all()->toArray();
-        $product_types_components = Product_Type_Component::all();
-        $productsConstructor = $productsWhereIsActive->where('name', 'Конструктор')->get();
-
-        $components_ids = array_column($components, 'id');
-        $component_types_ids = array_column($component_types, 'id');
-
-
         $componentsWithProductTypesForConstructor = [];
         foreach ($product_types_components as $product_type_component) {
             $component = $components[array_search($product_type_component->id_component, $components_ids)];
@@ -79,9 +75,11 @@ class UserMainPageController extends Controller
                 continue;
             }
 
-            if (isset($componentsWithProductTypesForConstructor[$product_type['name']]) && !isset($componentsWithProductTypesForConstructor[$product_type['name']][$component_type['name']])) {
+            if (isset($componentsWithProductTypesForConstructor[$product_type['name']]) &&
+                !isset($componentsWithProductTypesForConstructor[$product_type['name']][$component_type['name']])) {
                 $componentsWithProductTypesForConstructor[$product_type['name']][$component_type['name']] = [];
-            } elseif(!isset($componentsWithProductTypesForConstructor[$product_type['name']]) && !isset($componentsWithProductTypesForConstructor[$product_type['name']][$component_type['name']])) {
+            } elseif(!isset($componentsWithProductTypesForConstructor[$product_type['name']]) &&
+                !isset($componentsWithProductTypesForConstructor[$product_type['name']][$component_type['name']])) {
                 $componentsWithProductTypesForConstructor[$product_type['name']] = [];
                 $componentsWithProductTypesForConstructor[$product_type['name']][$component_type['name']] = [];
 
