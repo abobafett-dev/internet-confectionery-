@@ -1,10 +1,6 @@
 div#history, div#profile{
     display: inline-block;
     vertical-align: top;
-    width: 74%;
-}
-div#profile{
-    width: 25%;
 }
 img#avatar{
     width: 15em;
@@ -22,16 +18,20 @@ div.info{
     text-align: center;
     border: 1px solid black;
     border-radius: 11px 11px;
-}
-div.order{
-margin: 0px 10px;
-}
-div#history{
 
 }
+div.order{
+    margin: 0px 10px;
+}
+div#history{
+    margin: 15px 15px;
+    width: 72%;
+}
 div#profile{
+    width: 25%;
     background-color: #e0e0e0;
-    padding: 0 15px 15px 15px;
+    padding: 30px 15px;
+    float: right;
 }
 div#nav{
     border-bottom: 1px solid #A2A2A2FF; margin-bottom: 10px; padding: 0 0 5px 10px; display: flex;
@@ -53,5 +53,18 @@ div#links{
 }
 div.sale-basket-icons-item-wrapper{
     margin: 0px 35px;
+}
+div#footer-box-up{
+    background-color: #333333;
+    color: #FFFFFF;
+}
+div#footer-box-down{
+    background-color: #282828;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Times New Roman', sans-serif;
+}
+footer{
+    margin-top: -48px;
 }
 
