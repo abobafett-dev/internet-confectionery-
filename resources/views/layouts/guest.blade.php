@@ -23,9 +23,10 @@
     </head>
     <body>
 
+        <div style="position:absolute; width: 100%">
             @include('layouts.navigation')
-
-        <div class="font-sans text-gray-900 antialiased">
+        </div>
+        <div class="font-sans text-gray-900 antialiased" style="min-height: 830px; height: 100%;">
             {{ $slot }}
         </div>
     </body>

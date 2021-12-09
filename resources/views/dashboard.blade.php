@@ -5,7 +5,8 @@
         </h2>
         @if(session()->exists('was_updated'))
             <div
-                style="padding: 0px 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}</div>
+                style="padding: 0px 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}
+            </div>
         @endif
     </x-slot>
 
@@ -97,7 +98,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <img src="{{asset($user->avatar)}}" alt="Ваша аватарка" id="avatar">
+                        <img src="{{asset($user['avatar'])}}" alt="Ваша аватарка" id="avatar">
                         <form action="{{route('updateProfileUser')}}" method="POST" enctype="multipart/form-data"
                               onchange="fixProfile()">
                             <div style="text-align: center; width: 100%; margin-top: 15px;">

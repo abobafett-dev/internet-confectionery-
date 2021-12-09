@@ -1,5 +1,15 @@
 <x-guest-layout>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="margin-right: -160px;">
+            {{ __('Авторизация') }}
+        </h2>
+        @if(session()->exists('was_updated'))
+            <div
+                style="padding: 0px 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}
+            </div>
+        @endif
+    </x-slot>
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100" style="height: 100%">
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />

@@ -3,6 +3,6 @@
         asdasdasasd
     </div>
     <div id="footer-box-down">
-        © 2021
+        Copyright © 2021
     </div>
 </footer>
