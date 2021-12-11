@@ -29,7 +29,7 @@ Route::GET('/catalog', [Controllers\User\UserCatalogController::class, 'create']
 Route::GET('/cart', [Controllers\User\UserCartController::class, 'create'])
     ->middleware(['auth'])->name('cart');
 
-Route::GET('/order/{id}', [Controllers\User\UserOrderPageController::class, 'create'])
+Route::GET('/order/{order}', [Controllers\User\UserOrderPageController::class, 'create'])
     ->middleware(['auth'])->name('order');
 
 require __DIR__.'/auth.php';
