@@ -24,7 +24,7 @@ class UserCatalogController extends Controller
         foreach ($products as $product) {
             $product->product_type = $product_types[array_search($product->id_product_type, $product_types_ids)]['name'];
             if ($product->photo != null)
-                $product->photo = Storage::url($product->photo) . "?r=" . rand(0, 1000);
+                $product->photo = asset(Storage::url($product->photo) . "?r=" . rand(0, 1000));
 
             $productsWithTypesAndCount[count($productsWithTypesAndCount)] = $product->toArray();
         }
