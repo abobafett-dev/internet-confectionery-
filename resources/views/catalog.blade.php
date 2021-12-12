@@ -10,6 +10,7 @@
         @endif
     </x-slot>
 
+    {{var_dump($productsWithTypesAndCount)}}
 
 </x-app-layout>
 
