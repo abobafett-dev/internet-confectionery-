@@ -51,8 +51,16 @@ class UserProfileController extends Controller
         $orders_products = [];
 
         foreach ($orders as $index => $order) {
-            $orders[$index]['interval'] = Schedule_Interval::find($order['id_schedule_interval'])->toArray();
-            $orders[$index]['schedule_standard'] = Schedule_Standard::find($order['id_schedule_standard'])->toArray();
+            if($order['id_schedule_interval'] != null)
+                $orders[$index]['interval'] = Schedule_Interval::find($order['id_schedule_interval'])->toArray();
+            else
+                $orders[$index]['interval'] = null;
+
+            if($order['id_schedule_standard'] != null)
+                $orders[$index]['schedule_standard'] = Schedule_Standard::find($order['id_schedule_standard'])->toArray();
+            else
+                $orders[$index]['schedule_standard'] = null;
+
             $orders[$index]['status'] = Order_Status::find($order['id_status'])->toArray();
             $orders_products[$order['id']] = Order_Product::where('id_order', $order['id'])->get();
         }

@@ -35,8 +35,8 @@ class UpdateConfectioneryTablesV11 extends Migration
         });
 
         Schema::table('order', function(Blueprint $table){
-            $table->foreignId('id_schedule_standard')->constrained('schedule_standard')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('id_schedule_interval')->constrained('schedule_interval')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('id_schedule_standard')->nullable()->constrained('schedule_standard')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('id_schedule_interval')->nullable()->constrained('schedule_interval')->onUpdate('cascade')->onDelete('restrict');
         });
 
         Schema::table('schedule_update', function (Blueprint $table){
