@@ -27,7 +27,7 @@ Route::GET('/catalog', [Controllers\User\UserCatalogController::class, 'create']
     ->name('catalog');
 
 Route::GET('/cart', [Controllers\User\UserCartController::class, 'create'])
-    ->middleware(['auth'])->name('cart');
+    ->name('cart');
 
 Route::GET('/order/{order}', [Controllers\User\UserOrderPageController::class, 'create'])
     ->middleware(['auth'])->name('order');

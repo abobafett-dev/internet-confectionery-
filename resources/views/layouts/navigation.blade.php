@@ -139,7 +139,7 @@
                         @endauth
                     <!-- sale-basket -->
                     <div class="sale-basket-icons-item-wrapper">
-                        <a href="http://project/cart">
+                        <a href="{{route('cart')}}">
                             <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.7677 21.8164C11.343 21.8164 11.8094 21.3687 11.8094 20.8164C11.8094 20.2641 11.343 19.8164 10.7677 19.8164C10.1924 19.8164
                                 9.72607 20.2641 9.72607 20.8164C9.72607 21.3687 10.1924 21.8164 10.7677 21.8164Z" fill="#D9124A" stroke="#D9124A" stroke-width="1.5" stroke-linecap="square"></path>
