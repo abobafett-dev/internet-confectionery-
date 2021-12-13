@@ -1,5 +1,6 @@
 html,body{
     height: 100%;
+    scroll-behavior: smooth;
 }
 div#history, div#profile{
     display: inline-block;
@@ -33,11 +34,14 @@ div#history{
 div#profile{
     width: 25%;
     background-color: #e0e0e0;
-    padding: 30px 15px;
+    padding: 30px 15px 15px 15px;
     float: right;
 }
 div#nav{
-    border-bottom: 1px solid #A2A2A2FF; margin-bottom: 10px; padding: 0 0 5px 10px; display: flex;
+    border-bottom: 1px solid #A2A2A2FF;
+    margin-bottom: 10px;
+    padding: 0 0 5px 10px;
+    display: flex;
 }
 div#filter{
     margin-left: auto;
@@ -74,10 +78,11 @@ div#menu{
     display: none;
     background-color: white;
     position: absolute;
-    right: 32px;
+    right: 0px;
     top: 65px;
-    padding: 10px 20px;
     box-shadow: 0 0 5px;
+    border-radius: 5px;
+    overflow: hidden;
 }
 div#gototop{
     position: fixed;
@@ -97,5 +102,12 @@ div#indicator{
     height: 40px;
     display: flex;
     z-index: 999;
+}
+ul#menu_ul li{
+    border-bottom: 1px solid #e0dfdf;
+    padding: 10px 20px 10px 15px;
+}
+ul#menu_ul li:hover:hover{
+    background-color: #e0dfdf;
 }
 

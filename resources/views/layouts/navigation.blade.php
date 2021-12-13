@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script>
     window.addEventListener('scroll',(event) => {
         var elem = document.getElementById('gototop');
@@ -10,7 +11,6 @@
     }
     function OpenCloseMenu(){
         var elem = document.getElementById('menu');
-
         if(elem.style.display == 'block') {
             elem.style.display = 'none';
         }
@@ -96,7 +96,7 @@
                     </a>
                 </div>
                 <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ml-6" style="width: 480px; ">
+                <div class="hidden sm:flex sm:items-center sm:ml-6" style="width: 480px; position: relative">
 
                         @auth
                             <x-dropdown align="right" width="48">
@@ -152,9 +152,9 @@
                         </a>
                     </div>
                     <!-- Hamburger -->
-                    <div onclick="OpenCloseMenu()">
+                    <div onclick="OpenCloseMenu()" id="hamb">
                         <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100
-                         focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                         focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out" id="buttonMenu">
                             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"  style="color: #d9124a;">
                                 <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                                 <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -165,10 +165,10 @@
                         <ul id="menu_ul">
                             <a href="/" class="menu_a">
                                 <li>Главная</li>
-                            </a><a href="" class="menu_a">
+                            </a><a href="{{route('catalog')}}" class="menu_a">
                                 <li>Каталог</li>
-                            </a><a href="" class="menu_a">
-                                <li>Акции</li>
+{{--                            </a><a href="" class="menu_a">--}}
+{{--                                <li>Акции</li>--}}
                             </a><a href="" class="menu_a">
                                 <li>Для покупателя</li>
                             </a>

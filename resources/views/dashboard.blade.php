@@ -10,10 +10,7 @@
         @endif
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="bg-white border-gray-200">
+
                     <div id="history">
                         <div class="items-center" id="nav">
                             <div>
@@ -90,7 +87,7 @@
                     </div>
                     <div id="profile">
                         @if(count($errors)>0)
-                            <div class="error" style="color:red; text-align: center;">
+                            <div class="error" style="color:red; text-align: center; padding-bottom: 15px;">
                                 <ul>
                                     @foreach($errors->all() as $error)
                                         <li>{{$error}}</li>
@@ -130,7 +127,7 @@
                             <label class="block">Откуда узнали о нас?
                                 <select name="id_source">
                                     @if($user->id_source == null)
-                                        <option disabled selected></option>
+                                        <option disabled selected style="display: none;"></option>
                                     @else
                                         <option value="{{$user->id_source->id}}"
                                                 selected>{{$user->id_source->source}}</option>
@@ -151,21 +148,28 @@
                                         style="text-decoration:underline;">{{ $user->bonus }}</span>
                                 </div>
                             @endif
-                            <button type="submit" style="border:1px solid black;all: revert; display:none;"
-                                    id="SaveChanges">Сохранить изменения
-                            </button>
+                            <div style="text-align: center; margin-top: 10px;">
+                                <button type="submit" style="display:none;"
+                                        id="SaveChanges">Сохранить изменения
+                                </button>
+                            </div>
                             {{ csrf_field() }}
                         </form>
+                        @if($userStatus->name != "Админ")
+                            <form action="" method="POST" style="display:flex; margin-top: 10px;" id="delete_profile_id">
+                                <input type="number"  value="{{Auth::user()->id}}" name="id_product" disabled hidden>
+                                <button type="submit" style="border:1px solid black;all: revert; margin: auto; padding:8px;">
+                                    Удалить аккаунт
+                                </button>
+                                {{ csrf_field() }}
+                            </form>
+                        @endif
                     </div>
 
-
-                </div>
-            </div>
-        </div>
-    </div>
 </x-app-layout>
 <script>
     function fixProfile() {
-        document.getElementById('SaveChanges').setAttribute('style', 'border:1px solid black;all: revert;padding:8px;')
+        document.getElementById('SaveChanges').setAttribute('style', 'border:1px solid black;all: revert; padding:8px; margin: auto;')
+        document.getElementById('delete_profile_id').setAttribute('style', 'display:none')
     }
 </script>

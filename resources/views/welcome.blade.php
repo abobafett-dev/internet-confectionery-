@@ -21,7 +21,7 @@
 
 </head>
 <body class="antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100" style="padding-bottom: 70px;">
         @include('layouts.navigation')
         {{--    вывод продуктов с количеством по типу--}}
         @if(count($productsWithTypesAndCount) > 0)
@@ -30,12 +30,16 @@
                     <div>
                         {{$type}}
                         @foreach($productsOfType as $productOfType)
-                            <div>
-                                {{$productOfType->name}}
+                            <form action="">
                                 <div>
-                                    <img src="{{$productOfType->logo}}" alt="">
+                                    {{$productOfType->name}}
+                                    <input type="number" hidden disabled value="{{$productOfType['id']}}" name="id_product">
+                                    <div>
+                                        <img src="{{$productOfType['photo']}}" alt="" style="width: 10em">
+                                    </div>
+                                    <button>Добавить в корзину</button>
                                 </div>
-                            </div>
+                            </form>
                         @endforeach
                     </div>
                 @endforeach
@@ -43,29 +47,36 @@
         @endif
 
         {{--    вывод конструктора - по типу продукта --}}
+        {{var_dump($componentsWithProductTypesForConstructor)}}
         @if(count($componentsWithProductTypesForConstructor) > 0)
             @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
-                <div style="background-color: #f39b9b;">
-                    {{$product_type}}
-                    <div>
-                    {{$componentsWithType[0]['weight_min']}}
-                    {{$componentsWithType[0]['weight_initial']}}
-                    {{$componentsWithType[0]['weight_max']}}
-                    </div>
-                    @foreach($componentsWithType as $component_type => $components)
-                        <div style="background-color: #ee5656; margin-left: 10px">
-                            @if($component_type != "0")
-                                {{$component_type}}
-                                @foreach($components as $component)
-                                    <div style="background-color: #fa2121; margin-left: 20px">
-                                        {{$component['name']}}
-                                        <br>{{var_dump($component)}}
-                                    </div>
-                                @endforeach
-                            @endif
+                <form action="" method="POST" onchange="checked()">
+                    <input type="text" value="{{$product_type}}" name="product_type" hidden>
+                    <div style="background-color: #f39b9b;">
+                        {{$product_type}}
+                        <div>
+{{--                        {{$componentsWithType[0]['weight_min']}}--}}
+{{--                        {{$componentsWithType[0]['weight_initial']}}--}}
+{{--                        {{$componentsWithType[0]['weight_max']}}--}}
                         </div>
-                    @endforeach
-                </div>
+                        @foreach($componentsWithType as $component_type => $components)
+
+                            <div style="background-color: #ee5656; margin-left: 10px">
+                                @if($component_type != "0")
+                                    {{$component_type}}
+                                    <select name="constructor_{{$components[array_key_first($components)]['id_component_type']}}" id="">
+                                        <option value="" selected hidden></option>
+                                    @foreach($components as $key => $component)
+                                            <option value="{{$key}}">{{$component['name']}}</option>
+                                        </div>
+                                    @endforeach
+                                    </select>
+                                @endif
+                            </div>
+                        @endforeach
+                        <button>Заказать!</button>
+                    </div>
+                </form>
             @endforeach
         @endif
     </div>
