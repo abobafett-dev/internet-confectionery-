@@ -50,7 +50,7 @@
         {{var_dump($componentsWithProductTypesForConstructor)}}
         @if(count($componentsWithProductTypesForConstructor) > 0)
             @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
-                <form action="" method="POST" onchange="checked()">
+                <form action="{{route('addProductFromConstructor')}}" method="POST" onchange="checked()">
                     <input type="text" value="{{$product_type}}" name="product_type" hidden>
                     <div style="background-color: #f39b9b;">
                         {{$product_type}}
@@ -67,13 +67,14 @@
                                     <select name="constructor_{{$components[array_key_first($components)]['id_component_type']}}" id="">
                                         <option value="" selected hidden></option>
                                     @foreach($components as $key => $component)
-                                            <option value="{{$key}}">{{$component['name']}}</option>
+                                            <option value="{{$component['id']}}">{{$component['name']}}</option>
                                     @endforeach
                                     </select>
                                 @endif
                             </div>
                         @endforeach
                         <button>Заказать!</button>
+                        {{csrf_field()}}
                     </div>
                 </form>
             @endforeach
