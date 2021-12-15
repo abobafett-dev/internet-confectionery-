@@ -48,10 +48,12 @@ class UserProductController extends Controller
         $request_copy = $request->toArray();
         $products_components = array();
         $price = 0;
+        $components = array();
         foreach ($request_copy as $constructor => $component) {
             if (preg_match("/^constructor_[0-9]+$/", $constructor)) {
                 $request_copy[$constructor] = (int)$component;
                 $products_components[count($products_components)] = Product_Component::where('id_component', $request_copy[$constructor])->get()->toArray();
+                $components[count($components)] = Component::find((int)$component)->toArray();
                 $price += (int)Component::find((int)$component)->toArray()['price'];
             }
         }
@@ -96,6 +98,9 @@ class UserProductController extends Controller
         } elseif (Auth::user() == null && $productFromConstructor == null) {
             $productId = Product::insertGetId(['id_product_type' => $product_type[0]['id'], 'name' => 'Конструктор',
                 'photo' => $componentDecor['photo'], 'isActive' => true, 'bonus_coefficient' => 1, 'price' => $price]);
+            foreach($components as $component){
+                Product_Component::insert(['id_product'=>$productId, 'id_component'=>$component['id']]);
+            }
             $cookie = cookie('orderInCartProducts_' . $productId, $productId, 2680000);
             return redirect($request->server()['HTTP_REFERER'])->cookie($cookie);
 
@@ -109,6 +114,9 @@ class UserProductController extends Controller
         } elseif (Auth::user() != null && $productFromConstructor == null) {
             $productId = Product::insertGetId(['id_product_type' => $product_type[0]['id'], 'name' => 'Конструктор',
                 'photo' => $componentDecor['photo'], 'isActive' => true, 'bonus_coefficient' => 1, 'price' => $price]);
+            foreach($components as $component){
+                Product_Component::insert(['id_product'=>$productId, 'id_component'=>$component['id']]);
+            }
 
             $UserProductController = new UserProductController();
             $UserProductController->checkAndAddProductInChart($productId);
