@@ -15,6 +15,7 @@ class Schedule_Standard extends Model
         'weekday',
         'start',
         'end',
-        'orders_count'
+        'orders_count',
+        'isActive'
     ];
 }

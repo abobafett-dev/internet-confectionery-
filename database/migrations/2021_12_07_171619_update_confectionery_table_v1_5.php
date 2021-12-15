@@ -24,6 +24,15 @@ class UpdateConfectioneryTableV15 extends Migration
         Schema::table('user_status', function(Blueprint $table){
             $table->integer('will_update_in_months')->nullable();
         });
+
+        Schema::table('schedule_standard', function(Blueprint $table){
+            $table->boolean('isActive')->nullable();
+        });
+
+        Schema::table('schedule_update', function(Blueprint $table){
+            $table->dateTime('start')->nullable();
+            $table->dateTime('end')->nullable();
+        });
     }
 
     /**
@@ -43,6 +52,15 @@ class UpdateConfectioneryTableV15 extends Migration
 
         Schema::table('user_status', function(Blueprint $table){
             $table->dropColumn('will_update_in_months');
+        });
+
+        Schema::table('schedule_standard', function(Blueprint $table){
+            $table->dropColumn('isActive');
+        });
+
+        Schema::table('schedule_update', function(Blueprint $table){
+            $table->dropColumn('start');
+            $table->dropColumn('end');
         });
     }
 }
