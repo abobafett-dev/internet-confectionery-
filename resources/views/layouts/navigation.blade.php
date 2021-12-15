@@ -195,9 +195,10 @@
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex" style="min-height: 73px;">
         @if(isset($header)) {{ $header }} @endif
     </div>
-    <div id="gototop" onclick="backToTop()">
-        <div id="indicator">
-            <img src="{{asset(Storage::url('public/logo/indicator.png'))}}" alt="Вверх" style="margin: auto; width: 15px; align-items: center;">
-        </div>
-    </div>
 </header>
+<div id="gototop" onclick="backToTop()">
+    <div id="indicator">
+        <img src="{{asset(Storage::url('public/logo/indicator.png'))}}" alt="Вверх" style="margin: auto; width: 15px; align-items: center;">
+    </div>
+</div>
+
