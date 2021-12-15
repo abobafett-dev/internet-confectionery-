@@ -26,12 +26,12 @@ class UpdateConfectioneryTableV15 extends Migration
         });
 
         Schema::table('schedule_standard', function(Blueprint $table){
-            $table->boolean('isActive')->nullable();
+            $table->boolean('isActive')->default(true);
         });
 
         Schema::table('schedule_update', function(Blueprint $table){
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
+            $table->time('start')->nullable();
+            $table->time('end')->nullable();
         });
     }
 
