@@ -29,6 +29,9 @@ Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 
 Route::POST('/product/addProductInCart/{product}', [Controllers\User\UserProductController::class, 'addProductInCart'])
     ->name('addProductInCart');
 
+Route::POST('/product/deleteProductInCart/{product}', [Controllers\User\UserProductController::class, 'deleteProductInCart'])
+    ->name('deleteProductInCart');
+
 Route::POST('/product/addProductFromConstructor', [Controllers\User\UserProductController::class, 'addProductFromConstructor'])
     ->name('addProductFromConstructor');
 
