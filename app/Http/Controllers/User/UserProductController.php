@@ -49,12 +49,15 @@ class UserProductController extends Controller
         $products_components = array();
         $price = 0;
         $components = array();
+        $product_type = Product_Type::where('name', $request_copy['product_type'])->get()->toArray();
+
         foreach ($request_copy as $constructor => $component) {
             if (preg_match("/^constructor_[0-9]+$/", $constructor)) {
                 $request_copy[$constructor] = (int)$component;
                 $products_components[count($products_components)] = Product_Component::where('id_component', $request_copy[$constructor])->get()->toArray();
                 $components[count($components)] = Component::find((int)$component)->toArray();
-                $price += (int)Component::find((int)$component)->toArray()['price'];
+                $componentForPrice = Component::find((int)$component)->toArray();
+                $price += (int)$componentForPrice['price'] * (int)$componentForPrice['coefficient'] * (int)$product_type[0]['weight_initial'];
             }
         }
 
@@ -88,8 +91,6 @@ class UserProductController extends Controller
                 break;
             }
         }
-
-        $product_type = Product_Type::where('name', $request_copy['product_type'])->get()->toArray();
 
         if (Auth::user() == null && $productFromConstructor != null) {
             $cookie = cookie('orderInCartProducts_' . $productFromConstructor['id'], $productFromConstructor['id'], 2680000);
