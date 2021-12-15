@@ -10,9 +10,11 @@
         @endif
     </x-slot>
 
-    {{var_dump($orderInCart[0]['products'])}}
+    @isset($orderInCart)
+        {{var_dump($orderInCart[0]['products'])}}
 
-    {{var_dump($orderInCart, $schedule_interval, $schedule_standard, $schedule_update_all, $orders_all)}}
+        {{var_dump($orderInCart, $schedule_interval, $schedule_standard, $schedule_update_all, $orders_all)}}
+    @endisset
 
 </x-app-layout>
 
