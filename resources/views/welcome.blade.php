@@ -50,7 +50,7 @@
         {{var_dump($componentsWithProductTypesForConstructor)}}
         @if(count($componentsWithProductTypesForConstructor) > 0)
             @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
-                <form action="{{route('addProductFromConstructor')}}" method="POST" onchange="checked()">
+                <form action="{{route('addProductFromConstructor')}}" method="POST">
                     <input type="text" value="{{$product_type}}" name="product_type" hidden>
                     <div style="background-color: #f39b9b;">
                         {{$product_type}}

@@ -18,11 +18,12 @@ body {
     font-family: 'Nunito', sans-serif;
 }
 div.info{
-    width: 10em;
+    width: 100%;
     text-align: center;
-    border: 1px solid black;
-    border-radius: 11px 11px;
-
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.38);
+    border-radius: 0px 0px 10px 10px;
+    overflow: hidden;
+    margin: 0px 0px 15px 0px;
 }
 div.order{
     margin: 0px 10px;
@@ -140,12 +141,12 @@ div.cart_product_info{
 div.changes_position{
     border: 1px solid #afafaf;
     border-radius: 5px;
-    width: 70px;
+    width: 90px;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    padding: 5px;
 }
 div.changes_position input{
     display: inline-block;
@@ -163,9 +164,18 @@ div.changes_position input{
     outline: none;
 }
 div.changes_position button{
-    width: 20px;
+    text-align: center;
+    width: 30px;
     font-size: 25px;
     margin: auto;
+}
+div.changes_position button:hover{
+    text-align: center;
+    width: 30px;
+    font-size: 25px;
+    margin: auto;
+    background-color: #e1e1e1;
+    border-radius: 5px;
 }
 div#delete{
     display: none;
@@ -177,18 +187,54 @@ button.button_delete{
 }
 div.cart_product_description{
     display: flex;
-    font-size: 18px;
+    font-size: 16px;
     flex-direction: column;
     justify-content: space-between;
-    width: 380px;
+    width: 420px;
 }
 div.cart_product_price{
     padding: 0px 10px;
     width: 130px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 div.cart_product_price div{
+    text-align: right;
 }
+div.cart_product_counts{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+div.menuTotal{
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0px 5px rgb(0 0 0 / 18%);
+}
+div.menuTotal div ul{
+    width: 100%;
+}
+div.menuTotal div ul li{
+    border-bottom:1px solid rgba(168, 165, 165, 0.38);
+    width: 100%;
+    padding: 15px;
+}
+li#itog{
+    font-size: 18px;
+    font-weight: bold;
+}
+li#pickTime{
+    text-decoration: underline #000000;
+    cursor: pointer;
+}
+button#buttonOrder{
+    padding: 15px;
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    background-color: #FFBEB5;
+    border-radius: 10px;
+}
+
 

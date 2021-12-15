@@ -27,8 +27,7 @@
             </div>
         </div>
         @if(count($orders) > 0)
-
-            <div style="display: flex">
+            <div style="">
                 @foreach($orders as $order)
                     <div class="order">
                         <div class="info">
@@ -58,22 +57,56 @@
                             @default
                                 red
                             @endswitch
-                                ;font-family: sans-serif;border-radius:10px 10px 0px 0px;">{{$order['status']['status']}}</div>
-                            @foreach($order['products'] as $product)
-                                <img src="{{$product['photo']}}" style="width:10em;">
-                                <span>{{$product['name']}}<br></span>
-                                <span>
-                                        {{date('d.m.Y',strtotime($order['will_cooked_at']))}}
+                                ;font-family: sans-serif; display: flex; align-items: center; justify-content: space-between;">
+                                <div style="padding: 5px 15px; width: 160px;">
+                                    {{date('d.m.Y',strtotime($order['will_cooked_at']))}}
                                     {{date('h:i',strtotime($order['interval']['start']))}}
-                                    </span>
-                                <div style="text-align: center; margin: 5px 0px;">
-                                    <a href="/dashboard"
-                                       style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
-                                        отзыв</a>
                                 </div>
+                                <div style="padding: 5px 15px; width: 160px;">
+                                    {{$order['status']['status']}}
+                                </div>
+                                <div style="padding: 5px 15px; width: 160px;">
+                                    <form action="" method="POST">
+                                        <input type="text" hidden value="{{$order['id']}}">
+                                        <button style="color: #730101FF; text-decoration: underline #730101;">Удалить заказ</button>
+                                    </form>
+                                </div>
+                            </div>
+                            @php $sum = 0 @endphp
+                            @foreach($order['products'] as $product)
+                                @php $sum += $product['price'] // необходимо добавить умножение на количество @endphp
+                            <div style="display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(206,206,206,0.75);">
+                                <div>
+                                    <img src="{{$product['photo']}}" style="width:10em;">
+                                </div>
+                                <div style="display: flex; justify-content: space-between; flex-direction: column; width: 400px;">
+                                    <div>
+                                        <h2 style="font-weight: bold; font-size: 1.5em;">{{$product['name']}}</h2>
+                                        {{$product['description']}}
+                                    </div>
+                                    <div style="font-weight: bold;">{{$product['price']}}₽</div>
+                                    <div>
+                                        <form action="" method="POST">
+                                        <button
+                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
+                                            отзыв
+                                        </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; margin: 5px 0px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
+                                    <div>
+                                        kol-vo
+                                    </div>
+                                    <div>
+                                        Summa
+                                    </div>
+                                </div>
+                            </div>
                             @endforeach
+                            <div style="text-align: right; width: 100%; padding: 5px 15px; font-weight: bold;">Итого: {{$sum}}₽</div>
+                            </div>
                         </div>
-                    </div>
                 @endforeach
             </div>
         @else
@@ -81,7 +114,7 @@
         @endif
 
         @if($user['id_user_status'] == 2 && count($ordersToAdmin) > 0)
-            <div>{{var_dump($ordersToAdmin)}}</div>
+{{--            <div>{{var_dump($ordersToAdmin)}}</div>--}}
         @endif
     </div>
     <div id="profile">
@@ -98,7 +131,7 @@
         <form action="{{route('updateProfileUser')}}" method="POST" enctype="multipart/form-data"
               onchange="fixProfile()">
             <div style="text-align: center; width: 100%; margin-top: 15px;">
-                <label style="background-color: #FFE6EF;padding: 5px 20px; border: 1px solid #b8b7b7;">Загрузить
+                <label style="background-color: #FFE6EF;padding: 5px 20px; border: 1px solid #b8b7b7; cursor: pointer;">Загрузить
                     новый аватар
                     <input type="file" name="avatarFile" style="display: none;">
                 </label>
@@ -169,6 +202,6 @@
 <script>
     function fixProfile() {
         document.getElementById('SaveChanges').setAttribute('style', 'border:1px solid black;all: revert; padding:8px; margin: auto;')
-        document.getElementById('delete_profile_id').setAttribute('style', 'display:none')
+        @if($userStatus->name != "Админ") document.getElementById('delete_profile_id').setAttribute('style', 'display:none')@endif
     }
 </script>
