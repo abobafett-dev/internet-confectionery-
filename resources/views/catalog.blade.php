@@ -13,13 +13,15 @@
     {{var_dump($productsWithTypesAndCount)}}
     {{$productsWithTypesAndCount[0]['id']}}
     @foreach($productsWithTypesAndCount as $iter)
-    <form action="/" method="POST">
+    <form action="{{route('addProductInCart', ['product'=>$iter['id']])}}" method="POST">
         <img src="{{$iter['photo']}}" alt="" style="width:10em;">
         <input type="number"  value="{{$iter['id']}}" name="id_product" disabled hidden>
         <button>Добавить в корзину</button>
         {{ csrf_field() }}
     </form>
     @endforeach
+
+    {{var_dump(\Illuminate\Support\Facades\Cookie::get())}}
 
 </x-app-layout>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Order_Product;
+use App\Models\Product;
 use App\Models\Product_Type;
 use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
@@ -12,13 +13,25 @@ use App\Models\Schedule_Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Storage;
 
 class UserCartController extends Controller
 {
     public function create()
     {
-        if (Auth::user() == null && Cookie::get('orderInCart') != null) {
-            $orderInCart = Cookie::get('orderInCart');
+        if (Auth::user() == null) {
+            $orderInCartProducts = Cookie::get();
+            $orderInCart = array();
+            foreach($orderInCartProducts as $index=>$cookie){
+                if(preg_match("/^orderInCartProducts_[0-9]+$/",$index)){
+                    if(!isset($orderInCart[0]))
+                        $orderInCart = array(0=>array('products'=>array()));
+                    $productId = explode("_", $index);
+                    $orderInCart[0]['products'][(int)($productId[1])] = Product::find((int)($productId[1]))->toArray();
+                    $orderInCart[0]['products'][(int)($productId[1])]['photo'] =
+                        asset(Storage::url($orderInCart[0]['products'][(int)($productId[1])]['photo']) . "?r=" . rand(0, 1000));
+                }
+            }
         } elseif (Auth::user() != null) {
             $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
 
@@ -27,10 +40,6 @@ class UserCartController extends Controller
 
                 $orderInCart = $classUserProfileController->createOrders($orderInCart);
             }
-
-            foreach ($orderInCart[0]['products'] as $index => $product) {
-                $orderInCart[0]['products'][$index]['product_type'] = Product_Type::find($product['id_product_type'])->toArray();
-            }
         } else {
             $orderInCart = array();
         }
@@ -38,6 +47,10 @@ class UserCartController extends Controller
 //        $days = array(0 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
 //            3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
         if (count($orderInCart) > 0) {
+
+            foreach ($orderInCart[0]['products'] as $index => $product) {
+                $orderInCart[0]['products'][$index]['product_type'] = Product_Type::find($product['id_product_type'])->toArray();
+            }
 
             date_default_timezone_set('Etc/GMT-5');
 

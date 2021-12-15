@@ -26,6 +26,9 @@ Route::POST('/dashboard/update',[Controllers\User\UserProfileController::class, 
 Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 'delete'])
     ->middleware(['auth'])->name('deleteProfileUser');
 
+Route::POST('/product/addProductInCart/{product}', [Controllers\User\UserProductController::class, 'addProductInCart'])
+    ->name('addProductInCart');
+
 Route::GET('/catalog', [Controllers\User\UserCatalogController::class, 'create'])
     ->name('catalog');
 
