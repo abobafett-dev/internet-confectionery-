@@ -18,7 +18,7 @@ class UpdateConfectioneryTableV15 extends Migration
         });
 
         Schema::table('users', function(Blueprint $table){
-            $table->date('status_updated_at')->nullable();
+            $table->timestamp('status_updated_at')->nullable();
         });
 
         Schema::table('user_status', function(Blueprint $table){

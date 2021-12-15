@@ -33,7 +33,7 @@ class CreateConfectioneryTables extends Migration
             $table->id();
             $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('id_status')->constrained('order_status')->onUpdate('cascade')->onDelete('restrict');
-            $table->timestamp('will_cooked_at');
+            $table->date('will_cooked_at')->nullable();
             $table->string('address')->nullable();
             $table->text('review_text')->nullable();
             $table->string('review_photo')->nullable();

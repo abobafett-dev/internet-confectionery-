@@ -20,8 +20,11 @@ Route::GET('/', [Controllers\User\UserMainPageController::class, 'createProducts
 Route::GET('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
     ->middleware(['auth'])->name('dashboard');
 
-Route::POST('/dashboard',[Controllers\User\UserProfileController::class, 'update'])
+Route::POST('/dashboard/update',[Controllers\User\UserProfileController::class, 'update'])
     ->middleware(['auth'])->name('updateProfileUser');
+
+Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 'delete'])
+    ->middleware(['auth'])->name('deleteProfileUser');
 
 Route::GET('/catalog', [Controllers\User\UserCatalogController::class, 'create'])
     ->name('catalog');

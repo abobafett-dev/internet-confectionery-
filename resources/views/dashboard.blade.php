@@ -156,7 +156,7 @@
                             {{ csrf_field() }}
                         </form>
                         @if($userStatus->name != "Админ")
-                            <form action="" method="POST" style="display:flex; margin-top: 10px;" id="delete_profile_id">
+                            <form action="{{route('deleteProfileUser')}}" method="POST" style="display:flex; margin-top: 10px;" id="delete_profile_id">
                                 <input type="number"  value="{{Auth::user()->id}}" name="id_product" disabled hidden>
                                 <button type="submit" style="border:1px solid black;all: revert; margin: auto; padding:8px;">
                                     Удалить аккаунт

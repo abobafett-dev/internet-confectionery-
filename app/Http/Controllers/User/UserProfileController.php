@@ -27,6 +27,8 @@ class UserProfileController extends Controller
         $user = Auth::user();
         if ($user['avatar'] != null)
             $user['avatar'] = Storage::url($user['avatar']) . "?r=" . rand(0, 1000);
+        else
+            $user['avatar'] = "storage/logo/standardUserAvatar.png" . "?r=" . rand(0, 1000);
         if ($user['birthday'] != null)
             $user['birthday'] = date("Y-m-d", strtotime($user['birthday']));
         if ($user['id_source'] != null)
@@ -128,6 +130,19 @@ class UserProfileController extends Controller
 
     public function delete()
     {
+        $orders = Order::where('id_user',Auth::user()->id)->get()->toArray();
+        if(count($orders) > 0){
+            foreach($orders as $order){
+                if($order['id_status'] == 2){
+                    Order_Product::where('id_order',$order['id'])->delete();
+                    Order::find($order['id'])->delete();
+                }
+                else{
+                    Order::find($order['id'])->update(['id_user' => 1]);
+                }
+            }
+        }
+
         User::find(Auth::user()->id)->delete();
 
         return redirect()->route('main');

@@ -134,7 +134,7 @@
                              <a href="{{ route('login') }}" class="text-sm dark:text-gray-500" style="margin-left: auto;">Войти</a>
 
                                 @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="ml-4 text-sm dark:text-gray-500">Зарегестрироваться</a>
+                                    <a href="{{ route('register') }}" class="ml-4 text-sm dark:text-gray-500">Зарегистрироваться</a>
                             @endif
                         @endauth
                     <!-- sale-basket -->
