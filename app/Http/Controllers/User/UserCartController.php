@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Order_Product;
+use App\Models\Product_Type;
 use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
 use App\Models\Schedule_Update;
@@ -25,6 +26,10 @@ class UserCartController extends Controller
                 $classUserProfileController = new UserProfileController();
 
                 $orderInCart = $classUserProfileController->createOrders($orderInCart);
+            }
+
+            foreach($orderInCart[0]['products'] as $index=>$product){
+                $orderInCart[0]['products']['product_type'] = Product_Type::find($product['id_product_type'])->toArray();
             }
         }
         else {
