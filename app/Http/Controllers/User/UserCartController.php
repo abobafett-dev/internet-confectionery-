@@ -29,7 +29,7 @@ class UserCartController extends Controller
             }
 
             foreach ($orderInCart[0]['products'] as $index => $product) {
-                $orderInCart[0]['products']['product_type'] = Product_Type::find($product['id_product_type'])->toArray();
+                $orderInCart[0]['products'][$index]['product_type'] = Product_Type::find($product['id_product_type'])->toArray();
             }
         } else {
             $orderInCart = array();
