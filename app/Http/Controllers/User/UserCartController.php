@@ -78,12 +78,8 @@ class UserCartController extends Controller
         $schedule_update_all = $UserCartController->makeArrayUpdates($schedule_updates_24, $schedule_update_all);
         $schedule_update_all = $UserCartController->makeArrayUpdates($schedule_updates_48, $schedule_update_all);
 
-        var_dump($schedule_interval, $schedule_standard, $schedule_update_all, $orders_all);
-
-
-        return;
-
-        return view('cart')->with(['orderInCart'=>$orderInCart]);
+        return view('cart')->with(['orderInCart'=>$orderInCart, 'schedule_interval'=>$schedule_interval,
+            'schedule_standard'=>$schedule_standard, 'schedule_update_all'=>$schedule_update_all, 'orders_all'=>$orders_all]);
     }
 
     private function makeArrayUpdates($schedule_updates, $schedule_update_all): array
