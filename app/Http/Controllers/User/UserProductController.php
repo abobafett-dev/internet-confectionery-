@@ -27,9 +27,7 @@ class UserProductController extends Controller
                 Order_Product::insert(['id_order' => $orderId, 'id_product' => $productId, 'count' => 1]);
             } else {
                 $order_product = Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', $productId);
-                if (count($order_product->get()->toArray()) > 0) {
-                    $order_product->update(['count' => $order_product['count']++]);
-                } else {
+                if (count($order_product->get()->toArray()) == 0) {
                     Order_Product::insert(['id_order' => $orderInCart[0]['id'], 'id_product' => $productId, 'count' => 1]);
                 }
             }
