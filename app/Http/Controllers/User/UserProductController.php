@@ -57,7 +57,7 @@ class UserProductController extends Controller
                 $products_components[count($products_components)] = Product_Component::where('id_component', $request_copy[$constructor])->get()->toArray();
                 $components[count($components)] = Component::find((int)$component)->toArray();
                 $componentForPrice = Component::find((int)$component)->toArray();
-                $price += (int)$componentForPrice['price'] * (int)$componentForPrice['coefficient'] * (int)$product_type[0]['weight_initial'];
+                $price += (double)$componentForPrice['price'] * (double)$componentForPrice['coefficient'] * (double)$product_type[0]['weight_initial'];
             }
         }
 
