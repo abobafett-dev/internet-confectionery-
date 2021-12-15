@@ -32,7 +32,6 @@ class UserProductController extends Controller
                 }
             }
         }
-
         return redirect($request->server()['HTTP_REFERER']);
     }
 }

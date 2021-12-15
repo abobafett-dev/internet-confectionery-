@@ -30,14 +30,14 @@
                     <div>
                         {{$type}}
                         @foreach($productsOfType as $productOfType)
-                            <form action="">
+                            <form action="{{route('addProductInCart', ['product'=>$productOfType['id']])}}" method="POST">
                                 <div>
                                     {{$productOfType->name}}
-                                    <input type="number" hidden disabled value="{{$productOfType['id']}}" name="id_product">
                                     <div>
                                         <img src="{{$productOfType['photo']}}" alt="" style="width: 10em">
                                     </div>
                                     <button>Добавить в корзину</button>
+                                    {{ csrf_field() }}
                                 </div>
                             </form>
                         @endforeach
@@ -68,7 +68,6 @@
                                         <option value="" selected hidden></option>
                                     @foreach($components as $key => $component)
                                             <option value="{{$key}}">{{$component['name']}}</option>
-                                        </div>
                                     @endforeach
                                     </select>
                                 @endif
