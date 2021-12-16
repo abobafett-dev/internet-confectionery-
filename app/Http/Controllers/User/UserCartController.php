@@ -79,8 +79,7 @@ class UserCartController extends Controller
                 $count += (int)$schedule_update['orders_count_update'];
 
             foreach($schedule_intervals as $index=>$schedule_interval){
-                if(($schedule_interval['start'] >= $schedule_update['start'] || $schedule_interval['end'] <= $schedule_update['end']) ||
-                    ($schedule_interval['start'] <= $schedule_update['start'] && $schedule_interval['end'] >= $schedule_update['end'])){
+                if($schedule_interval['id'] == $schedule_update['id_schedule_interval']){
                     unset($schedule_intervals[$index]);
                 }
             }
