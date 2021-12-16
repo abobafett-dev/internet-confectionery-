@@ -159,15 +159,14 @@
                 </div>
             @endif
         </div>
-        <meta name="csrf-token" content="{{ csrf_token() }}">
     </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function deleteFromCart(id_ord, id_prod) {
+        function deleteFromCart(id_ord = -1, id_prod) {
             $.ajax({
                 url: '{{route('deleteProductInCartAjax')}}',
                 type: "POST",
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
                 data: {order: id_ord, product: id_prod},
                 success: function (id_prod) {
                     if (data.result == 'ok') {
