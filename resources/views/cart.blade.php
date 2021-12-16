@@ -76,7 +76,7 @@
             @endforeach
         </form>
     </div>
-    <div style="margin-top: 20px; padding: 0px 15px; width: 21%; display: inline-block; float: right;">
+    <div style="margin-top: 20px; padding: 0px 15px 15px 15px; width: 21%; display: inline-block; float: right;">
         <div class="menuTotal">
             <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
                 <ul>
@@ -90,6 +90,68 @@
                 Оформить заказ!
             </button>
         </div>
+        @if(!Auth::user())
+        <div id="regInForm">
+        @csrf
+
+        <!-- Name -->
+            <div>
+                <x-label for="name" :value="__('Имя')" />
+
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            </div>
+
+            <!-- Email Address -->
+            <div class="mt-4">
+                <x-label for="email" :value="__('Email')" />
+
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            </div>
+
+            <!-- Phone -->
+            <div class="mt-4">
+                <x-label for="phone" value="{{ __('Номер телефона') }}" />
+                <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" placeholder="88005553535"/>
+            </div>
+
+            <!-- Password -->
+            <div class="mt-4">
+                <x-label for="password" :value="__('Пароль')" />
+
+                <x-input id="password" class="block mt-1 w-full"
+                         type="password"
+                         name="password"
+                         required autocomplete="new-password" />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mt-4">
+                <x-label for="password_confirmation" :value="__('Подверждение пароля')" />
+
+                <x-input id="password_confirmation" class="block mt-1 w-full"
+                         type="password"
+                         name="password_confirmation" required />
+            </div>
+
+            <div class="flex items-center justify-center mt-4">
+                <button type="button" onclick="LogInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    {{ __('Уже зарегистрированы?') }}
+                </button>
+            </div>
+        </div>
+        <div id="logInForm">
+            <div>
+                <x-label for="email" :value="__('Email')" />
+
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            </div>
+            <div class="flex items-center justify-center mt-4">
+                <button type="button" onclick="RegInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    {{ __('Нет учётной записи?') }}
+                </button>
+            </div>
+        </div>
+        @endif
     </div>
     <script>
         function one_weight(index, difference, number) {
@@ -178,6 +240,14 @@
             summaryTotalCost();
             minDate()
         };
+        function LogInCart() {
+            document.getElementById('logInForm').setAttribute('style','display:block');
+            document.getElementById('regInForm').setAttribute('style','display:none');
+        }
+        function RegInCart() {
+            document.getElementById('logInForm').setAttribute('style','display:none');
+            document.getElementById('regInForm').setAttribute('style','display:block');
+        }
     </script>
     @else
     <div style="padding-top: 20px;">

@@ -236,5 +236,8 @@ button#buttonOrder{
     background-color: #FFBEB5;
     border-radius: 10px;
 }
+div#logInForm{
+    display: none;
+}
 
 

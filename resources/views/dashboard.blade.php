@@ -74,7 +74,7 @@
                             </div>
                             @php $sum = 0 @endphp
                             @foreach($order['products'] as $product)
-                                @php $sum += $product['price'] // необходимо добавить умножение на количество @endphp
+                                @php $sum += $product['price']*$product['data']['count']; // var_dump($product);// необходимо добавить умножение на количество @endphp
                             <div style="display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(206,206,206,0.75);">
                                 <div>
                                     <img src="{{$product['photo']}}" style="width:10em;">
@@ -85,28 +85,32 @@
                                         {{$product['description']}}
                                     </div>
                                     <div style="font-weight: bold;">{{$product['price']}}₽</div>
-                                    <div>
-                                        <form action="" method="POST">
-                                        <button
-                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
-                                            отзыв
-                                        </button>
-                                        </form>
-                                    </div>
                                 </div>
                                 <div style="text-align: center; margin: 5px 0px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
                                     <div>
-                                        kol-vo
+                                        {{$product['data']['count']}}шт
+                                        <br>
+                                        {{$product['data']['weight']}}kg
                                     </div>
-                                    <div>
-                                        Summa
+                                    <div style="font-weight: bold;">
+                                        Сумма: {{$product['price']*$product['data']['count']}}₽
                                     </div>
                                 </div>
                             </div>
                             @endforeach
-                            <div style="text-align: right; width: 100%; padding: 5px 15px; font-weight: bold;">Итого: {{$sum}}₽</div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="width: 300px; text-align: left;">
+                                    <form action="" method="POST">
+                                        <button
+                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
+                                            отзыв
+                                        </button>
+                                    </form>
+                                </div>
+                                <div style="text-align: right; width: 300px; padding: 5px 15px; font-weight: bold;">Итого: {{$sum}}₽</div>
                             </div>
                         </div>
+                    </div>
                 @endforeach
             </div>
         @else
