@@ -67,7 +67,7 @@ class UserCartController extends Controller
         $count = (int)$schedule_standard[0]['orders_count'];
 
         if($count < 1)
-            return array(0=>"closed");
+            return array();
 
         $schedule_intervals = Schedule_Interval::where('isActive', true)->get()->toArray();
         $schedule_updates = Schedule_Update::where('schedule_will_updated_at', $orderDate)->get()->toArray();
