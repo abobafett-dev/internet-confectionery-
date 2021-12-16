@@ -31,7 +31,7 @@
                                     @isset($orderInCart[0]['id'])
                                         <input name="order" value="{{$orderInCart[0]['id']}}" hidden>
                                     @endisset
-                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$orderInCart[0]['id']}}, {{$product['id']}})">Удалить
+                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$product['id']}}@isset($orderInCart[0]['id']),{{$orderInCart[0]['id']}}@endisset)">Удалить
                                         из корзины
                                     </button>
                                     {{--                                        {{csrf_field()}}--}}
@@ -162,21 +162,20 @@
     </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function deleteFromCart(id_ord = -1, id_prod) {
+        function deleteFromCart(id_prod, id_ord = -1) {
             $.ajax({
                 url: '{{route('deleteProductInCartAjax')}}',
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
                 data: {order: id_ord, product: id_prod},
-                success: function (id_prod) {
-                    if (data.result == 'ok') {
-                        $('#div'+id_prod).hide();
-                    } else {
-                        alert('else');
+                success: function (data) {
+                    if (data == "ok") {
+                        $('#div'+id_prod).remove();
+                        summaryTotalCost();
                     }
                 },
                 error: function () {
-                    alert('error');
+                    alert('Невозможно удалить продукт, перезагрузите страницу');
                 }
             });
         }
