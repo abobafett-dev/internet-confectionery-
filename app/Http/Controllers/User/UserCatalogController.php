@@ -29,7 +29,10 @@ class UserCatalogController extends Controller
             $productsWithTypesAndCount[count($productsWithTypesAndCount)] = $product->toArray();
         }
 
-        $product_types = Product_Type::all()->toArray();
+        $product_types = array();
+        foreach(Product_Type::all()->toArray() as $product_type){
+            $product_types[$product_type['id']] = $product_type;
+        }
 
         return view('catalog')->with(['productsWithTypesAndCount'=>$productsWithTypesAndCount, 'product_types'=>$product_types]);
     }
