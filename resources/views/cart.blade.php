@@ -9,7 +9,6 @@
             </div>
         @endif
     </x-slot>
-    {{--     id_product   --}}
     <form action="" name="cart" method="POST" onchange="summaryTotalCost()">
         <div style="padding: 0px 15px 15px 15px; width: 79%; display: inline-block;">
             @if(isset($orderInCart))
@@ -26,16 +25,13 @@
                                     {{$product['description']}}
                                 </div>
                                 <div>
-                                    {{--                                    <form action="{{route('deleteProductInCart',['product'=>$product['id']])}}"--}}
-                                    {{--                                          method="POST" class="delete">--}}
+                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$product['id']}}
                                     @isset($orderInCart[0]['id'])
-                                        <input name="order" value="{{$orderInCart[0]['id']}}" hidden>
+                                        ,{{$orderInCart[0]['id']}}
                                     @endisset
-                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$product['id']}}@isset($orderInCart[0]['id']),{{$orderInCart[0]['id']}}@endisset">Удалить
+                                    )">Удалить
                                         из корзины
                                     </button>
-                                    {{--                                        {{csrf_field()}}--}}
-                                    {{--                                    </form>--}}
                                 </div>
                             </div>
                             <div class="cart_product_counts"
@@ -170,8 +166,13 @@
                 data: {order: id_ord, product: id_prod},
                 success: function (data) {
                     if (data == "ok") {
-                        $('#div'+id_prod).remove();
-                        summaryTotalCost();
+                        if( document.getElementsByClassName('cart_product_block').length > 1) {
+                            $('#div' + id_prod).remove();
+                            summaryTotalCost();
+                        }
+                        else {
+                            document.getElementsByTagName('form')[0].parentNode.innerHTML = '<div style="padding: 20px 15px 15px 15px;">Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за покупками</a></div>';
+                        }
                     }
                 },
                 error: function () {
@@ -283,10 +284,9 @@
         }
     </script>
     @else
-        <div style="padding-top: 20px;">
-            Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за
-                покупками</a>
-        </div>
+    <div style="padding-top: 20px;">
+        Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за покупками</a>
+    </div>
     @endif
 </x-app-layout>
 
