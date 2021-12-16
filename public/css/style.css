@@ -424,4 +424,51 @@ div#cart_intervals input{
     background-color: #e9ecef;
 }
 
+/* catalog */
+.catalog-custom-radio>input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.catalog-custom-radio>span {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+.catalog-custom-radio>span::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+.catalog-custom-radio>input:not(:disabled):not(:checked)+span:hover::before {
+    border-color: #b3d7ff;
+}
+.catalog-custom-radio>input:not(:disabled):active+span::before {
+    background-color: #b3d7ff;
+    border-color: #b3d7ff;
+}
+.catalog-custom-radio-radio>input:focus+span::before {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.catalog-custom-radio>input:focus:not(:checked)+span::before {
+    border-color: #80bdff;
+}
+.catalog-custom-radio>input:checked+span::before {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+.catalog-custom-radio>input:disabled+span::before {
+    background-color: #e9ecef;
+}
+
 

@@ -23,7 +23,7 @@
         <!-- Primary Navigation Menu -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex" style="width: 520px;">
+                <div class="flex" style="width: 345px; justify-content: space-between;">
                     <!-- Location -->
                     <div class="flex-shrink-0 flex items-center">
                         <svg style="margin-right: 10px" width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +95,7 @@
                     </a>
                 </div>
                 <!-- Settings Dropdown -->
-                <div class="hidden sm:flex sm:items-center sm:ml-6" style="width: 480px; position: relative">
+                <div class="hidden sm:flex sm:items-center sm:ml-6" style="width: 325px; position: relative">
 
                         @auth
                             <x-dropdown align="right" width="48">

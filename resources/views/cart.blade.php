@@ -289,15 +289,16 @@
         };
 
         function LogInCart() {
-            document.getElementById('hiddenNon').setAttribute('style', 'display:block');
+            document.getElementById('hiddenNon').setAttribute('style', 'display:flex');
             for(let i = 0; i < document.getElementsByClassName('hiddenOnClick').length; i++)
                 document.getElementsByClassName('hiddenOnClick')[i].setAttribute('style', 'display:none');
         }
 
         function RegInCart() {
             document.getElementById('hiddenNon').setAttribute('style', 'display:none');
-            for(let i = 0; i < document.getElementsByClassName('hiddenOnClick').length; i++)
+            for(let i = 0; i < document.getElementsByClassName('hiddenOnClick').length-1; i++)
                 document.getElementsByClassName('hiddenOnClick')[i].setAttribute('style', 'display:block');
+            document.getElementsByClassName('hiddenOnClick')[document.getElementsByClassName('hiddenOnClick').length-1].setAttribute('style', 'display:flex');
         }
     </script>
     @else
