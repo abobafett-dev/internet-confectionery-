@@ -22,10 +22,10 @@ class UserCartController extends Controller
         if (Auth::user() == null) {
             $orderInCartProducts = Cookie::get();
             $orderInCart = array();
-            foreach($orderInCartProducts as $index=>$cookie){
-                if(preg_match("/^orderInCartProducts_[0-9]+$/",$index)){
-                    if(!isset($orderInCart[0]))
-                        $orderInCart = array(0=>array('products'=>array()));
+            foreach ($orderInCartProducts as $index => $cookie) {
+                if (preg_match("/^orderInCartProducts_[0-9]+$/", $index)) {
+                    if (!isset($orderInCart[0]))
+                        $orderInCart = array(0 => array('products' => array()));
                     $productId = explode("_", $index);
                     $orderInCart[0]['products'][(int)($productId[1])] = Product::find((int)($productId[1]))->toArray();
                     $orderInCart[0]['products'][(int)($productId[1])]['photo'] =
@@ -44,62 +44,70 @@ class UserCartController extends Controller
             $orderInCart = array();
         }
 
-//        $days = array(0 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
-//            3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
         if (count($orderInCart) > 0) {
-
             foreach ($orderInCart[0]['products'] as $index => $product) {
                 $orderInCart[0]['products'][$index]['product_type'] = Product_Type::find($product['id_product_type'])->toArray();
             }
 
-            date_default_timezone_set('Etc/GMT-5');
+            return view('cart')->with(['orderInCart' => $orderInCart]);
+        } else
+            return view('cart');
+    }
 
-            $timeNowPlus24h = date('H:i',
-                mktime(date('H') + 24, date('i'), 0,
-                    date('m'), date('d'), date('Y')));
+    public function createIntervalsAjax(Request $request): array
+    {
+        $orderDate = $request->toArray()['date'];
 
-            $dateNowPlus24h = date('Y-m-d',
-                mktime(date('H') + 24, date('i'), 0,
-                    date('m'), date('d'), date('Y')));
+        $weekDays = array(0 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
+            3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
 
-            $dateNowPlus48h = date('Y-m-d',
-                mktime(0, 0, 0,
-                    date('m'), date('d') + 2, date('Y')));
+        $orderDayCode = date('N', strtotime($orderDate));
 
-            $schedule_interval = Schedule_Interval::where('isActive', true)->get()->toArray();
-            $schedule_standard = Schedule_Standard::where('isActive', true)->get()->toArray();
-            $schedule_updates_24 = Schedule_Update::where('schedule_will_updated_at', '=', $dateNowPlus24h)->where('start', '>=', $timeNowPlus24h)->get()->toArray();
-            $schedule_updates_48 = Schedule_Update::where('schedule_will_updated_at', '>=', $dateNowPlus48h)->get()->toArray();
-            $orders = Order::where('will_cooked_at', '>=', $dateNowPlus24h)->get()->toArray();
-            $orders_all = array();
+        $schedule_standard = Schedule_Standard::where('isActive', true)->where('weekday', $weekDays[$orderDayCode])->get()->toArray();
+        $count = (int)$schedule_standard[0]['orders_count'];
 
-            foreach ($orders as $order) {
-                $orders_products = Order_Product::where('id_order', $order['id'])->get()->toArray();
-                if (isset($orders_all[$order['will_cooked_at']])) {
-                    foreach ($orders_products as $order_products) {
-                        $orders_all[$order['will_cooked_at']]['count'] += $order_products['count'];
-                    }
-                } else {
-                    $orders_all[$order['will_cooked_at']] = array('count' => 0);
-                    foreach ($orders_products as $order_products) {
-                        $orders_all[$order['will_cooked_at']]['count'] += $order_products['count'];
-                    }
+        if($count < 1)
+            return array(0=>"closed");
+
+        $schedule_intervals = Schedule_Interval::where('isActive', true)->get()->toArray();
+        $schedule_updates = Schedule_Update::where('schedule_will_updated_at', $orderDate)->get()->toArray();
+
+        foreach($schedule_updates as $schedule_update){
+            if(!$schedule_update['access'])
+                $count -= (int)$schedule_update['orders_count_update'];
+            else
+                $count += (int)$schedule_update['orders_count_update'];
+
+            foreach($schedule_intervals as $index=>$schedule_interval){
+                if(($schedule_interval['start'] >= $schedule_update['start'] || $schedule_interval['end'] <= $schedule_update['end']) ||
+                    ($schedule_interval['start'] <= $schedule_update['start'] && $schedule_interval['end'] >= $schedule_update['end'])){
+                    unset($schedule_intervals[$index]);
                 }
             }
 
-            $schedule_update_all = array();
-
-            $UserCartController = new UserCartController();
-
-
-            $schedule_update_all = $UserCartController->makeArrayUpdates($schedule_updates_24, $schedule_update_all);
-            $schedule_update_all = $UserCartController->makeArrayUpdates($schedule_updates_48, $schedule_update_all);
-
-            return view('cart')->with(['orderInCart' => $orderInCart, 'schedule_interval' => $schedule_interval,
-                'schedule_standard' => $schedule_standard, 'schedule_update_all' => $schedule_update_all, 'orders_all' => $orders_all]);
+            if($count < 1)
+                return array();
         }
-        else
-            return view('cart');
+
+
+        $orders = Order::where('will_cooked_at', $orderDate)->get()->toArray();
+        foreach($orders as $order){
+            $order_products = Order_Product::where('id_order', $order['id'])->get()->toArray();
+            foreach($order_products as $order_product){
+                $count -= (int)$order_product['count'];
+            }
+
+            foreach($schedule_intervals as $index=>$schedule_interval){
+                if($schedule_interval['id'] == $order['id_schedule_interval']){
+                    unset($schedule_intervals[$index]);
+                }
+            }
+
+            if($count < 1)
+                return array();
+        }
+
+        return $schedule_intervals;
     }
 
     private function makeArrayUpdates($schedule_updates, $schedule_update_all): array
