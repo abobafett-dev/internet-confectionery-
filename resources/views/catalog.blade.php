@@ -10,17 +10,18 @@
         @endif
     </x-slot>
 
-    {{var_dump($productsWithTypesAndCount)}}
-    {{$productsWithTypesAndCount[0]['id']}}
+    <div style="padding: 0px 15px 15px 15px; width: 100%;">
     @foreach($productsWithTypesAndCount as $iter)
     <form action="{{route('addProductInCart', ['product'=>$iter['id']])}}" method="POST">
+        {{$iter['name']}}
         <img src="{{$iter['photo']}}" alt="" style="width:10em;">
         <button>Добавить в корзину</button>
         {{ csrf_field() }}
     </form>
     @endforeach
+    </div>
 
-    {{var_dump(\Illuminate\Support\Facades\Cookie::get())}}
-
+    {{var_dump($productsWithTypesAndCount)}}
+{{--    {{$productsWithTypesAndCount[0]['id']}}--}}
 </x-app-layout>
 

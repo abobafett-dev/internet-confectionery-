@@ -93,7 +93,7 @@
                                         {{$product['data']['weight']}}kg
                                     </div>
                                     <div style="font-weight: bold;">
-                                        Сумма: {{$product['price']*$product['data']['count']}}₽
+                                        Сумма: {{$product['price']*$product['data']['count']*$product['data']['weight']}}₽
                                     </div>
                                 </div>
                             </div>

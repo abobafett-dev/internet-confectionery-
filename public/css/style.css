@@ -1,6 +1,7 @@
 html,body{
     height: 100%;
     scroll-behavior: smooth;
+    min-width: 1260px;
 }
 div#history, div#profile{
     display: inline-block;
