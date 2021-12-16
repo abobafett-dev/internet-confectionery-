@@ -15,26 +15,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class UserProductController extends Controller
 {
-    public function deleteProductInCart($productId, Request $request){
-        //var_dump($productId, $request->toArray());
-        if(Auth::user() != null){
-            $request = $request->toArray();
-            $order_product_order = Order_Product::where('id_order', $request['order']);
-            if(count($order_product_order->get()->toArray()) == 1){
-                $id_order = $order_product_order->get()->toArray()[0]['id_order'];
-                $order_product_order->delete();
-                Order::find($id_order)->delete();
-            }
-            $order_product_order->where('id_product',$productId)->delete();
-            return redirect('cart');
-        } else{
-            Cookie::queue(Cookie::forget('orderInCartProducts_'.$productId));
-            return redirect('cart');
-        }
-    }
-
     public function deleteProductInCartAjax(Request $request){
-        //var_dump($productId, $request->toArray());
         if(Auth::user() != null){
             $request = $request->toArray();
             $order_product_order = Order_Product::where('id_order', $request['order']);
