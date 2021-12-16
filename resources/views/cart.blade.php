@@ -82,7 +82,7 @@
                 <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <ul>
                         <li id="itog">Итого: <span id="summaryTotal"></span>₽</li>
-                        <li id="pickTime">Выбрать дату и время<input type="date" name="" id="minDate"></li>
+                        <li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="" id="minDate"></li>
                     </ul>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                         <x-label for="name" :value="__('Имя')"/>
 
                         <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
-                                 required autofocus/>
+                                 required/>
                     </div>
 
                     <!-- Email Address -->
@@ -173,6 +173,22 @@
                 },
                 error: function () {
                     alert('Невозможно удалить продукт, перезагрузите страницу');
+                }
+            });
+        }
+        function dropIntervals(dateForIntervals){
+            $.ajax({
+                url: '{{route('cartIntervals')}}',
+                type: "POST",
+                headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
+                data: {dateForIntervals: dateForIntervals},
+                success: function (data) {
+                    console.clear();
+                    console.log(data[0]);
+                    console.log(data);
+                },
+                error: function () {
+                    alert('Невозможно вывести интервалы, перезагрузите страницу');
                 }
             });
         }

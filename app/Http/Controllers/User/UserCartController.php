@@ -56,55 +56,73 @@ class UserCartController extends Controller
 
     public function createIntervalsAjax(Request $request): array
     {
-        $orderDate = $request->toArray()['date'];
+        $orderDate = $request->toArray()['dateForIntervals'];
 
         $weekDays = array(0 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
             3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
 
-        $orderDayCode = date('N', strtotime($orderDate));
+        $orderDayCode = (int)date('N', strtotime($orderDate));
+
 
         $schedule_standard = Schedule_Standard::where('isActive', true)->where('weekday', $weekDays[$orderDayCode])->get()->toArray();
         $count = (int)$schedule_standard[0]['orders_count'];
 
-        if($count < 1)
+        if ($count < 1)
             return array();
 
         $schedule_intervals = Schedule_Interval::where('isActive', true)->get()->toArray();
+
+        foreach ($schedule_intervals as $index => $schedule_interval) {
+            if (($schedule_standard[0]['start'] > $schedule_interval['start'] || $schedule_standard[0]['start'] > $schedule_interval['end']) ||
+            ($schedule_standard[0]['end'] < $schedule_interval['start'] || $schedule_standard[0]['end'] < $schedule_interval['end'])) {
+                unset($schedule_intervals[$index]);
+            }
+        }
+
         $schedule_updates = Schedule_Update::where('schedule_will_updated_at', $orderDate)->get()->toArray();
 
-        foreach($schedule_updates as $schedule_update){
-            if(!$schedule_update['access'])
+        foreach ($schedule_updates as $schedule_update) {
+            if (!$schedule_update['access'])
                 $count -= (int)$schedule_update['orders_count_update'];
             else
                 $count += (int)$schedule_update['orders_count_update'];
 
-            foreach($schedule_intervals as $index=>$schedule_interval){
-                if($schedule_interval['id'] == $schedule_update['id_schedule_interval']){
+            foreach ($schedule_intervals as $index => $schedule_interval) {
+                if ($schedule_interval['id'] == $schedule_update['id_schedule_interval']) {
                     unset($schedule_intervals[$index]);
                 }
             }
 
-            if($count < 1)
+            if ($count < 1)
                 return array();
         }
 
 
         $orders = Order::where('will_cooked_at', $orderDate)->get()->toArray();
-        foreach($orders as $order){
+        foreach ($orders as $order) {
             $order_products = Order_Product::where('id_order', $order['id'])->get()->toArray();
-            foreach($order_products as $order_product){
+            foreach ($order_products as $order_product) {
                 $count -= (int)$order_product['count'];
             }
 
-            foreach($schedule_intervals as $index=>$schedule_interval){
-                if($schedule_interval['id'] == $order['id_schedule_interval']){
+            foreach ($schedule_intervals as $index => $schedule_interval) {
+                if ($schedule_interval['id'] == $order['id_schedule_interval']) {
                     unset($schedule_intervals[$index]);
                 }
             }
 
-            if($count < 1)
+            if ($count < 1)
                 return array();
         }
+
+        function sortIntervalsByDate($firstObj, $secondObj): int
+        {
+            if ($firstObj['start'] == $secondObj['start'])
+                return 0;
+            return ($firstObj['start'] < $secondObj['start']) ? -1 : 1;
+        }
+
+        usort($schedule_intervals, "App\Http\Controllers\User\sortIntervalsByDate");
 
         return $schedule_intervals;
     }
