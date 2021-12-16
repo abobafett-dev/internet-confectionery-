@@ -25,11 +25,7 @@
                                     {{$product['description']}}
                                 </div>
                                 <div>
-                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$product['id']}}
-                                    @isset($orderInCart[0]['id'])
-                                        ,{{$orderInCart[0]['id']}}
-                                    @endisset
-                                    )">Удалить
+                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$product['id']}}@isset($orderInCart[0]['id']),{{$orderInCart[0]['id']}}@endisset)">Удалить
                                         из корзины
                                     </button>
                                 </div>
