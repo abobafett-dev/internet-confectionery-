@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class UserProductController extends Controller
 {
-    public function deleteProductInCart($productId, Request $request){
+    public function deleteProductInCart(Request $request){
         //var_dump($productId, $request->toArray());
         if(Auth::user() != null){
             $request = $request->toArray();
@@ -25,10 +25,10 @@ class UserProductController extends Controller
                 $order_product_order->delete();
                 Order::find($id_order)->delete();
             }
-            $order_product_order->where('id_product',$productId)->delete();
+            $order_product_order->where('id_product',$request['product'])->delete();
             return redirect('cart');
         } else{
-            Cookie::queue(Cookie::forget('orderInCartProducts_'.$productId));
+            Cookie::queue(Cookie::forget('orderInCartProducts_'.$request['product']));
             return redirect('cart');
         }
     }
