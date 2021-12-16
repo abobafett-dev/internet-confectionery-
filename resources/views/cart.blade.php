@@ -38,7 +38,7 @@
                                         <button type="button"
                                                 onclick="one_count('count{{$key}}', -1, {{$loop->index}})">–
                                         </button>
-                                        <input onkeypress="numbersOnly()" name="count{{$key}}" id="count{{$key}}"
+                                        <input onkeypress="numbersOnly()" name="productCount_{{$product['id']}}" id="count{{$key}}"
                                                value="1">
                                         <button type="button" onclick="one_count('count{{$key}}', 1, {{$loop->index}})">
                                             +
@@ -53,7 +53,7 @@
                                                     onclick="one_weight('weight{{$key}}', -0.5, {{$loop->index}})">–
                                             </button>
                                             <input onkeyup="range(this.value, 'weight{{$key}}')"
-                                                   onkeypress="doubleOnly(this.value)" name="weight{{$key}}"
+                                                   onkeypress="doubleOnly(this.value)" name="productWeight_{{$product['id']}}"
                                                    id="weight{{$key}}"
                                                    value="{{$product['product_type']['weight_initial']}}">
                                             <button type="button"
@@ -82,14 +82,11 @@
                 <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <ul>
                         <li id="itog">Итого: <span id="summaryTotal"></span>₽</li>
-                        <li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="" id="minDate"></li>
+                        <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="date" id="minDate"></li></label>
                     </ul>
                 </div>
             </div>
-            <div class="menuTotal" style="margin-top: 20px;">
-                <button id="buttonOrder">
-                    Оформить заказ!
-                </button>
+            <div id="cart_intervals" class="menuTotal">
             </div>
             @if(!Auth::user())
                 <div id="regInForm">
@@ -150,6 +147,11 @@
                     </div>
                 </div>
             @endif
+            <div class="menuTotal" style="margin-top: 20px;">
+                <button id="buttonOrder">
+                    Оформить заказ!
+                </button>
+            </div>
         </div>
     </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -167,7 +169,8 @@
                             summaryTotalCost();
                         }
                         else {
-                            document.getElementsByTagName('form')[0].parentNode.innerHTML = '<div style="padding: 20px 15px 15px 15px;">Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за покупками</a></div>';
+                            document.getElementsByTagName('form')[0].parentNode.innerHTML =
+                                '<div style="padding: 20px 15px 15px 15px;">Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за покупками</a></div>';
                         }
                     }
                 },
@@ -183,9 +186,11 @@
                 headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
                 data: {dateForIntervals: dateForIntervals},
                 success: function (data) {
-                    console.clear();
-                    console.log(data[0]);
-                    console.log(data);
+                    document.getElementById('cart_intervals').style = 'display:flex;';
+                    document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
+                    for(let i = 0; i < data.length; i++) {
+                        setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" id="'+data[i]["id"]+'" value=""><span>'+data[i]["start"]+'</span></label></div>'),200);
+                    }
                 },
                 error: function () {
                     alert('Невозможно вывести интервалы, перезагрузите страницу');
