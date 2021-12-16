@@ -84,8 +84,11 @@ class UserProfileController extends Controller
                         if (!isset($orders[$index]['products'])) {
                             $orders[$index]['products'] = [];
                             $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
-                        } else
+                            $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                        } else{
                             $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
+                            $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                        }
                         $orders[$index]['products'][$order_product['id_product']]['photo'] =
                             asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
                         break;
