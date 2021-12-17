@@ -18,6 +18,14 @@
             </ul>
         </div>
     @endif
+    @if(session()->exists('errorInterval'))
+        <div class="error" style="color:red">
+            <ul>
+                <li>{{session('errorInterval')}}</li>
+            </ul>
+        </div>
+        {{var_dump(session()->all())}}
+    @endisset
     <form action="{{route('addOrderToUser')}}" name="cart" method="POST" onchange="summaryTotalCost()">
         <div style="padding: 0px 15px 15px 15px; width: 79%; display: inline-block;">
             @if(isset($orderInCart))

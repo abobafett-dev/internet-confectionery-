@@ -146,10 +146,19 @@ class UserCartController extends Controller
             $UserCartController = new UserCartController();
             $scheduleIntervals = $UserCartController->createIntervalsAjax($request);
 
-            if(!isset($scheduleIntervals[(int)$request['schedule_interval']])){
-                return redirect('cart')->with(['errorInterval'=>'Интервал не доступен для выбора, выберите еще раз', $request->toArray()]);
+            if(!isset($scheduleIntervals[(int)$request['schedule_interval']])) {
+                return redirect('cart')->with(['errorInterval' => 'Интервал не доступен для выбора, выберите еще раз', $request->toArray()]);
             }
 
+            $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
+            $productsInOrder = Order_Product::where('id_order', $orderInCart[0]['id'])->get()->toArray();
+            foreach($productsInOrder as $index=>$productInOrder){
+                foreach($request->toArray() as $productProperty){
+                    if(preg_match("/^productWeight_[0-9]+$/", $productProperty) || preg_match("/^productCount_[0-9]+$/", $productProperty)){
+
+                    }
+                }
+            }
 
 
         }
