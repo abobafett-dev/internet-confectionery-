@@ -182,10 +182,10 @@
                 </select>
             </label>
             @if($user->bonus > -1)
-                <div id="status">Ваш статус - <span
+                <div id="dashboard_status">Ваш статус - <span
                         style="text-decoration:underline;">{{ $userStatus->name }}</span>
                 </div>
-                <div id="bonus">Ваши бонусы - <span
+                <div id="dashboard_bonus">Ваши бонусы - <span
                         style="text-decoration:underline;">{{ $user->bonus }}</span>
                 </div>
             @endif

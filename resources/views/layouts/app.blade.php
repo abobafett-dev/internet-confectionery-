@@ -22,7 +22,7 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased" style="">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100" style="padding-bottom: 325px;">
             <!-- Page Heading -->
             @include('layouts.navigation')
 
@@ -39,6 +39,9 @@
                 </div>
             </main>
         </div>
+        <!-- Page Footer -->
+        <div style="margin-top: -325px;">
         @include('layouts.footer')
+        </div>
     </body>
 </html>

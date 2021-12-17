@@ -37,7 +37,7 @@
         <div style="position:absolute; width: 100%">
             @include('layouts.navigation')
         </div>
-        <div class="font-sans text-gray-900 antialiased" style="height: 100%;">
+        <div class="font-sans text-gray-900 antialiased" style="height: 100%; min-height: 820px;">
             {{ $slot }}
         </div>
         @include('layouts.footer')
