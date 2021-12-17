@@ -94,7 +94,6 @@
             </div>
             @if(!Auth::user())
                 <div id="regInForm">
-                @csrf
                 <!-- Name -->
                     <div class="mt-4 hiddenOnClick">
                         <x-label for="name" :value="__('Имя')"/>
@@ -157,6 +156,7 @@
                 </button>
             </div>
         </div>
+        @csrf
     </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
