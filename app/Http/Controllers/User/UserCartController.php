@@ -71,14 +71,14 @@ class UserCartController extends Controller
             return array();
 
         $schedule_intervals = array();
-        foreach(Schedule_Interval::where('isActive', true)->get()->toArray() as $interval){
+        foreach (Schedule_Interval::where('isActive', true)->get()->toArray() as $interval) {
             $schedule_intervals[$interval['id']] = $interval;
         }
 
 
         foreach ($schedule_intervals as $index => $schedule_interval) {
             if (($schedule_standard[0]['start'] > $schedule_interval['start'] || $schedule_standard[0]['start'] > $schedule_interval['end']) ||
-            ($schedule_standard[0]['end'] < $schedule_interval['start'] || $schedule_standard[0]['end'] < $schedule_interval['end'])) {
+                ($schedule_standard[0]['end'] < $schedule_interval['start'] || $schedule_standard[0]['end'] < $schedule_interval['end'])) {
                 unset($schedule_intervals[$index]);
             }
         }
@@ -128,37 +128,90 @@ class UserCartController extends Controller
 
         usort($schedule_intervals, "App\Http\Controllers\User\sortIntervalsByDate");
 
+        $schedule_intervals[count($schedule_intervals)] = $count;
+
         return $schedule_intervals;
     }
 
-    public function addOrderToUser(Request $request){
+    public function addOrderToUser(Request $request)
+    {
 
+        if (Auth::user() != null) {
 
-        if(Auth::user() != null){
+            $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
+
+            if (count($orderInCart) < 1) {
+                return redirect(route('cart'));
+            }
 
             $request->validate([
                 'dateForIntervals' => ['required', 'string', 'size:10'],
                 'schedule_interval' => ['required', 'string'],
             ]);
 
-            var_dump($request->toArray());
+            $propertiesFromRequest = $request->toArray();
 
             $UserCartController = new UserCartController();
             $scheduleIntervals = $UserCartController->createIntervalsAjax($request);
+            $countForDay = $scheduleIntervals[count($scheduleIntervals) - 1];
+            $countForDay_copy = $countForDay;
 
-            if(isset($scheduleIntervals[(int)$request['schedule_interval']])) {
-                return redirect('cart')->with(['errorInterval' => 'Интервал не доступен для выбора, выберите еще раз', $request->toArray()]);
+            if (!isset($scheduleIntervals[(int)$request['schedule_interval']])) {
+                return redirect('cart')->with(['errorInterval' => 'Интервал не доступен для выбора, выберите еще раз', $propertiesFromRequest]);
             }
 
-            $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
             $productsInOrder = Order_Product::where('id_order', $orderInCart[0]['id'])->get()->toArray();
-            foreach($productsInOrder as $index=>$productInOrder){
-                foreach($request->toArray() as $productProperty){
-                    if(preg_match("/^productWeight_[0-9]+$/", $productProperty) || preg_match("/^productCount_[0-9]+$/", $productProperty)){
-
+            foreach ($productsInOrder as $indexProduct => $productInOrder) {
+                foreach ($propertiesFromRequest as $index => $productProperty) {
+                    if (preg_match("/^productCount_[0-9]+$/", $index)) {
+                        $countForDay -= $productProperty;
+                        if ($countForDay < 1) {
+                            return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
+                        }
                     }
                 }
+
+                foreach ($propertiesFromRequest as $index => $productProperty) {
+                    if (preg_match("/^productWeight_[0-9]+$/", $index)) {
+                        $weightId = explode('_', $index);
+                        Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (int)$weightId[1])
+                            ->update(['weight' => $productProperty]);
+                        $productsInOrder[$indexProduct]['status'] = true;
+                    }
+                    if (preg_match("/^productCount_[0-9]+$/", $index)) {
+                        $countId = explode('_', $index);
+                        Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (int)$countId[1])
+                            ->update(['count' => $productProperty]);
+                        $productsInOrder[$indexProduct]['status'] = true;
+                    }
+                }
+                if (!isset($productsInOrder[$indexProduct]['status'])) {
+                    $product = Product::find($productInOrder['id'])->toArray();
+                    $product_type = Product_Type::find($product['id_product_type'])->toArray();
+                    Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', $productInOrder['id'])
+                        ->update(['weight' => $product_type['weight_initial'], 'count' => 1]);
+                }
             }
+
+            $orderDate = $propertiesFromRequest['dateForIntervals'];
+
+            $weekDays = array(0 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
+                3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
+
+            $orderDayCode = (int)date('N', strtotime($orderDate));
+
+            $schedule_standard = Schedule_Standard::where('isActive', true)->where('weekday', $weekDays[$orderDayCode])->first()->toArray();
+
+            $currentOrder = Order::find($orderInCart[0]['id']);
+            $currentOrder->id_status = 1;
+            $currentOrder->will_cooked_at = $propertiesFromRequest['dateForIntervals'];
+            $currentOrder->id_schedule_standard = $schedule_standard['id'];
+            $currentOrder->id_schedule_interval = (int)$propertiesFromRequest['schedule_interval'];
+            $currentOrder->save();
+
+            return redirect(route('order', $orderInCart[0]['id']));
+        } else {
+            var_dump($request->toArray());
 
 
         }
