@@ -192,7 +192,11 @@
         @endauth
     </nav>
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex" style="min-height: 73px;">
-        @if(isset($header)) {{ $header }} @endif
+        @if(isset($header)) {{ $header }} @else
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="margin-right: -160px;">
+                Главная
+            </h2>
+             @endif
     </div>
 </header>
 <div id="gototop" onclick="backToTop()">

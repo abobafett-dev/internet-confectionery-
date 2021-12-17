@@ -583,3 +583,19 @@ div#money div{
 div#message{
     padding-left: 20px;
 }
+div.pink, div.white{
+    padding: 60px 40px;
+}
+div.pink{
+    background-color: #ffc0cb;
+}
+div.main_cursor_hover{
+    width: 170px;
+}
+div.main_cursor_hover h4{
+    text-align: center;
+}
+div.main_cursor_hover:hover{
+    cursor: pointer;
+
+}
