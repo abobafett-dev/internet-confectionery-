@@ -172,7 +172,7 @@ class UserCartController extends Controller
                 foreach ($propertiesFromRequest as $index => $productProperty) {
                     if (preg_match("/^productCount_[0-9]+$/", $index)) {
                         $countId = explode('_', $index);
-                        if ($countId[1] == $productInOrder['id']) {
+                        if ($countId[1] == $productInOrder['id_product']) {
                             $countForDay -= $productProperty;
                             if ($countForDay < 1) {
                                 return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
@@ -189,13 +189,13 @@ class UserCartController extends Controller
                     $countId = explode('_', $index);
                     $isWeight = false;
                     $isCount = false;
-                    if (preg_match("/^productWeight_[0-9]+$/", $index) && $weightId[1] == $productInOrder['id']) {
+                    if (preg_match("/^productWeight_[0-9]+$/", $index) && $weightId[1] == $productInOrder['id_product']) {
                         Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (double)$weightId[1])
                             ->update(['weight' => $productProperty]);
                         $productsInOrder[$indexProduct]['status'] = true;
                         $isWeight = true;
                     }
-                    if (preg_match("/^productCount_[0-9]+$/", $index) && $countId[1] == $productInOrder['id']) {
+                    if (preg_match("/^productCount_[0-9]+$/", $index) && $countId[1] == $productInOrder['id_product']) {
                         Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (int)$countId[1])
                             ->update(['count' => $productProperty]);
                         $productsInOrder[$indexProduct]['status'] = true;
@@ -206,9 +206,9 @@ class UserCartController extends Controller
                 }
 
                 if (!isset($productsInOrder[$indexProduct]['status'])) {
-                    $product = Product::find($productInOrder['id'])->toArray();
+                    $product = Product::find($productInOrder['id_product'])->toArray();
                     $product_type = Product_Type::find($product['id_product_type'])->toArray();
-                    Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', $productInOrder['id'])
+                    Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', $productInOrder['id_product'])
                         ->update(['weight' => $product_type['weight_initial'], 'count' => 1]);
                 }
             }
