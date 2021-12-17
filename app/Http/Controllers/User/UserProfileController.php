@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Order_Status;
 use App\Models\Product;
+use App\Models\Product_Type;
 use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
 use App\Models\Source;
@@ -85,9 +86,11 @@ class UserProfileController extends Controller
                             $orders[$index]['products'] = [];
                             $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
                             $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                            $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
                         } else{
                             $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
                             $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                            $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
                         }
                         $orders[$index]['products'][$order_product['id_product']]['photo'] =
                             asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
