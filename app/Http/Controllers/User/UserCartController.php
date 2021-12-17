@@ -70,7 +70,11 @@ class UserCartController extends Controller
         if ($count < 1)
             return array();
 
-        $schedule_intervals = Schedule_Interval::where('isActive', true)->get()->toArray();
+        $schedule_intervals = array();
+        foreach(Schedule_Interval::where('isActive', true)->get()->toArray() as $interval){
+            $schedule_intervals[$interval['id']] = $interval;
+        }
+
 
         foreach ($schedule_intervals as $index => $schedule_interval) {
             if (($schedule_standard[0]['start'] > $schedule_interval['start'] || $schedule_standard[0]['start'] > $schedule_interval['end']) ||
@@ -127,26 +131,52 @@ class UserCartController extends Controller
         return $schedule_intervals;
     }
 
-    private function makeArrayUpdates($schedule_updates, $schedule_update_all): array
-    {
-        foreach ($schedule_updates as $schedule_update) {
-            if (isset($schedule_update_all[$schedule_update['schedule_will_updated_at']])) {
-                $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']])] = $schedule_update;
+    public function addOrderToUser(Request $request){
 
-                if ($schedule_update['start'] !=
-                    $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']]) - 1]['start']
-                    || $schedule_update['end'] !=
-                    $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']]) - 1]['end']) {
-                    if ($schedule_update['access'] == false)
-                        $schedule_update_all[$schedule_update['schedule_will_updated_at']]['count'] += -1 * $schedule_update['orders_count_update'];
-                    else
-                        $schedule_update_all[$schedule_update['schedule_will_updated_at']]['count'] += $schedule_update['orders_count_update'];
-                }
-            } elseif ($schedule_update['access'] == false)
-                $schedule_update_all[$schedule_update['schedule_will_updated_at']] = array('count' => -1 * $schedule_update['orders_count_update'], 1 => $schedule_update);
-            elseif ($schedule_update['access'] == true)
-                $schedule_update_all[$schedule_update['schedule_will_updated_at']] = array('count' => $schedule_update['orders_count_update'], 1 => $schedule_update);
+
+        if(Auth::user() != null){
+
+            $request->validate([
+                'dateForIntervals' => ['required', 'string', 'size:10'],
+                'schedule_interval' => ['required', 'string'],
+            ]);
+
+            var_dump($request->toArray());
+
+            $UserCartController = new UserCartController();
+            $scheduleIntervals = $UserCartController->createIntervalsAjax($request);
+
+            if(!isset($scheduleIntervals[(int)$request['schedule_interval']])){
+                return redirect('cart')->with(['errorInterval'=>'Интервал не доступен для выбора, выберите еще раз', $request->toArray()]);
+            }
+
+
+
         }
-        return $schedule_update_all;
+
+        return;
     }
+
+//    private function makeArrayUpdates($schedule_updates, $schedule_update_all): array
+//    {
+//        foreach ($schedule_updates as $schedule_update) {
+//            if (isset($schedule_update_all[$schedule_update['schedule_will_updated_at']])) {
+//                $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']])] = $schedule_update;
+//
+//                if ($schedule_update['start'] !=
+//                    $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']]) - 1]['start']
+//                    || $schedule_update['end'] !=
+//                    $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']]) - 1]['end']) {
+//                    if ($schedule_update['access'] == false)
+//                        $schedule_update_all[$schedule_update['schedule_will_updated_at']]['count'] += -1 * $schedule_update['orders_count_update'];
+//                    else
+//                        $schedule_update_all[$schedule_update['schedule_will_updated_at']]['count'] += $schedule_update['orders_count_update'];
+//                }
+//            } elseif ($schedule_update['access'] == false)
+//                $schedule_update_all[$schedule_update['schedule_will_updated_at']] = array('count' => -1 * $schedule_update['orders_count_update'], 1 => $schedule_update);
+//            elseif ($schedule_update['access'] == true)
+//                $schedule_update_all[$schedule_update['schedule_will_updated_at']] = array('count' => $schedule_update['orders_count_update'], 1 => $schedule_update);
+//        }
+//        return $schedule_update_all;
+//    }
 }

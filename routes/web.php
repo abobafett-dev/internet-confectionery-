@@ -44,6 +44,9 @@ Route::GET('/cart', [Controllers\User\UserCartController::class, 'create'])
 Route::POST('/cart/intervals', [Controllers\User\UserCartController::class, 'createIntervalsAjax'])
     ->name('cartIntervals');
 
+Route::POST('/cart/addOrderToUser', [Controllers\User\UserCartController::class, 'addOrderToUser'])
+    ->name('addOrderToUser');
+
 Route::GET('/order/{order}', [Controllers\User\UserOrderPageController::class, 'create'])
     ->middleware(['auth'])->name('order');
 

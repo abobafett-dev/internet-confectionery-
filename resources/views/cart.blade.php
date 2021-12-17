@@ -9,7 +9,17 @@
             </div>
         @endif
     </x-slot>
-    <form action="" name="cart" method="POST" onchange="summaryTotalCost()">
+    @if(count($errors)>0)
+        <div class="error" style="color:red">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{$error}}</li>
+                @endforeach
+            </ul>
+        </div>
+        {{var_dump(old())}}
+    @endif
+    <form action="{{route('addOrderToUser')}}" name="cart" method="POST" onchange="summaryTotalCost()">
         <div style="padding: 0px 15px 15px 15px; width: 79%; display: inline-block;">
             @if(isset($orderInCart))
                 @foreach($orderInCart[0]['products'] as $key => $product)
@@ -86,7 +96,7 @@
                 <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <ul>
                         <li id="itog">Итого: <span id="summaryTotal"></span>₽</li>
-                        <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="date" id="minDate"></li></label>
+                        <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="dateForIntervals" id="minDate"></li></label>
                     </ul>
                 </div>
             </div>
@@ -193,7 +203,7 @@
                     document.getElementById('cart_intervals').style = 'display:flex;';
                     document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
                     for(let i = 0; i < data.length; i++) {
-                        setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" id="'+data[i]["id"]+'" value=""><span>'+data[i]["start"]+'</span></label></div>'),200);
+                        setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
                     }
                 },
                 error: function () {
