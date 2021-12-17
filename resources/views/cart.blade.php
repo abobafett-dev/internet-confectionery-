@@ -62,7 +62,7 @@
                                         <button type="button"
                                                 onclick="one_count('count{{$key}}', -1, {{$loop->index}})">–
                                         </button>
-                                        <input onkeypress="numbersOnly()" name="productCount_{{$product['id']}}" id="count{{$key}}"
+                                        <input onkeypress="numbersOnly()" name="productCount_{{$product['id']}}" id="count{{$key}}" class="countProd"
                                                @if(isset($old)>0) value="{{$old['productCount_'.$product['id']]}}" @else value="1" @endif>
                                         <button type="button" onclick="one_count('count{{$key}}', 1, {{$loop->index}})">
                                             +
@@ -114,12 +114,18 @@
                     </ul>
                 </div>
             </div>
+            <div id="max_count" class="menuTotal">
+                <h4 style="all: revert; margin: 5px auto;">Сколько товаров можно заказать на текущую дату:</h4>
+                <div id="max"></div>
+                <h4 style="all: revert; margin: 5px auto;">Сколько товаров у вас в корзине:</h4>
+                <div id="have"></div>
+            </div>
             <div id="cart_intervals" class="menuTotal">
             </div>
             @if(!Auth::user())
                 <div id="regInForm">
                 <!-- Name -->
-                    <div class="mt-4 hiddenOnClick">
+                    <div class="mt-4">
                         <x-label for="name" :value="__('Имя')"/>
 
                         <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
@@ -135,14 +141,14 @@
                     </div>
 
                     <!-- Phone -->
-                    <div class="mt-4 hiddenOnClick">
+                    <div class="mt-4">
                         <x-label for="phone" value="{{ __('Номер телефона') }}"/>
                         <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')"
                                  placeholder="88005553535"/>
                     </div>
 
                     <!-- Password -->
-                    <div class="mt-4 hiddenOnClick">
+                    <div class="mt-4">
                         <x-label for="password" :value="__('Пароль')"/>
 
                         <x-input id="password" class="block mt-1 w-full"
@@ -152,7 +158,7 @@
                     </div>
 
                     <!-- Confirm Password -->
-                    <div class="mt-4 hiddenOnClick">
+                    <div class="mt-4">
                         <x-label for="password_confirmation" :value="__('Подверждение пароля')"/>
 
                         <x-input id="password_confirmation" class="block mt-1 w-full"
@@ -160,7 +166,7 @@
                                  name="password_confirmation" required/>
                     </div>
 
-                    <div class="flex items-center justify-center mt-4 hiddenOnClick">
+                    <div class="flex items-center justify-center mt-4">
                         <button type="button" onclick="LogInCart()"
                                 class="underline text-sm text-gray-600 hover:text-gray-900">
                             {{ __('Уже зарегистрированы?') }}
@@ -215,6 +221,12 @@
                 data: {dateForIntervals: dateForIntervals},
                 success: function (data) {
                     document.getElementById('cart_intervals').style = 'display:flex;';
+                    document.getElementById('max_count').style = 'display:flex;';
+                    // let summary = 0;
+                    // for (let i = 0; i < document.getElementsByClassName('countProd').length; i++)
+                    //     summary -= -(document.getElementsByClassName('countProd')[i].innerHTML);
+                    // document.getElementById('summaryTotal').innerHTML = summary;
+                    document.getElementById('max').innerHTML = data[data.length - 1];
                     document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
                     for(let i = 0; i < data.length - 1; i++) {
                         setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
@@ -324,17 +336,57 @@
         };
 
         function LogInCart() {
-            document.getElementById('hiddenNon').setAttribute('style', 'display:flex');
-            for(let i = 0; i < document.getElementsByClassName('hiddenOnClick').length; i++)
-                document.getElementsByClassName('hiddenOnClick')[i].setAttribute('style', 'display:none');
+            document.getElementById('regInForm').innerHTML = '<div class="mt-4">'+
+                '<label class="block font-medium text-sm text-gray-700" for="email">'+
+                'Email'+
+                '</label>'+
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">'+
+                '</div>'+
+                '<div class="flex items-center justify-center mt-4" id="hiddenNon">'+
+                '<button type="button" onclick="RegInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">'+
+                'Нет учётной записи?'+
+                '</button>'+
+                '</div>'
+
         }
 
         function RegInCart() {
-            document.getElementById('hiddenNon').setAttribute('style', 'display:none');
-            for(let i = 0; i < document.getElementsByClassName('hiddenOnClick').length-1; i++)
-                document.getElementsByClassName('hiddenOnClick')[i].setAttribute('style', 'display:block');
-            document.getElementsByClassName('hiddenOnClick')[document.getElementsByClassName('hiddenOnClick').length-1].setAttribute('style', 'display:flex');
-        }
+            document.getElementById('regInForm').innerHTML = '<div class="mt-4 ">'+
+                '<label class="block font-medium text-sm text-gray-700" for="name">'+
+                'Имя'+
+                '</label>'+
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="name" type="text" name="name" required="required">'+
+                '</div>'+
+                '<div class="mt-4">'+
+                '<label class="block font-medium text-sm text-gray-700" for="email">'+
+                'Email'+
+                '</label>'+
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">'+
+                '</div>'+
+                '<div class="mt-4">'+
+                '<label class="block font-medium text-sm text-gray-700" for="phone">'+
+                'Номер телефона'+
+                '</label>'+
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="phone" type="text" name="phone" placeholder="88005553535">'+
+                '</div>'+
+                '<div class="mt-4">'+
+                '<label class="block font-medium text-sm text-gray-700" for="password">'+
+                'Пароль'+
+                '</label>'+
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password" aria-autocomplete="list">'+
+                '</div>'+
+                '<div class="mt-4">'+
+                '<label class="block font-medium text-sm text-gray-700" for="password_confirmation">'+
+                'Подверждение пароля'+
+                '</label>'+
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="password_confirmation" type="password" name="password_confirmation" required="required">'+
+                '</div>'+
+                '<div class="flex items-center justify-center mt-4">'+
+                '<button type="button" onclick="LogInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">'+
+                'Уже зарегистрированы?'+
+                '</button>'+
+                '</div>'
+            }
     </script>
     @else
     <div style="padding-top: 20px;">
@@ -342,4 +394,3 @@
     </div>
     @endif
 </x-app-layout>
-
