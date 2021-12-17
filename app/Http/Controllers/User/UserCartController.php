@@ -146,7 +146,7 @@ class UserCartController extends Controller
             $UserCartController = new UserCartController();
             $scheduleIntervals = $UserCartController->createIntervalsAjax($request);
 
-            if(!isset($scheduleIntervals[(int)$request['schedule_interval']])) {
+            if(isset($scheduleIntervals[(int)$request['schedule_interval']])) {
                 return redirect('cart')->with(['errorInterval' => 'Интервал не доступен для выбора, выберите еще раз', $request->toArray()]);
             }
 
