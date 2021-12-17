@@ -216,12 +216,12 @@
                 success: function (data) {
                     document.getElementById('cart_intervals').style = 'display:flex;';
                     document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
-                    for(let i = 0; i < data.length; i++) {
+                    for(let i = 0; i < data.length - 1; i++) {
                         setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
                     }
                 },
                 error: function () {
-                    alert('Невозможно вывести интервалы, перезагрузите страницу');
+                    alert('Невозможно вывести интервалы, выберите другую дату');
                 }
             });
         }
