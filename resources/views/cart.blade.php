@@ -17,7 +17,6 @@
                 @endforeach
             </ul>
         </div>
-        {{var_dump(old())}}
     @endif
     <form action="{{route('addOrderToUser')}}" name="cart" method="POST" onchange="summaryTotalCost()">
         <div style="padding: 0px 15px 15px 15px; width: 79%; display: inline-block;">
@@ -49,7 +48,7 @@
                                                 onclick="one_count('count{{$key}}', -1, {{$loop->index}})">–
                                         </button>
                                         <input onkeypress="numbersOnly()" name="productCount_{{$product['id']}}" id="count{{$key}}"
-                                               value="1">
+                                               @if(count($errors)>0) value="{{old()['productCount_'.$product['id']]}}" @else value="1" @endif>
                                         <button type="button" onclick="one_count('count{{$key}}', 1, {{$loop->index}})">
                                             +
                                         </button>
@@ -65,7 +64,7 @@
                                             <input onkeyup="range(this.value, 'weight{{$key}}')"
                                                    onkeypress="doubleOnly(this.value)" name="productWeight_{{$product['id']}}"
                                                    id="weight{{$key}}"
-                                                   value="{{$product['product_type']['weight_initial']}}">
+                                                   @if(count($errors)>0) value="{{old()['productWeight_'.$product['id']]}}" @else value="{{$product['product_type']['weight_initial']}}" @endif>
                                             <button type="button"
                                                     onclick="one_weight('weight{{$key}}', 0.5, {{$loop->index}})">+
                                             </button>
@@ -88,7 +87,7 @@
                 @endforeach
                 <div id="notes">
                     <h3 style="all:revert; margin: 5px;">Комментарий к заказу</h3>
-                    <textarea name="notesForOrder" id="notesText" cols="120" rows="4"></textarea>
+                    <textarea name="notesForOrder" id="notesText" cols="120" rows="4">@if(count($errors)>0) {{old()['notesForOrder']}} @endif</textarea>
                 </div>
         </div>
         <div style="margin-top: 20px; padding: 0px 15px 15px 15px; width: 21%; display: inline-block; float: right;">
@@ -96,7 +95,7 @@
                 <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <ul>
                         <li id="itog">Итого: <span id="summaryTotal"></span>₽</li>
-                        <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="dateForIntervals" id="minDate"></li></label>
+                        <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="dateForIntervals" id="minDate" @if(count($errors)>0) value="{{old()['dateForIntervals']}}" @endif></li></label>
                     </ul>
                 </div>
             </div>
@@ -298,8 +297,15 @@
         }
 
         window.onload = function load() {
+            let div_prod_counts = document.getElementsByClassName('cart_product_counts')
+            var change = new Event('change');
+            for(let i = 0; i < div_prod_counts.length; i++)
+                div_prod_counts[i].dispatchEvent(change);
+            @isset(old()['dateForIntervals'])
+            dropIntervals('{{old()['dateForIntervals']}}');
+            @endisset
             summaryTotalCost();
-            minDate()
+            minDate();
         };
 
         function LogInCart() {
