@@ -16,16 +16,15 @@
         <link rel="stylesheet" href="{{ asset('css/style.css')}}">
 
         <!-- Logo -->
-        <link rel="shortcut icon" href="/storage/logo/Logo.png" type="image/png">
+        <link rel="shortcut icon" href="{{\Illuminate\Support\Facades\Storage::url('logo/Logo.png')}}" type="image/png">
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased" style="">
         <div class="min-h-screen bg-gray-100">
-
             <!-- Page Heading -->
-                @include('layouts.navigation')
+            @include('layouts.navigation')
 
             <!-- Page Content -->
             <main style="padding-bottom: 40px;">

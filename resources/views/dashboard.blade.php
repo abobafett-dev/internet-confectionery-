@@ -74,7 +74,7 @@
                             </div>
                             @php $sum = 0 @endphp
                             @foreach($order['products'] as $product)
-                                @php $sum += $product['price']*$product['data']['count']; // var_dump($product);// необходимо добавить умножение на количество @endphp
+                                @php $sum += ($product['data']['weight']/$product['product_type']['weight_initial'])*$product['price']*$product['data']['count']; //var_dump($product);// необходимо добавить умножение на количество @endphp
                             <div style="display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(206,206,206,0.75);">
                                 <div>
                                     <img src="{{$product['photo']}}" style="width:10em;">
@@ -86,11 +86,11 @@
                                     </div>
                                     <div style="font-weight: bold;">{{$product['price']}}₽</div>
                                 </div>
-                                <div style="text-align: center; margin: 5px 0px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
+                                <div style="text-align: right; margin: 5px 10px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
                                     <div>
-                                        {{$product['data']['count']}}шт
+                                        {{$product['data']['count']}} шт.
                                         <br>
-                                        {{$product['data']['weight']}}kg
+                                        {{$product['data']['weight']}} кг
                                     </div>
                                     <div style="font-weight: bold;">
                                         Сумма: {{$product['price']*$product['data']['count']*$product['data']['weight']}}₽
@@ -99,7 +99,12 @@
                             </div>
                             @endforeach
                             <div style="display: flex; justify-content: space-between;">
-                                <div style="width: 300px; text-align: left;">
+                                <div style="width: 25%; text-align: left; padding: 5px 15px;">
+                                    <a href="{{route('order',$order['id'])}}"
+                                        style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Подробнее
+                                    </a>
+                                </div>
+                                <div style="width: 35%; text-align: right;">
                                     <form action="" method="POST">
                                         <button
                                             style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
@@ -107,7 +112,7 @@
                                         </button>
                                     </form>
                                 </div>
-                                <div style="text-align: right; width: 300px; padding: 5px 15px; font-weight: bold;">Итого: {{$sum}}₽</div>
+                                <div style="text-align: right; width: 42%; padding: 5px 25px; font-weight: bold;">Итого: {{$sum}}₽</div>
                             </div>
                         </div>
                     </div>
