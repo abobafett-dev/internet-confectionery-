@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Order_Product;
@@ -10,10 +11,12 @@ use App\Models\Product_Type;
 use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
 use App\Models\Schedule_Update;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules;
 
 class UserCartController extends Controller
 {
@@ -135,7 +138,6 @@ class UserCartController extends Controller
 
     public function addOrderToUser(Request $request)
     {
-
         if (Auth::user() != null) {
 
             $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
@@ -156,7 +158,12 @@ class UserCartController extends Controller
             $countForDay = $scheduleIntervals[count($scheduleIntervals) - 1];
             $countForDay_copy = $countForDay;
 
-            if (!isset($scheduleIntervals[(int)$request['schedule_interval']])) {
+            foreach($scheduleIntervals as $scheduleInterval){
+                if(isset($scheduleInterval['id']) && $scheduleInterval['id'] == (int)($request['schedule_interval'])){
+                    $isTrueInterval = true;
+                }
+            }
+            if (!isset($isTrueInterval)) {
                 return redirect('cart')->with(['errorInterval' => 'Интервал не доступен для выбора, выберите еще раз', $propertiesFromRequest]);
             }
 
@@ -164,27 +171,40 @@ class UserCartController extends Controller
             foreach ($productsInOrder as $indexProduct => $productInOrder) {
                 foreach ($propertiesFromRequest as $index => $productProperty) {
                     if (preg_match("/^productCount_[0-9]+$/", $index)) {
-                        $countForDay -= $productProperty;
-                        if ($countForDay < 1) {
-                            return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
+                        $countId = explode('_', $index);
+                        if ($countId[1] == $productInOrder['id']) {
+                            $countForDay -= $productProperty;
+                            if ($countForDay < 1) {
+                                return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
+                            }
+                            break;
                         }
                     }
                 }
+            }
 
+            foreach ($productsInOrder as $indexProduct => $productInOrder) {
                 foreach ($propertiesFromRequest as $index => $productProperty) {
-                    if (preg_match("/^productWeight_[0-9]+$/", $index)) {
-                        $weightId = explode('_', $index);
-                        Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (int)$weightId[1])
+                    $weightId = explode('_', $index);
+                    $countId = explode('_', $index);
+                    $isWeight = false;
+                    $isCount = false;
+                    if (preg_match("/^productWeight_[0-9]+$/", $index) && $weightId[1] == $productInOrder['id']) {
+                        Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (double)$weightId[1])
                             ->update(['weight' => $productProperty]);
                         $productsInOrder[$indexProduct]['status'] = true;
+                        $isWeight = true;
                     }
-                    if (preg_match("/^productCount_[0-9]+$/", $index)) {
-                        $countId = explode('_', $index);
+                    if (preg_match("/^productCount_[0-9]+$/", $index) && $countId[1] == $productInOrder['id']) {
                         Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', (int)$countId[1])
                             ->update(['count' => $productProperty]);
                         $productsInOrder[$indexProduct]['status'] = true;
+                        $isCount = true;
                     }
+                    if ($isCount && $isWeight)
+                        break;
                 }
+
                 if (!isset($productsInOrder[$indexProduct]['status'])) {
                     $product = Product::find($productInOrder['id'])->toArray();
                     $product_type = Product_Type::find($product['id_product_type'])->toArray();
@@ -211,34 +231,138 @@ class UserCartController extends Controller
 
             return redirect(route('order', $orderInCart[0]['id']));
         } else {
-            var_dump($request->toArray());
 
+            if (isset($propertiesFromRequest['name']) && isset($propertiesFromRequest['email']) &&
+                isset($propertiesFromRequest['phone']) && isset($propertiesFromRequest['password'])) {
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'phone' => ['required', 'string', 'regex:/^8\d{10,10}$/'],
+                    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                    'dateForIntervals' => ['required', 'string', 'size:10'],
+                    'schedule_interval' => ['required', 'string'],
+                ]);
+            } elseif(isset($propertiesFromRequest['name'])){
+                $request->validate([
+                    'email' => ['filled', 'string', 'email', 'max:255'],
+                    'dateForIntervals' => ['required', 'string', 'size:10'],
+                    'schedule_interval' => ['required', 'string'],
+                ]);
+            }
 
+            $propertiesFromRequest = $request->toArray();
+
+            $UserCartController = new UserCartController();
+            $scheduleIntervals = $UserCartController->createIntervalsAjax($request);
+            $countForDay = $scheduleIntervals[count($scheduleIntervals) - 1];
+            $countForDay_copy = $countForDay;
+
+            foreach($scheduleIntervals as $scheduleInterval){
+                if(isset($scheduleInterval['id']) && $scheduleInterval['id'] == (int)($request['schedule_interval'])){
+                    $isTrueInterval = true;
+                }
+            }
+            if (!isset($isTrueInterval)) {
+                return redirect('cart')->with(['errorInterval' => 'Интервал не доступен для выбора, выберите еще раз', $propertiesFromRequest]);
+            }
+
+            $productsInOrder = Cookie::get();
+
+            foreach ($productsInOrder as $indexProduct => $cookie) {
+                if (preg_match("/^orderInCartProducts_[0-9]+$/", $indexProduct)) {
+                    foreach ($propertiesFromRequest as $index => $productProperty) {
+                        if (preg_match("/^productCount_[0-9]+$/", $index)) {
+                            $countId = explode('_', $index);
+                            if ($countId[1] == (int)$cookie) {
+                                $countForDay -= $productProperty;
+                                if ($countForDay < 1) {
+                                    return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $orderDate = $propertiesFromRequest['dateForIntervals'];
+
+            $weekDays = array(0 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
+                3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
+
+            $orderDayCode = (int)date('N', strtotime($orderDate));
+
+            $schedule_standard = Schedule_Standard::where('isActive', true)->where('weekday', $weekDays[$orderDayCode])->first()->toArray();
+
+            if (isset($propertiesFromRequest['name']) && isset($propertiesFromRequest['email']) &&
+                isset($propertiesFromRequest['phone']) && isset($propertiesFromRequest['password'])) {
+                $RegisteredUserController = new Controllers\Auth\RegisteredUserController();
+                $RegisteredUserController->store($request);
+
+                $currentOrder = Order::create([
+                    'id_user' => Auth::id(),
+                    'id_status' => 1,
+                    'will_cooked_at' => $propertiesFromRequest['dateForIntervals'],
+                    'id_schedule_interval' => (int)$propertiesFromRequest['schedule_interval'],
+                    'id_schedule_standard' => $schedule_standard['id'],
+                ]);
+
+            } elseif (isset($propertiesFromRequest['email'])) {
+                $user = User::where('email', $propertiesFromRequest['email'])->first()->toArray();
+
+                if (count($user) < 1) {
+                    return redirect('cart')->with(['errorInterval' => 'Пользователь с указаной почтой не существует', $propertiesFromRequest]);
+                }
+
+                $currentOrder = Order::create([
+                    'id_user' => $user['id'],
+                    'id_status' => 1,
+                    'will_cooked_at' => $propertiesFromRequest['dateForIntervals'],
+                    'id_schedule_interval' => (int)$propertiesFromRequest['schedule_interval'],
+                    'id_schedule_standard' => $schedule_standard['id'],
+                ]);
+            }
+
+//            var_dump($request->toArray(), $productsInOrder);
+//            return;
+
+            foreach ($productsInOrder as $indexProduct => $cookie) {
+                if (preg_match("/^orderInCartProducts_[0-9]+$/", $indexProduct)) {
+                    $isWeight = false;
+                    $isCount = false;
+                    $currentWeight = 0;
+                    $currentCount = 0;
+                    foreach ($propertiesFromRequest as $index => $productProperty) {
+                        $weightId = explode('_', $index);
+                        $countId = explode('_', $index);
+                        if (preg_match("/^productWeight_[0-9]+$/", $index) && $weightId[1] == $cookie) {
+                            $currentWeight = (double)$productProperty;
+                            $isWeight = true;
+                        }
+                        if (preg_match("/^productCount_[0-9]+$/", $index) && $countId[1] == $cookie) {
+                            $currentCount = (int)$productProperty;
+                            $isCount = true;
+                        }
+                        if ($isCount && $isWeight) {
+                            Order_Product::insert(['id_product' => (int)$cookie, 'id_order' => $currentOrder['id'], 'count' => $currentCount, 'weight' => $currentWeight]);
+                            break;
+                        }
+                    }
+
+                    if (!($isCount && $isWeight)) {
+                        $product = Product::find((int)$cookie)->toArray();
+                        $product_type = Product_Type::find($product['id_product_type'])->toArray();
+                        Order_Product::insert(['id_product' => (int)$cookie, 'id_order' => $currentOrder['id'], 'count' => 1, 'weight' => $product_type['weight_initial']]);
+                    }
+
+                    Cookie::queue(Cookie::forget('orderInCartProducts_' . $cookie));
+                }
+            }
+
+            if(Auth::user() != null)
+                return redirect(route('order', $currentOrder['id']));
+            else
+                return redirect(route('main'));
         }
-
-        return;
     }
-
-//    private function makeArrayUpdates($schedule_updates, $schedule_update_all): array
-//    {
-//        foreach ($schedule_updates as $schedule_update) {
-//            if (isset($schedule_update_all[$schedule_update['schedule_will_updated_at']])) {
-//                $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']])] = $schedule_update;
-//
-//                if ($schedule_update['start'] !=
-//                    $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']]) - 1]['start']
-//                    || $schedule_update['end'] !=
-//                    $schedule_update_all[$schedule_update['schedule_will_updated_at']][count($schedule_update_all[$schedule_update['schedule_will_updated_at']]) - 1]['end']) {
-//                    if ($schedule_update['access'] == false)
-//                        $schedule_update_all[$schedule_update['schedule_will_updated_at']]['count'] += -1 * $schedule_update['orders_count_update'];
-//                    else
-//                        $schedule_update_all[$schedule_update['schedule_will_updated_at']]['count'] += $schedule_update['orders_count_update'];
-//                }
-//            } elseif ($schedule_update['access'] == false)
-//                $schedule_update_all[$schedule_update['schedule_will_updated_at']] = array('count' => -1 * $schedule_update['orders_count_update'], 1 => $schedule_update);
-//            elseif ($schedule_update['access'] == true)
-//                $schedule_update_all[$schedule_update['schedule_will_updated_at']] = array('count' => $schedule_update['orders_count_update'], 1 => $schedule_update);
-//        }
-//        return $schedule_update_all;
-//    }
 }

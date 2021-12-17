@@ -51,6 +51,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        if(count($request->toArray()) == 6)
+            return redirect(RouteServiceProvider::HOME);
     }
 }
