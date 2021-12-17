@@ -69,7 +69,7 @@ div#filter > label > input[type='date'] {
 }
 
 div.sociallinks {
-    margin-left: 15px;
+    margin-left: 35px;
 }
 
 div#links {
@@ -84,7 +84,8 @@ div#footer-box-up {
     background-color: #333333;
     color: #FFFFFF;
     display: flex;
-    justify-content: space-around;
+    justify-content: end;
+    padding: 0px 25px;
 }
 
 div#footer-box-down {
@@ -514,3 +515,18 @@ div.social{
 .instagram a.icon:hover {background: #eb3181; color: #fff;}
 .vk a.icon:hover {background: #5d84ae; color: #fff;}
 .telegram a.icon:hover {background: #249bd7; color: #fff;}
+
+/* ------------------------------------------------------- */
+div#notes{
+    border-radius: 8px;
+    clear: both;
+    padding: 10px;
+    background: #fff;
+    margin-top: 20px;
+    box-shadow: 0 0 5px rgb(0 0 0 / 18%);
+    overflow: hidden;
+}
+textarea#notesText{
+    max-width: 100%;
+    resize: none;
+}

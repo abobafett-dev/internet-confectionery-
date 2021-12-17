@@ -76,6 +76,10 @@
                         </div>
                     </div>
                 @endforeach
+                <div id="notes">
+                    <h3 style="all:revert; margin: 5px;">Комментарий к заказу</h3>
+                    <textarea name="notesForOrder" id="notesText" cols="120" rows="4"></textarea>
+                </div>
         </div>
         <div style="margin-top: 20px; padding: 0px 15px 15px 15px; width: 21%; display: inline-block; float: right;">
             <div class="menuTotal">
