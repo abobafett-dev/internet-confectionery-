@@ -21,6 +21,9 @@ class UserOrderPageController extends Controller
             if(Auth::user()->id_user_status != 2)
                 abort(403);
 
+        if($order['id_status'] == 2)
+            abort(403);
+
         $order = array(0 => $order->toArray());
 
         $classUserProfileController = new UserProfileController();
