@@ -174,7 +174,7 @@ class UserCartController extends Controller
                         $countId = explode('_', $index);
                         if ($countId[1] == $productInOrder['id_product']) {
                             $countForDay -= $productProperty;
-                            if ($countForDay < 1) {
+                            if ($countForDay < 0) {
                                 return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
                             }
                             break;
@@ -275,7 +275,7 @@ class UserCartController extends Controller
                             $countId = explode('_', $index);
                             if ($countId[1] == (int)$cookie) {
                                 $countForDay -= $productProperty;
-                                if ($countForDay < 1) {
+                                if ($countForDay < 0) {
                                     return redirect('cart')->with(['errorInterval' => 'Доступно для заказа продуктов на этот день: ' . $countForDay_copy, $propertiesFromRequest]);
                                 }
                                 break;
