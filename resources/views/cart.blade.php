@@ -54,7 +54,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="cart_product_counts"
+                            <div class="cart_product_counts" id="cart_product_counts_{{$loop->index}}"
                                  onchange="calculateCost({{$key}}, {{$product['price']}}, {{$product['product_type']['weight_initial']}})">
                                 <div>
                                     Количество
@@ -247,7 +247,7 @@
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             }
-            document.getElementsByClassName('cart_product_counts')[number].dispatchEvent(new Event('change'));
+            document.getElementById('cart_product_counts_'+number).dispatchEvent(new Event('change'));
             document.getElementsByName('cart')[0].dispatchEvent(new Event('change'));
         }
 
@@ -258,7 +258,7 @@
             } else {
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
-                document.getElementsByClassName('cart_product_counts')[number].dispatchEvent(new Event('change'));
+                document.getElementById('cart_product_counts_'+number).dispatchEvent(new Event('change'));
                 document.getElementsByName('cart')[0].dispatchEvent(new Event('change'));
             }
         }
