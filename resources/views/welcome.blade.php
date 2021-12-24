@@ -52,15 +52,17 @@
         </div>
         <div class="pink">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div>
+                    <h3 style="all:revert; margin: 0px 0px 20px 0px; text-align: center;">Собери свой торт!</h3>
+                </div>
                 @if(count($componentsWithProductTypesForConstructor) > 0)
                     <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap;">
                     @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
-                        {{var_dump($componentsWithType)}}
-                    <div style="border: 1px solid black; padding: 5px; margin: 10px 0px" id="{{$product_type}}" class="main_cursor_hover" onclick="hiddenForm({{$product_type}})"><h4 style="all:revert; margin: 0px; text-align: center;">{{$product_type}}</h4></div>
+                    <div style="border: 1px solid black; padding: 5px; margin: 10px 0px" id="{{$product_type}}" class="main_cursor_hover" onclick="hiddenForm(this,{{$loop->index}})"><h4 style="all:revert; margin: 0px; text-align: center;">{{$product_type}}</h4></div>
                     @endforeach
                     </div>
                     @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
-                        <form action="{{route('addProductFromConstructor')}}" id="{{$product_type}}" class="formConstructor" method="POST">
+                        <form action="{{route('addProductFromConstructor')}}" id="{{$loop->index}}" class="formConstructor" method="POST">
                             <input type="text" value="{{$product_type}}" name="product_type" hidden>
                             <div style="margin: auto; width: 35%;">
                                 @foreach($componentsWithType as $component_type => $components)
@@ -103,10 +105,13 @@
 {{--    </div>--}}
 </body>
 <script>
-    function hiddenForm(index) {
+    function hiddenForm(block, index) {
         for(let i = 0; i < document.getElementsByClassName('formConstructor').length; i++)
-            document.getElementsByClassName('formConstructor')[i].style.visibility = 'hidden';
-        document.getElementById(index).style.visibility = 'visible';
+            document.getElementsByClassName('formConstructor')[i].style.display = 'none';
+        document.getElementById(index).style.display = 'block';
+        for(let i = 0; i < document.getElementsByClassName('main_cursor_hover').length; i++)
+            document.getElementsByClassName('main_cursor_hover')[i].style.backgroundColor ='';
+        block.style.backgroundColor = '#b8848d';
     }
 </script>
 </html>

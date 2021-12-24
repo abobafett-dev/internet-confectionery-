@@ -599,3 +599,6 @@ div.main_cursor_hover:hover{
     cursor: pointer;
 
 }
+form.formConstructor{
+    display: none;
+}
