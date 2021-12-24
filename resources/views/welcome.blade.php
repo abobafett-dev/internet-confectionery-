@@ -111,8 +111,8 @@
         document.getElementById(index).style.display = 'block';
         for(let i = 0; i < document.getElementsByClassName('main_cursor_hover').length; i++)
             document.getElementsByClassName('main_cursor_hover')[i].style.backgroundColor ='';
-        document.getElementsByClassName('main_cursor_hover')[block].style.backgroundColor = 'rgb(222 151 163)';
+        block.style.backgroundColor = 'rgb(222 151 163)';
     }
-    document.body.onload(hiddenForm(0, 0));
+    window.onload = document.getElementsByClassName('main_cursor_hover')[0].click();
 </script>
 </html>

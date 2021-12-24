@@ -240,9 +240,9 @@
         function one_weight(index, difference, number) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < {{$product['product_type']['weight_min']}}) {
-                alert('Минимальный вес продутка {{$product['product_type']['weight_min']}}')
+                alert('Минимальный вес продукта {{$product['product_type']['weight_min']}}кг')
             } else if (document.getElementById(index).getAttribute('value') - (-difference) > {{$product['product_type']['weight_max']}}) {
-                alert('Максимальный вес продутка {{$product['product_type']['weight_max']}}')
+                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}кг')
             } else {
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
@@ -254,7 +254,7 @@
         function one_count(index, difference, number) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < 1) {
-                alert('Минимальное количество 1')
+                alert('Минимальное количество 1 шт.')
             } else {
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
@@ -271,11 +271,11 @@
 
         function range(x, index) {
             if ((x != '') && (x < {{$product['product_type']['weight_min']}})) {
-                alert('Минимальный вес продутка {{$product['product_type']['weight_min']}}');
+                alert('Минимальный вес продукта {{$product['product_type']['weight_min']}}кг');
                 document.getElementById(index).value = {{$product['product_type']['weight_min']}};
                 document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_min']}});
             } else if ((x != '') && (x > {{$product['product_type']['weight_max']}})) {
-                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}');
+                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}кг');
                 document.getElementById(index).value = {{$product['product_type']['weight_max']}};
                 document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_max']}});
             }
