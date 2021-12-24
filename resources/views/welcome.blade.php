@@ -34,16 +34,18 @@
                     @foreach($productsWithTypesAndCount as $type => $productsOfType)
                         <div style="">
                             <h3 style="all:revert; margin: 0px 0px 20px 0px; text-align: center;"> Топ-5 из категории «{{$type}}»</h3>
-                            @foreach($productsOfType as $productOfType)
-                                <form action="{{route('addProductInCart', ['product'=>$productOfType['id']])}}" method="POST" style=" max-width: 13em; padding: 1em; text-align: center; border: 1px solid rgba(151,149,149,0.29); border-radius: 5px;">
-                                    <h4 style="all:revert; margin: 0px; text-align: center; margin-bottom: 10px;">{{$productOfType->name}}</h4>
+                            <div style="display: flex; min-width: 100%; justify-content: space-evenly; box-shadow: 0px 0px 5px #97959536; padding:20px 10px;">
+                            @for($i = 0; $i < 5; $i++)
+                                <form action="{{route('addProductInCart', ['product'=>$productsOfType[$i]['id']])}}" method="POST" style=" max-width: 13em; padding: 1em; text-align: center; border: 1px solid rgba(151,149,149,0.29); border-radius: 5px;">
+                                    <h4 style="all:revert; margin: 0px; text-align: center; margin-bottom: 10px;">{{$productsOfType[$i]->name}}</h4>
                                     <div style="margin: auto;">
-                                        <img style="border-radius: 5px;" src="{{$productOfType['photo']}}" alt="" style="width: 10em">
+                                        <img style="border-radius: 5px;" src="{{$productsOfType[$i]['photo']}}" alt="" style="width: 10em">
                                     </div>
                                     <button>Добавить в корзину</button>
                                     {{ csrf_field() }}
                                 </form>
-                            @endforeach
+                            @endfor
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -67,7 +69,7 @@
                                         @if($component_type != "0")
                                             <div>{{$component_type}}</div>
                                             <div>
-                                                <select style="min-width: 180px;" name="constructor_{{$components[array_key_first($components)]['id_component_type']}}" id="">
+                                                <select style="width: 180px;" name="constructor_{{$components[array_key_first($components)]['id_component_type']}}" id="">
                                                     <option value="" selected hidden></option>
                                                 @foreach($components as $key => $component)
                                                     <option value="{{$component['id']}}">{{$component['name']}}</option>

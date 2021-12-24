@@ -50,7 +50,7 @@
             <div id="order_dates">
                 <div id="date_order">
                     <h4 style="all:revert; margin: 0px;">Дата оформления заказа</h4>
-                    {{$order[0]['created_at']}}
+                    {{date('Y-m-d  H:i',strtotime($order[0]['created_at']))}}
                 </div>
 
                 <div id="status">
@@ -60,8 +60,8 @@
 
                 <div id="date_cook">
                     <h4 style="all:revert; margin: 0px;">Дата приготовления</h4>
-                    <span id="will_cooked_at" style="margin-right: 10px;">{{$order[0]['will_cooked_at']}}</span> <span
-                        id="interval">{{$order[0]['interval']['start']}}</span>
+                    <span id="will_cooked_at" style="margin-right: 5px;">{{$order[0]['will_cooked_at']}}</span> <span
+                        id="interval">{{date('H:i',strtotime($order[0]['interval']['start']))}}</span>
                 </div>
             </div>
 
@@ -106,9 +106,9 @@
             <div id="message">
                 <a style="color: #c08d87" href="https://www.instagram.com/cakemechtai.tmn/">@<span style="text-decoration: underline; ">cakemechtai.tmn</span></a>
             </div>
+            <div style="width: 210px; margin: auto; padding:20px;">
+                <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную</a>
+            </div>
         </div>
-    </div>
-    <div style="width: 210px; margin: auto; padding:20px;">
-        <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную</a>
     </div>
 </x-app-layout>

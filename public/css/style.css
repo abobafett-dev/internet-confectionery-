@@ -570,11 +570,11 @@ div#date_cook{
     padding-right: 15px;
 }
 div#order_left{
-    width: 575px;
+    width: 550px;
     float: left;
 }
 div#order_right{
-    width: 580px;
+    width: 600px;
     float: right;
 }
 div#money div{
