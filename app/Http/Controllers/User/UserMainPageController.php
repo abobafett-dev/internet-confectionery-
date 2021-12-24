@@ -42,7 +42,10 @@ class UserMainPageController extends Controller
             $product->product_type = $product_types[array_search($product->id_product_type, $product_types_ids)]['name'];
             if ($product->photo != null)
                 $product->photo = Storage::url($product->photo) . "?r=" . rand(0, 1000);
-            $product['count'] = $countProductsInOrders[$product->id];
+            if(isset($countProductsInOrders[$product->id]))
+                $product['count'] = $countProductsInOrders[$product->id];
+            else
+                $product['count'] = 0;
             if (isset($productsWithTypesAndCount[$product['product_type']]))
                 $productsWithTypesAndCount[$product['product_type']][count($productsWithTypesAndCount[$product['product_type']])] = $product;
             else {
