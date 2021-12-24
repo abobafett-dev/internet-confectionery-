@@ -53,7 +53,7 @@
         <div class="pink">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div>
-                    <h3 style="all:revert; margin: 0px 0px 20px 0px; text-align: center;">Собери свой торт!</h3>
+                    <h3 style="all:revert; margin: 0px 0px 20px 0px; text-align: center;">Собери свой десерт!</h3>
                 </div>
                 @if(count($componentsWithProductTypesForConstructor) > 0)
                     <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap;">
