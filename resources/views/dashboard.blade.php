@@ -62,7 +62,7 @@
                                     {{date('d.m.Y',strtotime($order['will_cooked_at']))}}
                                     {{date('h:i',strtotime($order['interval']['start']))}}
                                 </div>
-                                <div style="padding: 5px 15px; width: 160px;">
+                                <div style="padding: 5px 15px; width: 160px; font-weight: bold;">
                                     {{$order['status']['status']}}
                                 </div>
                                 <div style="padding: 5px 15px; width: 160px;">
