@@ -111,7 +111,7 @@
         document.getElementById(index).style.display = 'block';
         for(let i = 0; i < document.getElementsByClassName('main_cursor_hover').length; i++)
             document.getElementsByClassName('main_cursor_hover')[i].style.backgroundColor ='';
-        block.style.backgroundColor = '#b8848d';
+        block.style.backgroundColor = 'rgb(222 151 163)';
     }
 </script>
 </html>
