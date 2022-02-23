@@ -16,8 +16,6 @@ class Order extends Model
         'id_status',
         'will_cooked_at',
         'address',
-        'review_text',
-        'review_photo',
         'id_schedule_standard',
         'id_schedule_interval',
         'paidByPoints'

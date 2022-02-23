@@ -15,6 +15,10 @@ class Order_Product extends Model
         'id_order',
         'id_product',
         'count',
-        'weight'
+        'weight',
+        'review_text',
+        'review_photo',
+        'comment_text',
+        'comment_photo'
     ];
 }
