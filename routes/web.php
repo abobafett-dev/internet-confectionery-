@@ -53,4 +53,10 @@ Route::GET('/order/{order}', [Controllers\User\UserOrderPageController::class, '
 Route::GET('admin/orders/{date}', [Controllers\Admin\AdminOrdersPageController::class, 'create'])
     ->middleware(['auth'])->name('adminOrders');
 
+Route::GET('admin/products', [Controllers\Admin\AdminProductsPageController::class, 'create'])
+    ->middleware(['auth'])->name('adminProducts');
+
+Route::GET('admin/products/add', [Controllers\Admin\AdminCreateProductPageController::class, 'create'])
+    ->middleware(['auth'])->name('adminProductsAdd');
+
 require __DIR__.'/auth.php';
