@@ -86,7 +86,7 @@
                     <div id="paid">
                         <h4 style="all:revert; margin: 0px;">Оплачено</h4>
                         @if($order[0]['status']['id'] == 5 || $order[0]['status']['id'] == 6)
-                            ){{$sum - $order[0]['paidByPoints']}}₽ @else {{($sum - $order[0]['paidByPoints'])/2}}
+                            {{$sum - $order[0]['paidByPoints']}}₽ @else {{($sum - $order[0]['paidByPoints'])/2}}
                         ₽ @endif
                     </div>
                 </div>
@@ -94,7 +94,7 @@
             @if($order[0]['status']['id'] != 7 || $order[0]['status']['id'] != 6)
                 <h3 style="all:revert; margin: 5px;">Комментарий к заказу</h3>
                 <div id="comment">
-                    {{$order[0]['review_text']}}
+{{--                   {{$order[0]['review_text']}}--}}
                 </div>
             @endif
             <h3 style="all:revert; margin: 5px;">Сообщение, которое вам нужно отправить кондитеру</h3>

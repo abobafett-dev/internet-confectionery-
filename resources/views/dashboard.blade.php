@@ -74,7 +74,7 @@
                             </div>
                             @php $sum = 0 @endphp
                             @foreach($order['products'] as $product)
-                                @php $sum += ($product['data']['weight']/$product['product_type']['weight_initial'])*$product['price']*$product['data']['count']; //var_dump($product);// необходимо добавить умножение на количество @endphp
+                                @php $sum += ($product['data']['weight']/$product['product_type']['weight_initial'])*$product['price']*$product['data']['count']; @endphp
                             <div style="display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(206,206,206,0.75);">
                                 <div>
                                     <img src="{{$product['photo']}}" style="width:10em;">
@@ -84,7 +84,7 @@
                                         <h2 style="font-weight: bold; font-size: 1.5em;">{{$product['name']}}</h2>
                                         {{$product['description']}}
                                     </div>
-                                    <div style="font-weight: bold;">{{$product['price']}}₽</div>
+                                    <div style="font-weight: bold;">{{$product['price']}}₽ за {{$product['product_type']['weight_initial']}}кг</div>
                                 </div>
                                 <div style="text-align: right; margin: 5px 10px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
                                     <div>
@@ -105,7 +105,7 @@
                                     </a>
                                 </div>
                                 <div style="width: 35%; text-align: right;">
-                                    <form action="" method="POST">
+                                    <form action="" method="">
                                         <button
                                             style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
                                             отзыв
@@ -120,10 +120,6 @@
             </div>
         @else
             <div>Вы ещё не совершали заказов</div>
-        @endif
-
-        @if($user['id_user_status'] == 2 && count($ordersToAdmin) > 0)
-{{--            <div>{{var_dump($ordersToAdmin)}}</div>--}}
         @endif
     </div>
     <div id="profile">
@@ -206,6 +202,14 @@
                 {{ csrf_field() }}
             </form>
         @endif
+            @if($user['id_user_status'] == 2 && count($ordersToAdmin) > 0)
+                <div style="text-decoration: underline">
+                    <div><a href="{{route('adminOrders',date('Y-m-d'))}}">Расписание заказов</a></div>
+                    <div><a href="">Администрирование данных</a></div>
+                </div>
+
+
+            @endif
     </div>
 </x-app-layout>
 <script>

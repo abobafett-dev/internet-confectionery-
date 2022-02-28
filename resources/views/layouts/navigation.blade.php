@@ -1,19 +1,20 @@
 <script>
-    window.addEventListener('scroll',(event) => {
+    window.addEventListener('scroll', (event) => {
         var elem = document.getElementById('gototop');
-        if (scrollY>900) elem.style.display = 'block';
+        if (scrollY > 900) elem.style.display = 'block';
         else elem.style.display = 'none';
     });
-    function backToTop(){
+
+    function backToTop() {
         var i = Number(scrollY);
         window.scrollTo(0, 0);
     }
-    function OpenCloseMenu(){
+
+    function OpenCloseMenu() {
         var elem = document.getElementById('menu');
-        if(elem.style.display == 'block') {
+        if (elem.style.display == 'block') {
             elem.style.display = 'none';
-        }
-        else {
+        } else {
             elem.style.display = 'block';
         }
     }
@@ -26,21 +27,27 @@
                 <div class="flex" style="width: 345px; justify-content: space-between;">
                     <!-- Location -->
                     <div class="flex-shrink-0 flex items-center">
-                        <svg style="margin-right: 10px" width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg style="margin-right: 10px" width="18" height="22" viewBox="0 0 18 22" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M9.34606 20.0871C11.7469 17.5594 13.5235 15.2893 14.6964 13.2752C15.8724 11.2556 16.4127 9.54244 16.4127
                             8.11431C16.4127 4.29846 13.0786 1.11707 8.85332 1.11707C4.62805 1.11707 1.29395 4.29846 1.29395
                             8.11431C1.29395 9.54244 1.8342 11.2556 3.01028 13.2752C4.18311 15.2893 5.95976 17.5594 8.36056
                             20.0871L9.34606 20.0871ZM9.34606 20.0871C9.3299 20.1041 9.31252 20.1203 9.29396 20.1357L9.34606
-                            20.0871ZM9.29388 20.1358C9.02106 20.3612 8.59269 20.3315 8.36058 20.0871L9.29388 20.1358Z" stroke="#D9124A" stroke-width="1.5"></path>
+                            20.0871ZM9.29388 20.1358C9.02106 20.3612 8.59269 20.3315 8.36058 20.0871L9.29388 20.1358Z"
+                                  stroke="#D9124A" stroke-width="1.5"></path>
                             <circle cx="8.85329" cy="8.67654" r="3.12771" stroke="#D9124A" stroke-width="1.5"></circle>
-                        </svg> г. Тюмень
+                        </svg>
+                        г. Тюмень
                     </div>
                     <!-- Links -->
                     <div class="flex-shrink-0 flex items-center" id="links">
                         <div class="sociallinks">
                             <a href="https://vk.com/cakemechtai" target="_blank" rel="noopener">
-                                <svg class="t-sociallinks__svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve">
+                                <svg class="t-sociallinks__svg" version="1.1" id="Layer_1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px"
+                                     height="30px" viewBox="0 0 48 48" enable-background="new 0 0 48 48"
+                                     xml:space="preserve">
                                     <desc>
                                         VK
                                     </desc>
@@ -62,7 +69,8 @@
                         </div>
                         <div class="sociallinks">
                             <a href="https://www.instagram.com/cakemechtai.tmn/" target="_blank" rel="noopener">
-                                <svg class="t-sociallinks__svg" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                <svg class="t-sociallinks__svg" version="1.1" id="Layer_1"
+                                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                      width="30px" height="30px" viewBox="0 0 30 30" xml:space="preserve">
                                     <desc>
                                         Instagram
@@ -91,72 +99,96 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center" style="align-self: center;">
                     <a href="{{ route('main') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600"/>
                     </a>
                 </div>
                 <!-- Settings Dropdown -->
                 <div class="hidden sm:flex sm:items-center sm:ml-6" style="width: 325px; position: relative">
 
-                        @auth
-                            <x-dropdown align="right" width="48">
-                                <x-slot name="trigger">
-                                    <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none
-                                    focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out" style="color:#d9124a;">
-                                        <div style="color: black">{{ Auth::user()->name }}</div>
+                    @auth
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none
+                                    focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                                        style="color:#d9124a;">
+                                    <div style="color: black">{{ Auth::user()->name }}</div>
 
-                                        <div class="ml-1">
-                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </button>
-                                </x-slot>
+                                    <div class="ml-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
 
-                                <x-slot name="content">
-                                    <!-- Dashboard -->
-                                    <x-dropdown-link :href="route('dashboard')">
-                                        {{ __('Личный кабинет') }}
+                            <x-slot name="content">
+                                <!-- Dashboard -->
+                                <x-dropdown-link :href="route('dashboard')">
+                                    {{ __('Личный кабинет') }}
+                                </x-dropdown-link>
+                                <!-- Админская часть -->
+                                @if(Auth::user()->id_user_status == '2')
+                                    <x-dropdown-link :href="route('adminOrders', ['date' => date('Y-m-d')])">
+                                        {{ __('Заказы') }}
                                     </x-dropdown-link>
-                                    <!-- Authentication -->
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
+                                    <x-dropdown-link :href="route('adminProducts')">
+                                        {{ __('Каталог') }}
+                                    </x-dropdown-link>
+                                @endif
+                            <!-- Authentication -->
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
 
-                                        <x-dropdown-link :href="route('logout')"
-                                                onclick="event.preventDefault();
+                                    <x-dropdown-link :href="route('logout')"
+                                                     onclick="event.preventDefault();
                                                             this.closest('form').submit();">
-                                            {{ __('Выйти') }}
-                                        </x-dropdown-link>
-                                    </form>
-                                </x-slot>
-                            </x-dropdown>
-                        @else
-                             <a href="{{ route('login') }}" class="text-sm dark:text-gray-500" style="margin-left: auto;">Войти</a>
+                                        {{ __('Выйти') }}
+                                    </x-dropdown-link>
+                                </form>
+                            </x-slot>
+                        </x-dropdown>
+                    @else
+                        <a href="{{ route('login') }}" class="text-sm dark:text-gray-500" style="margin-left: auto;">Войти</a>
 
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="ml-4 text-sm dark:text-gray-500">Зарегистрироваться</a>
-                            @endif
-                        @endauth
-                    <!-- sale-basket -->
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}"
+                               class="ml-4 text-sm dark:text-gray-500">Зарегистрироваться</a>
+                    @endif
+                @endauth
+                <!-- sale-basket -->
                     <div class="sale-basket-icons-item-wrapper">
                         <a href="{{route('cart')}}">
-                            <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="26" height="25" viewBox="0 0 26 25" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.7677 21.8164C11.343 21.8164 11.8094 21.3687 11.8094 20.8164C11.8094 20.2641 11.343 19.8164 10.7677 19.8164C10.1924 19.8164
-                                9.72607 20.2641 9.72607 20.8164C9.72607 21.3687 10.1924 21.8164 10.7677 21.8164Z" fill="#D9124A" stroke="#D9124A" stroke-width="1.5" stroke-linecap="square"></path>
+                                9.72607 20.2641 9.72607 20.8164C9.72607 21.3687 10.1924 21.8164 10.7677 21.8164Z"
+                                      fill="#D9124A" stroke="#D9124A" stroke-width="1.5" stroke-linecap="square"></path>
                                 <path d="M19.1012 21.8164C19.6765 21.8164 20.1429 21.3687 20.1429 20.8164C20.1429 20.2641 19.6765 19.8164 19.1012 19.8164C18.5259
-                                19.8164 18.0596 20.2641 18.0596 20.8164C18.0596 21.3687 18.5259 21.8164 19.1012 21.8164Z" fill="#D9124A" stroke="#D9124A" stroke-width="1.5" stroke-linecap="square"></path>
+                                19.8164 18.0596 20.2641 18.0596 20.8164C18.0596 21.3687 18.5259 21.8164 19.1012 21.8164Z"
+                                      fill="#D9124A" stroke="#D9124A" stroke-width="1.5" stroke-linecap="square"></path>
                                 <path d="M2.95508 2.81641H6.08008L8.89258 15.2164C8.98998 15.675 9.2518 16.0862 9.63246 16.3786C10.0131 16.6709 10.4885 16.8258 10.9759
                                 16.8164H18.9967C19.4841 16.8258 19.9595 16.6709 20.3402 16.3786C20.7209 16.0862 20.9827
-                                15.675 21.0801 15.2164L22.7467 6.81641H7.74675" stroke="#D9124A" stroke-width="1.5" stroke-linecap="square"></path>
+                                15.675 21.0801 15.2164L22.7467 6.81641H7.74675" stroke="#D9124A" stroke-width="1.5"
+                                      stroke-linecap="square"></path>
                             </svg>
                         </a>
                     </div>
                     <!-- Hamburger -->
                     <div onclick="OpenCloseMenu()" id="hamb">
                         <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100
-                         focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out" id="buttonMenu">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"  style="color: #d9124a;">
-                                <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                         focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                id="buttonMenu">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"
+                                 style="color: #d9124a;">
+                                <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 6h16M4 12h16M4 18h16"/>
+                                <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden"
+                                      stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         </button>
                     </div>
@@ -166,8 +198,8 @@
                                 <li>Главная</li>
                             </a><a href="{{route('catalog')}}" class="menu_a">
                                 <li>Каталог</li>
-{{--                            </a><a href="" class="menu_a">--}}
-{{--                                <li>Акции</li>--}}
+                                {{--                            </a><a href="" class="menu_a">--}}
+                                {{--                                <li>Акции</li>--}}
                             </a><a href="" class="menu_a">
                                 <li>Для покупателя</li>
                             </a>
@@ -179,8 +211,12 @@
                     <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500
                     hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h16M4 18h16"/>
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden"
+                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                     </button>
                 </div>
@@ -188,7 +224,6 @@
         </div>
         <!-- Responsive Navigation Menu -->
         @auth
-
         @endauth
     </nav>
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex" style="min-height: 73px;">
@@ -196,12 +231,13 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="margin-right: -160px;">
                 Главная
             </h2>
-             @endif
+        @endif
     </div>
 </header>
 <div id="gototop" onclick="backToTop()">
     <div id="indicator">
-        <img src="{{asset(Storage::url('public/logo/indicator.png'))}}" alt="Вверх" style="margin: auto; width: 15px; align-items: center;">
+        <img src="{{asset(Storage::url('public/logo/indicator.png'))}}" alt="Вверх"
+             style="margin: auto; width: 15px; align-items: center;">
     </div>
 </div>
 

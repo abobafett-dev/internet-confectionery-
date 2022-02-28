@@ -24,8 +24,9 @@
 <body class="antialiased">
 
     <div class="" style="">
-        {{--    вывод продуктов с количеством по типу--}}
         @include('layouts.navigation')
+        {{--    вывод продуктов с количеством по типу--}}
+
         <div style="padding: 20px 40px;">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 {{--                {{var_dump($productsWithTypesAndCount['торт_тест'])}}--}}
@@ -58,7 +59,7 @@
                 @if(count($componentsWithProductTypesForConstructor) > 0)
                     <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap;">
                     @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
-                    <div style="border: 1px solid black; padding: 5px; margin: 10px 0px" id="{{$product_type}}" class="main_cursor_hover" onclick="hiddenForm(this,{{$loop->index}})"><h4 style="all:revert; margin: 0px; text-align: center;">{{$product_type}}</h4></div>
+                    <div style="border: 1px solid black; padding: 5px; margin: 10px 0px" id="{{$product_type}}" class="main_cursor_hover" onclick="hiddenFormConstructor(this,{{$loop->index}})"><h4 style="all:revert; margin: 0px; text-align: center;">{{$product_type}}</h4></div>
                     @endforeach
                     </div>
                     @foreach($componentsWithProductTypesForConstructor as $product_type => $componentsWithType)
@@ -95,17 +96,9 @@
     </div>
     @include('layouts.footer')
 
-
-{{--    <div class="white">--}}
-{{--        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="pink">--}}
-{{--        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8"></div>--}}
-{{--    </div>--}}
 </body>
 <script>
-    function hiddenForm(block, index) {
+    function hiddenFormConstructor(block, index) {
         for(let i = 0; i < document.getElementsByClassName('formConstructor').length; i++)
             document.getElementsByClassName('formConstructor')[i].style.display = 'none';
         document.getElementById(index).style.display = 'block';
