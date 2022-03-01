@@ -602,3 +602,13 @@ div.main_cursor_hover:hover{
 form.formConstructor{
     display: none;
 }
+div.adminOrdersGridContainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+}
+div.adminOrders-grid-container{
+
+}
+.border{
+    border: 1px solid black;
+}

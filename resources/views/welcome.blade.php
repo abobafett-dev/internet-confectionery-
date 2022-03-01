@@ -34,14 +34,14 @@
                 @foreach($productsWithTypesAndCount as $type => $productsOfType)
                     <div style="margin:40px 0px;">
                         <h3 style="all:revert; margin: 0px 0px 20px 0px; text-align: center;"> Топ-@if(count($productsOfType) < 5){{count($productsOfType)}} @else{{5}}@endif из категории «{{$type}}»</h3>
-                        <div style="display: flex; min-width: 100%; justify-content: space-evenly; box-shadow: 0px 0px 5px #97959536; padding:20px 10px;">
+                        <div style="display: flex; min-width: 100%; justify-content: space-evenly; box-shadow: 0px 0px 10px #0000004a; padding:20px 10px;">
                         @for($i = 0; ($i < 5) && ($i < count($productsOfType)); $i++)
                             <form action="{{route('addProductInCart', ['product'=>$productsOfType[$i]['id']])}}" method="POST" style=" max-width: 13em; padding: 1em; text-align: center; border: 1px solid rgba(151,149,149,0.29); border-radius: 5px;">
                                 <h4 style="all:revert; margin: 0px; text-align: center; margin-bottom: 10px;">{{$productsOfType[$i]->name}}</h4>
                                 <div style="margin: auto;">
                                     <img style="border-radius: 5px; width: 11em; height: 11em;" src="{{$productsOfType[$i]['photo']}}" alt="" style="width: 10em">
                                 </div>
-                                <button>Добавить в корзину</button>
+                                <button style="text-decoration: underline; margin-top: 10px;">Добавить в корзину</button>
                                 {{ csrf_field() }}
                             </form>
                         @endfor

@@ -21,7 +21,7 @@ class AdminOrdersPageController extends Controller
         if (Auth::user()->id_user_status != 2)
                 abort(403);
 
-        $currentDay = date('Y-m-d');
+        $currentDay = $date;
 
         $orders = Order::where('will_cooked_at', $currentDay)->get()->toArray();
 
@@ -29,7 +29,7 @@ class AdminOrdersPageController extends Controller
 
         $orders = $AdminFunctionsController->createOrders($orders);
 
-        return view('adminOrders')->with(['data'=>$orders]);
+        return view('adminOrders')->with(['data'=>$orders, 'date'=>$date]);
     }
 
 }

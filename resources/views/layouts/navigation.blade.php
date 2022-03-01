@@ -131,11 +131,11 @@
                                 </x-dropdown-link>
                                 <!-- Админская часть -->
                                 @if(Auth::user()->id_user_status == '2')
-                                    <x-dropdown-link :href="route('adminOrders', ['date' => date('Y-m-d')])">
+                                    <x-dropdown-link :href="route('adminOrders', ['date' => date('Y.m.d')])">
                                         {{ __('Заказы') }}
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('adminProducts')">
-                                        {{ __('Каталог') }}
+                                        {{ __('Ассортимент') }}
                                     </x-dropdown-link>
                                 @endif
                             <!-- Authentication -->

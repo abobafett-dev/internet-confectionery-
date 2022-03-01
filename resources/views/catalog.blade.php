@@ -45,7 +45,7 @@
                 <form action="{{route('addProductInCart', ['product'=>$iter['id']])}}" method="POST" style="width:15em;">
                     <div style="display: flex; justify-content: center; margin-bottom: 10px;"><h4 style="all: revert; margin: 5px;">{{$iter['name']}}</h4></div>
                     <div style="display: flex; justify-content: center;"><img src="{{$iter['photo']}}" alt="" style="width:15em; height: 15em;"></div>
-                    <div style="display: flex; justify-content: center; padding: 10px; max-width: 100%;">{{$iter['description']}}
+                    <div style="display: none; justify-content: center; padding: 10px; max-width: 100%;">{{$iter['description']}}
                         <div style="display: none;">{{$iter['price']}}
                             <input type="text" value="{{$product_types[$iter['id_product_type']]['weight_min']}}" hidden>
                             <input type="text" value="{{$product_types[$iter['id_product_type']]['weight_max']}}" hidden>
