@@ -36,8 +36,8 @@ class AdminProductsPageController extends Controller
                         unset($products[$idProduct]);
                         $prov = true;
                         break;
-                    } elseif(!in_array($idProductCopy, $isDeleted) && !in_array($idProduct, $isDeleted)) {
-                        array_push($isDeleted,$idProductCopy);
+                    } elseif (!in_array($idProductCopy, $isDeleted) && !in_array($idProduct, $isDeleted)) {
+                        array_push($isDeleted, $idProductCopy);
                         continue;
                     }
                 }
@@ -47,7 +47,7 @@ class AdminProductsPageController extends Controller
                 continue;
             }
 
-            if(!in_array($idProduct, $isDeleted)) {
+            if (!in_array($idProduct, $isDeleted)) {
                 $product['product_type'] = $product_types[array_search($product['id_product_type'], $product_types_ids)]['name'];
                 if ($product['photo'] != null)
                     $product['photo'] = asset(Storage::url($product['photo']) . "?r=" . rand(0, 1000));
@@ -66,17 +66,20 @@ class AdminProductsPageController extends Controller
 
 
     //Функция для изменения будет ли продаваться продукт или нет
+    //В атрибут надо отправить
+    // product = id продукта
+    //$this->changeActiveAjax(new Request(['product'=>21]));
     function changeActiveAjax(Request $request)
     {
         $request = $request->toArray();
 
         $currentProduct = Product::find($request['product']);
 
-        if($currentProduct != null){
-            $currentProduct->update(['isActive'=>!$currentProduct->isActive]);
+        if ($currentProduct != null) {
+            $currentProduct->update(['isActive' => !$currentProduct->isActive]);
 
-            return "200";
-        } else{
+            return "Статус продукта успешно изменен!";
+        } else {
             return "Ошибка! продукт не обнаружен. Перезагрузите страницу Ctrl+F5";
         }
     }
