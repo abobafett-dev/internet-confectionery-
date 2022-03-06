@@ -68,4 +68,10 @@ Route::POST('admin/products/changeActiveAjax', [Controllers\Admin\AdminProductsP
 Route::GET('admin/products/add', [Controllers\Admin\AdminCreateProductPageController::class, 'create'])
     ->middleware(['auth'])->name('adminProductsAdd');
 
+Route::GET('/userAgreement', [Controllers\User\UserAgreementController::class, 'create'])
+    ->name('userAgreement');
+
+Route::GET('admin/products/update/{product}', [Controllers\Admin\AdminUpdateProductPageController::class, 'create'])
+    ->middleware(['auth'])->name('adminProductsUpdate');
+
 require __DIR__.'/auth.php';

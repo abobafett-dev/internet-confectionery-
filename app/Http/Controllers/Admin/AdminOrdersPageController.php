@@ -13,6 +13,7 @@ use App\Models\Schedule_Standard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Nette\Utils\DateTime;
 
 class AdminOrdersPageController extends Controller
 {
@@ -20,6 +21,9 @@ class AdminOrdersPageController extends Controller
     {
         if (Auth::user()->id_user_status != 2)
             abort(403);
+
+        if(DateTime::createFromFormat('Y-m-d', $date) == false)
+            abort(404);
 
         $currentDay = $date;
 
@@ -58,6 +62,9 @@ class AdminOrdersPageController extends Controller
     {
         if (Auth::user()->id_user_status != 2)
             abort(403);
+
+        if(DateTime::createFromFormat('Y-m-d', $date) == false)
+            abort(404);
 
         $currentDay = $date;
 
@@ -105,12 +112,13 @@ class AdminOrdersPageController extends Controller
         $request = $request->toArray();
 
         $currentOrder = Order::find($request['order']);
-        $currentIntervalStart = Schedule_Interval::find($currentOrder->id_schedule_interval)->start;
-
-        $old_status = Order_Status::find($currentOrder['id_status'])->toArray();
 
         if ($currentOrder != null) {
             $currentOrder->update(['id_status' => $request['status']]);
+
+            $currentIntervalStart = Schedule_Interval::find($currentOrder->id_schedule_interval)->start;
+
+            $old_status = Order_Status::find($currentOrder['id_status'])->toArray();
 
             $new_status = Order_Status::find($request['status'])->toArray();
 

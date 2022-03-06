@@ -5,17 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Component;
 use App\Models\Component_Type;
+use App\Models\Order;
 use App\Models\Product_Type;
 use App\Models\Product_Type_Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminCreateProductPageController extends Controller
+class AdminUpdateProductPageController extends Controller
 {
-    function create(){
+    function create($product){
 
         if (Auth::user()->id_user_status != 2)
             abort(403);
+
+        $currentProduct = Order::find((int)$product);
+
+        if($currentProduct == null)
+            abort(404);
 
         $data = [];
 
@@ -48,6 +54,6 @@ class AdminCreateProductPageController extends Controller
         }
 
 
-        return view('adminCreateProduct')->with(['data'=>$data]);
+        return view('adminCreateProduct')->with(['currentOrder'=>$currentProduct->toArray(), 'data'=>$data]);
     }
 }
