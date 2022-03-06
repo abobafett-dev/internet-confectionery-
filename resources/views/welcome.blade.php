@@ -54,6 +54,11 @@
         <div class="pink">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div>
+                    @if(session()->exists('errorConstructor'))
+                    <div>
+                        {{session('errorConstructor')}}
+                    </div>
+                    @endif
                     <h3 style="all:revert; margin: 0px 0px 20px 0px; text-align: center;">Собери свой десерт!</h3>
                 </div>
                 @if(count($componentsWithProductTypesForConstructor) > 0)

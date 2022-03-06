@@ -63,6 +63,11 @@ class UserProductController extends Controller
     public function addProductFromConstructor(Request $request)
     {
         $request_copy = $request->toArray();
+
+        if(in_array(null,$request_copy)){
+            return redirect($request->server()['HTTP_REFERER'])->with(['errorConstructor'=>"Ошибка! Необходимо указать все компоненты"]);
+        }
+
         $products_components = array();
         $price = 0;
         $components = array();
