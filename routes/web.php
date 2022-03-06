@@ -53,8 +53,17 @@ Route::GET('/order/{order}', [Controllers\User\UserOrderPageController::class, '
 Route::GET('admin/orders/{date}', [Controllers\Admin\AdminOrdersPageController::class, 'create'])
     ->middleware(['auth'])->name('adminOrders');
 
+Route::POST('admin/orders/{date}/createAjax', [Controllers\Admin\AdminOrdersPageController::class, 'createAjax'])
+    ->middleware(['auth'])->name('createAjax');
+
+Route::POST('admin/orders/{date}/changeStatusAjax', [Controllers\Admin\AdminOrdersPageController::class, 'changeStatusAjax'])
+    ->middleware(['auth'])->name('changeStatusAjax');
+
 Route::GET('admin/products', [Controllers\Admin\AdminProductsPageController::class, 'create'])
     ->middleware(['auth'])->name('adminProducts');
+
+Route::POST('admin/products/changeActiveAjax', [Controllers\Admin\AdminProductsPageController::class, 'changeActiveAjax'])
+    ->middleware(['auth'])->name('changeActiveAjax');
 
 Route::GET('admin/products/add', [Controllers\Admin\AdminCreateProductPageController::class, 'create'])
     ->middleware(['auth'])->name('adminProductsAdd');

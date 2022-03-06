@@ -71,6 +71,9 @@ class AdminProductsPageController extends Controller
     //$this->changeActiveAjax(new Request(['product'=>21]));
     function changeActiveAjax(Request $request)
     {
+        if (Auth::user()->id_user_status != 2)
+            abort(403);
+
         $request = $request->toArray();
 
         $currentProduct = Product::find($request['product']);

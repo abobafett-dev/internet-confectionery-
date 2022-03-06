@@ -51,8 +51,6 @@ class AdminOrdersPageController extends Controller
 
         usort($orders, "App\Http\Controllers\Admin\sortByIntervalReg");
 
-        $this->changeStatusAjax(new Request(['order' => 21, 'status' => 7]));
-
         return view('adminOrders')->with(['data' => $orders, 'date' => $date]);
     }
 
@@ -101,6 +99,9 @@ class AdminOrdersPageController extends Controller
     // $this->changeStatusAjax(new Request(['order'=>21,'status'=>7]));
     function changeStatusAjax(Request $request)
     {
+        if (Auth::user()->id_user_status != 2)
+            abort(403);
+
         $request = $request->toArray();
 
         $currentOrder = Order::find($request['order']);
