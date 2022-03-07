@@ -17,15 +17,12 @@ use Nette\Utils\DateTime;
 
 class AdminOrdersPageController extends Controller
 {
-    function create(string $date)
+    function create()
     {
         if (Auth::user()->id_user_status != 2)
             abort(403);
 
-        if(DateTime::createFromFormat('Y-m-d', $date) == false)
-            abort(404);
-
-        $currentDay = $date;
+        $currentDay = date('Y-m-d');
 
         $orders = Order::where('will_cooked_at', $currentDay)->get()->toArray();
 
@@ -55,7 +52,7 @@ class AdminOrdersPageController extends Controller
 
         usort($orders, "App\Http\Controllers\Admin\sortByIntervalReg");
 
-        return view('adminOrders')->with(['data' => $orders, 'date' => $date]);
+        return view('adminOrders')->with(['data' => $orders, 'date' => $currentDay]);
     }
 
     function createAjax(Request $request)

@@ -50,7 +50,7 @@ Route::POST('/cart/addOrderToUser', [Controllers\User\UserCartController::class,
 Route::GET('/order/{order}', [Controllers\User\UserOrderPageController::class, 'create'])
     ->middleware(['auth'])->name('order');
 
-Route::GET('admin/orders/{date}', [Controllers\Admin\AdminOrdersPageController::class, 'create'])
+Route::GET('admin/orders', [Controllers\Admin\AdminOrdersPageController::class, 'create'])
     ->middleware(['auth'])->name('adminOrders');
 
 Route::POST('admin/orders/createAjax', [Controllers\Admin\AdminOrdersPageController::class, 'createAjax'])
