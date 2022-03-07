@@ -66,7 +66,12 @@ class AdminFunctionsController extends Controller
 
                             foreach($component_ingredients as $component_ingredient){
                                 $ingredient = Ingredient::find($component_ingredient['id_ingredient'])->toArray();
+                                if($ingredient == null)
+                                    continue;
+                                if(!isset($ingredientsAndOrdersForDay['ingregients'][$ingredient['name']]))
+                                    $ingredientsAndOrdersForDay['ingregients'][$ingredient['name']] = 0;
 
+                                $ingredientsAndOrdersForDay['ingregients'][$ingredient['name']] += $order_product['count'] * $order_product['weight'] * $component['coefficient'] * $component_ingredient['weight'];
 
                             }
                         }
