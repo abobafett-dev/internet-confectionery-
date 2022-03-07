@@ -50,7 +50,8 @@ class AdminFunctionsController extends Controller
                         $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
                         $countProducts += $orders[$index]['products'][$order_product['id_product']]['data']['count'];
 
-                        $product_components = Product_Component::where('id_product', $order['id'])->get()->toArray();
+                        $product_components = Product_Component::where('id_product', $orders[$index]['products'][$order_product['id_product']]['id'])->get()->toArray();
+
                         foreach ($product_components as $product_component) {
                             if (!isset($orders[$index]['products'][$order_product['id_product']]['components']))
                                 $orders[$index]['products'][$order_product['id_product']]['components'] = [];
