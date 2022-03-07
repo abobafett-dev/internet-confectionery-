@@ -9,5 +9,11 @@
             </div>
         @endif
     </x-slot>
+    <div>
+        <form action="">
+            <h3>Добавление типа продукта</h3>
+        </form>
+    </div>
 </x-app-layout>
+{{var_dump($data['product_types'][0]['components'])}}
 {{var_dump($data['product_types'])}}

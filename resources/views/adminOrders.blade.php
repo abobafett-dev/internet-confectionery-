@@ -9,83 +9,170 @@
             </div>
         @endif
     </x-slot>
-    <div style="padding: 20px;">
-        <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date}}" onchange="dateOfBoard(this.value)" ></div>
-    <table class="border" style="width: 100%; border-radius: 10px;">
-    <tr class="border" style="text-align: center;">
-        <td class="border">Время</td>
-        <td class="border">Статус</td>
-        <td class="border">Вид</td>
-        <td class="border">Кг/Шт</td>
-{{--        <td class="border">Начинка</td>--}}
-        <td class="border" style="width: 30%;">Оформление</td>
-        <td class="border" style="width: 30%;">Комменатрий</td>
-    </tr>
-    @foreach($data as $order)
-            @php
-                $rowCount = count($order['products']);
-                $firstProd = array_shift($order['products']);
-            @endphp
-            <tr class="border">
-                <td class="border" rowspan="{{$rowCount}}">{{$order['interval']['start']}}</td>
-                <td class="border" rowspan="{{$rowCount}}">
-                    <select name="" id="" style="border: none;" onchange="changeStatus(this.value, {{$order['id']}})">
-                        <option value="" hidden selected>{{$order['status']['status']}}</option>
-                        <option value="1">Принят</option>
-                        <option value="3" style="background-color: yellow;">Готовится</option>
-                        <option value="4" style="background-color: limegreen;">Готов/Оплата</option>
-                        <option value="6" style="background-color: darkgreen;">Выдан</option>
-                        <option value="7" style="background-color: red;">Отменён</option>
-                    </select>
-                </td>
-                <td class="border">{{$firstProd['name']}}</td>
-                <td class="border">{{$firstProd['data']['weight']}}</td>
-{{--                <td class="border">{{$firstProd['data']['weight']}}</td>--}}
-                <td class="border">{{$firstProd['data']['comment_photo']}}</td>
-                <td class="border">{{$firstProd['data']['comment_text']}}</td>
-            </tr>
-            @foreach($order['products'] as $product)
-                <tr class="border">
-                    <td class="border">{{$product['name']}}</td>
-                    <td class="border">{{$product['data']['weight']}}</td>
-                    <td class="border">{{$product['data']['comment_photo']}}</td>
-                    <td class="border">{{$product['data']['comment_text']}}</td>
+    <div style="padding: 20px;" id="">
+        <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date}}" onchange="dateOfBoard(this.value)"></div>
+        <div id="container">
+            <h1 style="font-size: 26px; margin-left: 20px;">День недели: {{$data['orders'][0]['schedule_standard']['weekday']}}</h1>
+            <table class="border" style="width: 100%; border-radius: 10px;" id="table">
+                <tr class="border" style="text-align: center;" id="header">
+                    <td class="border">Время</td>
+                    <td class="border">Статус</td>
+                    <td class="border">Вид</td>
+                    <td class="border" colspan="2">Подробнее</td>
+                    <td class="border">Кг</td>
+                    <td class="border">Шт</td>
+                    <td class="border" style="">Комменатрий</td>
+                    <td class="border" style="">Оформление</td>
                 </tr>
-            @endforeach
-    @endforeach
+{{--                {{var_dump($data['ingregients'])}}--}}
+                @foreach($data['orders'] as $order)
+{{--                    {{var_dump($order['products'][1])}}--}}
+                    @php
+                        $firstProd = array_shift($order['products']);
+                    @endphp
+                    <tr class="border">
+                        <td class="border" rowspan="{{$order['countProducts']}}">{{$order['interval']['start']}}</td>
+                        <td class="border" rowspan="{{$order['countProducts']}}">
+                            <select name="" id="" style="border: none;"
+                                    onchange="changeStatus(this.value, {{$order['id']}})">
+                                <option value="" hidden selected>{{$order['status']['status']}}</option>
+                                <option value="1">Принят</option>
+                                <option value="3" style="background-color: yellow;">Готовится</option>
+                                <option value="4" style="background-color: limegreen;">Готов/Оплата</option>
+                                <option value="6" style="background-color: darkgreen;">Выдан</option>
+                                <option value="7" style="background-color: red;">Отменён</option>
+                            </select>
+                        </td>
+                        <td class="border">{{$firstProd['product_type']['name']}}</td>
+                        <td class="border" style="text-align: left;">
+                            @foreach($firstProd['components'] as $component)
+                            <div class="detail">{{$component['component_type']['name']}}</div>
+                            @endforeach
+                        </td>
+                        <td class="border" style="text-align: left;">
+                            @foreach($firstProd['components'] as $component)
+                                <div class="detail">{{$component['name']}}</div>
+                            @endforeach
+                        </td>
+                        <td class="border">{{$firstProd['data']['weight']}}</td>
+                        <td class="border">{{$firstProd['data']['count']}}</td>
+                        <td class="border">
+{{--                            @foreach($firstProd['data']['comment_text'] as $comment)--}}
+                                {{$firstProd['data']['comment_text']}}
+{{--                                <br>--}}
+{{--                            @endforeach--}}
+                        </td>
+                        <td class="border">
+{{--                            @foreach($firstProd['data']['comment_photo'] as $photo)--}}
+{{--                                <img src="{{$photo}}" alt="">--}}
+{{--                                <br>--}}
+{{--                            @endforeach--}}
+                        </td>
+                    </tr>
+                    @foreach($order['products'] as $product)
+                        <tr class="border">
+                            <td class="border">{{$product['product_type']['name']}}</td>
+                            <td class="border">{{$product['data']['weight']}}</td>
+                            <td class="border">
+{{--                                @foreach($firstProd['data']['comment_text'] as $comment)--}}
+                                    {{$firstProd['data']['comment_text']}}
+{{--                                    <br>--}}
+{{--                                @endforeach--}}
+                            </td>
+                            <td class="border">
+{{--                                @foreach($firstProd['data']['comment_photo'] as $photo)--}}
+{{--                                    <img src="{{$photo}}" alt="">--}}
+{{--                                    <br>--}}
+{{--                                @endforeach--}}
+                            </td>
+                        </tr>
+                    @endforeach
+                @endforeach
 
-    </table>
+            </table>
+        </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function dateOfBoard(date){
+        function dateOfBoard(date) {
+            document.getElementById('container').innerHTML = '<h3 style="text-align: center; width: 100%;">Загрузка</h3>';
             $.ajax({
                 url: "{{route('createAjax')}}",
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
                 data: {date: date},
                 success: function (data) {
-                    alert(data['date']);
-                    // alert(data['data'][0]['id']);
+                    if (data['data']['orders'].length > 0) {
+                        document.getElementById('container').innerHTML = '<table class="border" style="width: 100%; border-radius: 10px;" id="table"></table>'
+                        document.getElementById('table').innerHTML = '<tr class="border" style="text-align: center;" id="header"> <td class="border">Время</td> <td class="border">Статус</td> <td class="border">Вид</td> <td class="border" colspan="2">Подробнее</td><td class="border">Кг</td> <td class="border">Шт</td><td class="border" style="">Комменатрий</td><td class="border" style="">Оформление</td></tr>'
+                        let dataForTable = '';
+                        for(order of data['data']['orders']){
+                            var keys = Object.keys(order['products'])
+                            let firstProd = order['products'][keys[0]];
+                            console.log(firstProd);
+                            delete order['products'][keys[0]];
+                            dataForTable += '<tr class="border"> <td class="border" rowspan="'+order['countProducts']+'">'+order['interval']['start']+'</td><td class="border" rowspan="'+order['countProducts']+'"><select name="" id="" style="border: none;" onchange="changeStatus(this.value, '+order['id']+')">'
+                            dataForTable += '<option value="" hidden selected>'+order['status']['status']+'</option>'
+                            dataForTable += '<option value="1">Принят</option>'
+                            dataForTable += '<option value="3" style="background-color: yellow;">Готовится</option>'
+                            dataForTable += '<option value="4" style="background-color: limegreen;">Готов/Оплата</option>'
+                            dataForTable += '<option value="6" style="background-color: darkgreen;">Выдан</option>'
+                            dataForTable += '<option value="7" style="background-color: red;">Отменён</option>'
+                            dataForTable += '</select>'
+                            dataForTable += '</td>'
+                            dataForTable += '<td class="border">'+firstProd['product_type']['name']+'</td>'
+                            dataForTable += '<td class="border" style="text-align: left;">'
+                            let componentHTML = '';
+                            for(component in firstProd['components']){
+                                componentHTML += '<div class="detail">'+firstProd['components'][component]['component_type']['name']+'</div>'
+                            }
+                            dataForTable += componentHTML+'</td>';
+                            dataForTable += '<td class="border" style="text-align: left;">';
+                            componentHTML = '';
+                            for(component in firstProd['components']){
+                                componentHTML += '<div class="detail">'+firstProd['components'][component]['name']+'</div>'
+                            }
+                            dataForTable += componentHTML+'</td>'
+                            dataForTable += '<td class="border">'+firstProd['data']['weight']+'</td>'
+                            dataForTable += '<td class="border">'+firstProd['data']['count']+'</td>'
+                            let comment =  '<td class="border">';
+                            // for(var i = 0; i < firstProd['data']['comment_text'].length; i++){
+                            //     comment += firstProd['data']['comment_text'][i]+'<br>'
+                            // }
+                            // comment += '</td>'
+                            comment += firstProd['data']['comment_text']+'</td>'
+                            dataForTable += comment;
+                            dataForTable += '<td class="border">'+firstProd['data']['comment_photo']+'</td>'
+                            dataForTable += '</tr>'
 
+                            let product = order['products'];
+                            for(id in product){
+                                componentHTML = '<td class="border" style="text-align: left;">';
+                                for(component in firstProd['components']){
+                                    componentHTML += '<div class="detail">'+firstProd['components'][component]['component_type']['name']+'</div>'
+                                }
+                                componentHTML += '</td>'
+                                componentHTML += '<td class="border" style="text-align: left;">';
+                                for(component in firstProd['components']){
+                                    componentHTML += '<div class="detail">'+firstProd['components'][component]['name']+'</div>'
+                                }
+                                componentHTML += '</td>'
+                                dataForTable += '<tr class="border"> <td class="border">'+product[id]['product_type']['name']+'</td> '+componentHTML+' <td class="border">'+product[id]["data"]["weight"]+'<td class="border">'+firstProd['data']['count']+'</td></td><td class="border">'+product[id]["data"]["comment_text"]+'</td><td class="border">'+product[id]["data"]["comment_photo"]+'</td></tr>'
+                            }
 
-                    // document.getElementById('cart_intervals').style = 'display:flex;';
-                    // document.getElementById('max_count').style = 'display:flex;';
-                    // // let summary = 0;
-                    // // for (let i = 0; i < document.getElementsByClassName('countProd').length; i++)
-                    // //     summary -= -(document.getElementsByClassName('countProd')[i].innerHTML);
-                    // // document.getElementById('summaryTotal').innerHTML = summary;
-                    // document.getElementById('max').innerHTML = data[data.length - 1];
-                    // document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
-                    // for(let i = 0; i < data.length - 1; i++) {
-                    //     setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
-                    // }
+                        }
+                        document.getElementById('table').innerHTML += dataForTable;
+                    }
+                    else {
+                        document.getElementById('container').innerHTML = '<h3>На данную дату нет заказов</h3>';
+                    }
                 },
                 error: function () {
                     alert('Невозможно вывести интервалы, выберите другую дату');
                 }
             });
         }
+
         function changeStatus(value, id) {
             $.ajax({
                 url: "{{route('changeStatusAjax')}}",
@@ -94,17 +181,6 @@
                 data: {status: value, order: id},
                 success: function () {
                     alert('Статус успешно изменён');
-                    // document.getElementById('cart_intervals').style = 'display:flex;';
-                    // document.getElementById('max_count').style = 'display:flex;';
-                    // // let summary = 0;
-                    // // for (let i = 0; i < document.getElementsByClassName('countProd').length; i++)
-                    // //     summary -= -(document.getElementsByClassName('countProd')[i].innerHTML);
-                    // // document.getElementById('summaryTotal').innerHTML = summary;
-                    // document.getElementById('max').innerHTML = data[data.length - 1];
-                    // document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
-                    // for(let i = 0; i < data.length - 1; i++) {
-                    //     setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
-                    // }
                 },
                 error: function () {
                     alert('Невозможно изменить статус заказа!');

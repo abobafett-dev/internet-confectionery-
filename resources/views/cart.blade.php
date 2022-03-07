@@ -85,6 +85,8 @@
                                             </button>
                                         </div>
                                     </div>
+                                @else
+                                    <input type="" id="weight{{$key}}" hidden disabled value="{{$product['product_type']['weight_initial']}}">
                                 @endif
                             </div>
                             <div class="cart_product_price">
@@ -237,6 +239,7 @@
                 }
             });
         }
+        @if($product['product_type']['weight_min'] != $product['product_type']['weight_max'])
         function one_weight(index, difference, number) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < {{$product['product_type']['weight_min']}}) {
@@ -250,7 +253,18 @@
             document.getElementById('cart_product_counts_'+number).dispatchEvent(new Event('change'));
             document.getElementsByName('cart')[0].dispatchEvent(new Event('change'));
         }
-
+        function range(x, index) {
+            if ((x != '') && (x < {{$product['product_type']['weight_min']}})) {
+                alert('Минимальный вес продукта {{$product['product_type']['weight_min']}}кг');
+                document.getElementById(index).value = {{$product['product_type']['weight_min']}};
+                document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_min']}});
+            } else if ((x != '') && (x > {{$product['product_type']['weight_max']}})) {
+                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}кг');
+                document.getElementById(index).value = {{$product['product_type']['weight_max']}};
+                document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_max']}});
+            }
+        }
+        @endif
         function one_count(index, difference, number) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < 1) {
@@ -269,17 +283,7 @@
                 event.returnValue = false;
         }
 
-        function range(x, index) {
-            if ((x != '') && (x < {{$product['product_type']['weight_min']}})) {
-                alert('Минимальный вес продукта {{$product['product_type']['weight_min']}}кг');
-                document.getElementById(index).value = {{$product['product_type']['weight_min']}};
-                document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_min']}});
-            } else if ((x != '') && (x > {{$product['product_type']['weight_max']}})) {
-                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}кг');
-                document.getElementById(index).value = {{$product['product_type']['weight_max']}};
-                document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_max']}});
-            }
-        }
+
 
         function doubleOnly(x) {
             var prov1 = /[0-9]/.test(event.key);

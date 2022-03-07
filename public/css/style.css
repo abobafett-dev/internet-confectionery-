@@ -611,4 +611,8 @@ div.adminOrders-grid-container{
 }
 .border{
     border: 1px solid black;
+    text-align: center;
+}
+div.detail:nth-child(2n){
+    background-color: #fdbcb5;
 }
