@@ -81,6 +81,28 @@ class AdminFunctionsController extends Controller
 
 
 
+        function sortByIntervalReg($firstObj, $secondObj): int
+        {
+            if ($firstObj['interval']['start'] == $secondObj['interval']['start'] && $firstObj['id_status'] == $secondObj['id_status']) {
+                return 0;
+            } elseif ($firstObj['id_status'] == $secondObj['id_status'] && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
+                return -1;
+            } elseif ($firstObj['id_status'] == $secondObj['id_status'] && $firstObj['interval']['start'] > $secondObj['interval']['start']) {
+                return 1;
+            } elseif ($firstObj['id_status'] > 5 && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
+                return -1;
+            } elseif ($firstObj['id_status'] < 5 && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
+                return 1;
+            } elseif ($firstObj['id_status'] < 5 && $firstObj['interval']['start'] == $secondObj['interval']['start']) {
+                return -1;
+            } elseif ($firstObj['id_status'] > 5 && $firstObj['interval']['start'] == $secondObj['interval']['start']) {
+                return 1;
+            }
+            return 0;
+        }
+
+        usort($ingredientsAndOrdersForDay['orders'], "App\Http\Controllers\Admin\sortByIntervalReg");
+
         return $ingredientsAndOrdersForDay;
     }
 }

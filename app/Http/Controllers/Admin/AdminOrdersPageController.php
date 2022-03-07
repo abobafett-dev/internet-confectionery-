@@ -30,28 +30,6 @@ class AdminOrdersPageController extends Controller
 
         $orders = $AdminFunctionsController->createOrders($orders);
 
-        function sortByIntervalReg($firstObj, $secondObj): int
-        {
-            if ($firstObj['interval']['start'] == $secondObj['interval']['start'] && $firstObj['id_status'] == $secondObj['id_status']) {
-                return 0;
-            } elseif ($firstObj['id_status'] == $secondObj['id_status'] && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
-                return -1;
-            } elseif ($firstObj['id_status'] == $secondObj['id_status'] && $firstObj['interval']['start'] > $secondObj['interval']['start']) {
-                return 1;
-            } elseif ($firstObj['id_status'] > 5 && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
-                return -1;
-            } elseif ($firstObj['id_status'] < 5 && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
-                return 1;
-            } elseif ($firstObj['id_status'] < 5 && $firstObj['interval']['start'] == $secondObj['interval']['start']) {
-                return -1;
-            } elseif ($firstObj['id_status'] > 5 && $firstObj['interval']['start'] == $secondObj['interval']['start']) {
-                return 1;
-            }
-            return 0;
-        }
-
-        usort($orders, "App\Http\Controllers\Admin\sortByIntervalReg");
-
         return view('adminOrders')->with(['data' => $orders, 'date' => $currentDay]);
     }
 
@@ -72,28 +50,6 @@ class AdminOrdersPageController extends Controller
         $AdminFunctionsController = new AdminFunctionsController();
 
         $orders = $AdminFunctionsController->createOrders($orders);
-
-        function sortByIntervalReg($firstObj, $secondObj): int
-        {
-            if ($firstObj['interval']['start'] == $secondObj['interval']['start'] && $firstObj['id_status'] == $secondObj['id_status']) {
-                return 0;
-            } elseif ($firstObj['id_status'] == $secondObj['id_status'] && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
-                return -1;
-            } elseif ($firstObj['id_status'] == $secondObj['id_status'] && $firstObj['interval']['start'] > $secondObj['interval']['start']) {
-                return 1;
-            } elseif ($firstObj['id_status'] > 5 && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
-                return -1;
-            } elseif ($firstObj['id_status'] < 5 && $firstObj['interval']['start'] < $secondObj['interval']['start']) {
-                return 1;
-            } elseif ($firstObj['id_status'] < 5 && $firstObj['interval']['start'] == $secondObj['interval']['start']) {
-                return -1;
-            } elseif ($firstObj['id_status'] > 5 && $firstObj['interval']['start'] == $secondObj['interval']['start']) {
-                return 1;
-            }
-            return 0;
-        }
-
-        usort($orders, "App\Http\Controllers\Admin\sortByIntervalReg");
 
         return ['data' => $orders, 'date' => $date];
     }
