@@ -24,18 +24,18 @@ class AdminFunctionsController extends Controller
         $ingredientsAndOrdersForDay = ['ingregients'=>[], 'orders'=>$orders];
         $orders_products = [];
 
-        foreach ($orders as $index => $order) {
+        foreach ($ingredientsAndOrdersForDay['orders'] as $index => $order) {
             if ($order['id_schedule_interval'] != null)
-                $orders[$index]['interval'] = Schedule_Interval::find($order['id_schedule_interval'])->toArray();
+                $ingredientsAndOrdersForDay['orders'][$index]['interval'] = Schedule_Interval::find($order['id_schedule_interval'])->toArray();
             else
-                $orders[$index]['interval'] = null;
+                $ingredientsAndOrdersForDay['orders'][$index]['interval'] = null;
 
             if ($order['id_schedule_standard'] != null)
-                $orders[$index]['schedule_standard'] = Schedule_Standard::find($order['id_schedule_standard'])->toArray();
+                $ingredientsAndOrdersForDay['orders'][$index]['schedule_standard'] = Schedule_Standard::find($order['id_schedule_standard'])->toArray();
             else
-                $orders[$index]['schedule_standard'] = null;
+                $ingredientsAndOrdersForDay['orders'][$index]['schedule_standard'] = null;
 
-            $orders[$index]['status'] = Order_Status::find($order['id_status'])->toArray();
+            $ingredientsAndOrdersForDay['orders'][$index]['status'] = Order_Status::find($order['id_status'])->toArray();
             $orders_products[$order['id']] = Order_Product::where('id_order', $order['id'])->get();
         }
 
@@ -43,24 +43,24 @@ class AdminFunctionsController extends Controller
         foreach ($orders_products as $order_products) {
             $countProducts = 0;
             foreach ($order_products as $order_product) {
-                foreach ($orders as $index => $order) {
+                foreach ($ingredientsAndOrdersForDay['orders'] as $index => $order) {
                     if ($order['id'] == $order_product['id_order']) {
-                        if (!isset($orders[$index]['products']))
-                            $orders[$index]['products'] = [];
+                        if (!isset($ingredientsAndOrdersForDay['orders'][$index]['products']))
+                            $ingredientsAndOrdersForDay['orders'][$index]['products'] = [];
 
-                        $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
-                        $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
-                        $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
-                        $countProducts += $orders[$index]['products'][$order_product['id_product']]['data']['count'];
+                        $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
+                        $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                        $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
+                        $countProducts += $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['data']['count'];
 
-                        $product_components = Product_Component::where('id_product', $orders[$index]['products'][$order_product['id_product']]['id'])->get()->toArray();
+                        $product_components = Product_Component::where('id_product', $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['id'])->get()->toArray();
 
-                        $orders[$index]['products'][$order_product['id_product']]['components'] = [];
+                        $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['components'] = [];
                         foreach ($product_components as $product_component) {
 
                             $component = Component::find($product_component['id_component'])->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['components'][$component['id']] = $component;
-                            $orders[$index]['products'][$order_product['id_product']]['components'][$component['id']]['component_type'] = Component_Type::find($component['id_component_type'])->toArray();
+                            $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['components'][$component['id']] = $component;
+                            $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['components'][$component['id']]['component_type'] = Component_Type::find($component['id_component_type'])->toArray();
 
                             $component_ingredients = Ingredient_Component::where('id_component', $component['id'])->get()->toArray();
 
@@ -70,9 +70,9 @@ class AdminFunctionsController extends Controller
 
                             }
                         }
-                        $orders[$index]['products'][$order_product['id_product']]['photo'] =
-                            asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
-                        $orders[$index]['countProducts'] = $countProducts;
+                        $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['photo'] =
+                            asset(Storage::url($ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
+                        $ingredientsAndOrdersForDay['orders'][$index]['countProducts'] = $countProducts;
                         break;
                     }
                 }
