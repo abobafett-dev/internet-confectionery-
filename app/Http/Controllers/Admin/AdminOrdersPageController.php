@@ -58,10 +58,12 @@ class AdminOrdersPageController extends Controller
         return view('adminOrders')->with(['data' => $orders, 'date' => $date]);
     }
 
-    function createAjax(string $date)
+    function createAjax(Request $request)
     {
         if (Auth::user()->id_user_status != 2)
             abort(403);
+
+        $date = $request->toArray()['date'];
 
         if(DateTime::createFromFormat('Y-m-d', $date) == false)
             abort(404);

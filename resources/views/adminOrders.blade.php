@@ -59,14 +59,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         function dateOfBoard(date){
-            alert(date);
             $.ajax({
-                url: "{{route('createAjax', ['date' => date('y-m-d')])}}", // убрать date после фикса
+                url: "{{route('createAjax')}}", // убрать date после фикса
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
                 data: {date: date},
                 success: function (data) {
-                    alert(data);
+                    alert(data['date']);
+                    // alert(data['data'][0]['id']);
+
+
                     // document.getElementById('cart_intervals').style = 'display:flex;';
                     // document.getElementById('max_count').style = 'display:flex;';
                     // // let summary = 0;
