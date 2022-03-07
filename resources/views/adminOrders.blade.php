@@ -9,28 +9,8 @@
             </div>
         @endif
     </x-slot>
-{{--    <div style="padding: 15px;">--}}
-{{--        <div class="adminOrdersGridContainer">--}}
-{{--            <div class="adminOrders-grid-container">--}}
-{{--                <div>1.1</div>--}}
-{{--                <div>1.2</div>--}}
-{{--            </div>--}}
-{{--            <div class="adminOrders-grid-container">--}}
-{{--                <div>2.1</div>--}}
-{{--                <div>2.2</div>--}}
-{{--            </div>--}}
-{{--            <div class="adminOrders-grid-container">3</div>--}}
-{{--            <div class="adminOrders-grid-container">4</div>--}}
-{{--            <div class="adminOrders-grid-container">5</div>--}}
-{{--            <div class="adminOrders-grid-container">6</div>--}}
-{{--            <div class="adminOrders-grid-container">7</div>--}}
-{{--        </div>--}}
-
-
-
-{{--    </div>--}}
     <div style="padding: 20px;">
-        <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date}}"></div>
+        <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date}}" onchange="dateOfBoard(this.value)" ></div>
     <table class="border" style="width: 100%; border-radius: 10px;">
     <tr class="border" style="text-align: center;">
         <td class="border">Время</td>
@@ -49,7 +29,7 @@
             <tr class="border">
                 <td class="border" rowspan="{{$rowCount}}">{{$order['interval']['start']}}</td>
                 <td class="border" rowspan="{{$rowCount}}">
-                    <select name="" id="" style="border: none;">
+                    <select name="" id="" style="border: none;" onchange="changeStatus(this.value, {{$order['id']}})">
                         <option value="" hidden selected>{{$order['status']['status']}}</option>
                         <option value="1">Принят</option>
                         <option value="3" style="background-color: yellow;">Готовится</option>
@@ -76,4 +56,58 @@
 
     </table>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function dateOfBoard(date){
+            alert(date);
+            $.ajax({
+                url: "{{route('createAjax', ['date' => date('y-m-d')])}}", // убрать date после фикса
+                type: "POST",
+                headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
+                data: {date: date},
+                success: function (data) {
+                    alert(data);
+                    // document.getElementById('cart_intervals').style = 'display:flex;';
+                    // document.getElementById('max_count').style = 'display:flex;';
+                    // // let summary = 0;
+                    // // for (let i = 0; i < document.getElementsByClassName('countProd').length; i++)
+                    // //     summary -= -(document.getElementsByClassName('countProd')[i].innerHTML);
+                    // // document.getElementById('summaryTotal').innerHTML = summary;
+                    // document.getElementById('max').innerHTML = data[data.length - 1];
+                    // document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
+                    // for(let i = 0; i < data.length - 1; i++) {
+                    //     setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
+                    // }
+                },
+                error: function () {
+                    alert('Невозможно вывести интервалы, выберите другую дату');
+                }
+            });
+        }
+        function changeStatus(value, id) {
+            $.ajax({
+                url: "{{route('changeStatusAjax', ['date' => date('y-m-d')])}}", // убрать date после фикса
+                type: "POST",
+                headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
+                data: {id_status: value, id_order: id},
+                success: function (data) {
+                    alert('Статус успешно изменён');
+                    // document.getElementById('cart_intervals').style = 'display:flex;';
+                    // document.getElementById('max_count').style = 'display:flex;';
+                    // // let summary = 0;
+                    // // for (let i = 0; i < document.getElementsByClassName('countProd').length; i++)
+                    // //     summary -= -(document.getElementsByClassName('countProd')[i].innerHTML);
+                    // // document.getElementById('summaryTotal').innerHTML = summary;
+                    // document.getElementById('max').innerHTML = data[data.length - 1];
+                    // document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
+                    // for(let i = 0; i < data.length - 1; i++) {
+                    //     setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
+                    // }
+                },
+                error: function () {
+                    alert('Невозможно изменить статус заказа!');
+                }
+            });
+        }
+    </script>
 </x-app-layout>
