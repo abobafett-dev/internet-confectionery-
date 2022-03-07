@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Component;
 use App\Models\Component_Type;
+use App\Models\Ingredient;
+use App\Models\Ingredient_Component;
 use App\Models\Order_Product;
 use App\Models\Order_Status;
 use App\Models\Product;
@@ -19,6 +21,7 @@ class AdminFunctionsController extends Controller
 {
     public function createOrders(array $orders): array
     {
+        $ingredientsAndOrdersForDay = ['ingregients'=>[], 'orders'=>$orders];
         $orders_products = [];
 
         foreach ($orders as $index => $order) {
@@ -52,14 +55,20 @@ class AdminFunctionsController extends Controller
 
                         $product_components = Product_Component::where('id_product', $orders[$index]['products'][$order_product['id_product']]['id'])->get()->toArray();
 
+                        $orders[$index]['products'][$order_product['id_product']]['components'] = [];
                         foreach ($product_components as $product_component) {
-                            if (!isset($orders[$index]['products'][$order_product['id_product']]['components']))
-                                $orders[$index]['products'][$order_product['id_product']]['components'] = [];
 
                             $component = Component::find($product_component['id_component'])->toArray();
                             $orders[$index]['products'][$order_product['id_product']]['components'][$component['id']] = $component;
                             $orders[$index]['products'][$order_product['id_product']]['components'][$component['id']]['component_type'] = Component_Type::find($component['id_component_type'])->toArray();
 
+                            $component_ingredients = Ingredient_Component::where('id_component', $component['id'])->get()->toArray();
+
+                            foreach($component_ingredients as $component_ingredient){
+                                $ingredient = Ingredient::find($component_ingredient['id_ingredient'])->toArray();
+
+
+                            }
                         }
                         $orders[$index]['products'][$order_product['id_product']]['photo'] =
                             asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
@@ -70,6 +79,8 @@ class AdminFunctionsController extends Controller
             }
         }
 
-        return $orders;
+
+
+        return $ingredientsAndOrdersForDay;
     }
 }
