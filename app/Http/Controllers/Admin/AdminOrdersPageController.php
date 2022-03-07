@@ -23,6 +23,7 @@ class AdminOrdersPageController extends Controller
             abort(403);
 
         $currentDay = date('Y-m-d');
+        $currentDay = "2021-12-17";
 
         $orders = Order::where('will_cooked_at', $currentDay)->get()->toArray();
 
@@ -51,6 +52,9 @@ class AdminOrdersPageController extends Controller
         }
 
         usort($orders, "App\Http\Controllers\Admin\sortByIntervalReg");
+
+        var_dump($orders[0]['products'][7]['components']);
+        return;
 
         return view('adminOrders')->with(['data' => $orders, 'date' => $currentDay]);
     }

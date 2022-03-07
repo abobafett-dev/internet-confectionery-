@@ -39,15 +39,15 @@ class UserProfileController extends Controller
 
         $orders = $classUserProfileController->createOrders(Order::where('id_user', $user['id'])->get()->toArray());
 
-        foreach($orders as $index => $order){
-            if($order['id_status'] == 2)
+        foreach ($orders as $index => $order) {
+            if ($order['id_status'] == 2)
                 unset($orders[$index]);
         }
 
         $ordersToAdmin = $classUserProfileController->createOrders(Order::all()->toArray());
 
-        foreach($ordersToAdmin as $index => $order){
-            if($order['id_status'] == 2)
+        foreach ($ordersToAdmin as $index => $order) {
+            if ($order['id_status'] == 2)
                 unset($ordersToAdmin[$index]);
         }
 
@@ -64,12 +64,12 @@ class UserProfileController extends Controller
         $orders_products = [];
 
         foreach ($orders as $index => $order) {
-            if($order['id_schedule_interval'] != null)
+            if ($order['id_schedule_interval'] != null)
                 $orders[$index]['interval'] = Schedule_Interval::find($order['id_schedule_interval'])->toArray();
             else
                 $orders[$index]['interval'] = null;
 
-            if($order['id_schedule_standard'] != null)
+            if ($order['id_schedule_standard'] != null)
                 $orders[$index]['schedule_standard'] = Schedule_Standard::find($order['id_schedule_standard'])->toArray();
             else
                 $orders[$index]['schedule_standard'] = null;
@@ -82,16 +82,12 @@ class UserProfileController extends Controller
             foreach ($order_products as $order_product) {
                 foreach ($orders as $index => $order) {
                     if ($order['id'] == $order_product['id_order']) {
-                        if (!isset($orders[$index]['products'])) {
+                        if (!isset($orders[$index]['products']))
                             $orders[$index]['products'] = [];
-                            $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
-                        } else{
-                            $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
-                        }
+                        $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
+                        $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                        $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
+
                         $orders[$index]['products'][$order_product['id_product']]['photo'] =
                             asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
                         break;
@@ -136,14 +132,13 @@ class UserProfileController extends Controller
 
     public function delete()
     {
-        $orders = Order::where('id_user',Auth::user()->id)->get()->toArray();
-        if(count($orders) > 0){
-            foreach($orders as $order){
-                if($order['id_status'] == 2){
-                    Order_Product::where('id_order',$order['id'])->delete();
+        $orders = Order::where('id_user', Auth::user()->id)->get()->toArray();
+        if (count($orders) > 0) {
+            foreach ($orders as $order) {
+                if ($order['id_status'] == 2) {
+                    Order_Product::where('id_order', $order['id'])->delete();
                     Order::find($order['id'])->delete();
-                }
-                else{
+                } else {
                     Order::find($order['id'])->update(['id_user' => 1]);
                 }
             }

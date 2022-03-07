@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Component;
+use App\Models\Component_Type;
 use App\Models\Order_Product;
 use App\Models\Order_Status;
 use App\Models\Product;
+use App\Models\Product_Component;
 use App\Models\Product_Type;
 use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
@@ -39,17 +42,23 @@ class AdminFunctionsController extends Controller
             foreach ($order_products as $order_product) {
                 foreach ($orders as $index => $order) {
                     if ($order['id'] == $order_product['id_order']) {
-                        if (!isset($orders[$index]['products'])) {
+                        if (!isset($orders[$index]['products']))
                             $orders[$index]['products'] = [];
-                            $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
-                            $countProducts += $orders[$index]['products'][$order_product['id_product']]['data']['count'];
-                        } else {
-                            $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
-                            $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
-                            $countProducts += $orders[$index]['products'][$order_product['id_product']]['data']['count'];
+
+                        $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
+                        $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
+                        $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
+                        $countProducts += $orders[$index]['products'][$order_product['id_product']]['data']['count'];
+
+                        $product_components = Product_Component::where('id_product', $order['id'])->get()->toArray();
+                        foreach ($product_components as $product_component) {
+                            if (!isset($orders[$index]['products'][$order_product['id_product']]['components']))
+                                $orders[$index]['products'][$order_product['id_product']]['components'] = [];
+
+                            $component = Component::find($product_component['id_component'])->toArray();
+                            $orders[$index]['products'][$order_product['id_product']]['components'][$component['id']] = $component;
+                            $orders[$index]['products'][$order_product['id_product']]['components'][$component['id']]['component_type'] = Component_Type::find($component['id_component_type'])->toArray();
+
                         }
                         $orders[$index]['products'][$order_product['id_product']]['photo'] =
                             asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
