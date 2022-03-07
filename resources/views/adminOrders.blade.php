@@ -60,7 +60,7 @@
     <script>
         function dateOfBoard(date){
             $.ajax({
-                url: "{{route('createAjax')}}", // убрать date после фикса
+                url: "{{route('createAjax')}}",
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
                 data: {date: date},
@@ -88,11 +88,11 @@
         }
         function changeStatus(value, id) {
             $.ajax({
-                url: "{{route('changeStatusAjax', ['date' => date('y-m-d')])}}", // убрать date после фикса
+                url: "{{route('changeStatusAjax')}}",
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
-                data: {id_status: value, id_order: id},
-                success: function (data) {
+                data: {status: value, order: id},
+                success: function () {
                     alert('Статус успешно изменён');
                     // document.getElementById('cart_intervals').style = 'display:flex;';
                     // document.getElementById('max_count').style = 'display:flex;';
