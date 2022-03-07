@@ -30,9 +30,6 @@ class AdminOrdersPageController extends Controller
 
         $orders = $AdminFunctionsController->createOrders($orders);
 
-        var_dump($orders);
-        return;
-
         return view('adminOrders')->with(['data' => $orders, 'date' => $currentDay]);
     }
 
