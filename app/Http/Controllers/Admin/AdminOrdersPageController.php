@@ -17,6 +17,7 @@ use Nette\Utils\DateTime;
 
 class AdminOrdersPageController extends Controller
 {
+
     function create()
     {
         if (Auth::user()->id_user_status != 2)
@@ -24,13 +25,17 @@ class AdminOrdersPageController extends Controller
 
         $currentDay = date('Y-m-d');
 
+        $AdminFunctionsController = new AdminFunctionsController();
+
+        $weekDay = $AdminFunctionsController->currentWeekDay($currentDay);
+
         $orders = Order::where('will_cooked_at', $currentDay)->get()->toArray();
 
         $AdminFunctionsController = new AdminFunctionsController();
 
         $orders = $AdminFunctionsController->createOrders($orders);
 
-        return view('adminOrders')->with(['data' => $orders, 'date' => $currentDay]);
+        return view('adminOrders')->with(['data' => $orders, 'date' => ['date'=>$currentDay,'weekDay'=>$weekDay]]);
     }
 
     function createAjax(Request $request)
@@ -45,13 +50,17 @@ class AdminOrdersPageController extends Controller
 
         $currentDay = $date;
 
+        $AdminFunctionsController = new AdminFunctionsController();
+
+        $weekDay = $AdminFunctionsController->currentWeekDay($currentDay);
+
         $orders = Order::where('will_cooked_at', $currentDay)->get()->toArray();
 
         $AdminFunctionsController = new AdminFunctionsController();
 
         $orders = $AdminFunctionsController->createOrders($orders);
 
-        return ['data' => $orders, 'date' => $date];
+        return ['data' => $orders, 'date' => ['date'=>$currentDay,'weekDay'=>$weekDay]];
     }
 
     //Функция для изменения статуса заказа

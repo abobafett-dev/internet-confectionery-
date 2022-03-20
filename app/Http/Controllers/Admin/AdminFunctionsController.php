@@ -110,4 +110,14 @@ class AdminFunctionsController extends Controller
 
         return $ingredientsAndOrdersForDay;
     }
+
+    function currentWeekDay(string $date): string
+    {
+        $weekDays = array(7 => 'воскресенье', 1 => 'понедельник', 2 => 'вторник',
+            3 => 'среда', 4 => 'четверг', 5 => 'пятница', 6 => 'суббота');
+
+        $orderDayCode = (int)date('N', strtotime($date));
+
+        return $weekDays[$orderDayCode];
+    }
 }
