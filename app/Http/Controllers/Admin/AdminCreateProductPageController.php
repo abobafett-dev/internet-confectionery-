@@ -9,6 +9,7 @@ use App\Models\Product_Type;
 use App\Models\Product_Type_Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminCreateProductPageController extends Controller
 {
@@ -33,6 +34,9 @@ class AdminCreateProductPageController extends Controller
 
                     $component = Component::find($product_type_component['id_component'])->toArray();
 
+                    $component['photo'] =
+                        asset(Storage::url($component['photo']) . "?r=" . rand(0, 1000));
+
                     foreach($component_types as $component_type){
                         if($component_type['id'] == $component['id_component_type']){
                             if(!isset($data['product_types'][$product_type_index]['components'][$component_type['name']]))
@@ -47,6 +51,9 @@ class AdminCreateProductPageController extends Controller
             }
         }
 
+
+        var_dump($data['product_types'][0]['components']['начинка']);
+        return;
 
         return view('adminCreateProduct')->with(['data'=>$data]);
     }

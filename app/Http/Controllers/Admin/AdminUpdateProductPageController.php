@@ -10,6 +10,7 @@ use App\Models\Product_Type;
 use App\Models\Product_Type_Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminUpdateProductPageController extends Controller
 {
@@ -38,6 +39,9 @@ class AdminUpdateProductPageController extends Controller
                 if($product_type_component['id_product_type'] == $product_type['id']){
 
                     $component = Component::find($product_type_component['id_component'])->toArray();
+
+                    $component['photo'] =
+                        asset(Storage::url($component['photo']) . "?r=" . rand(0, 1000));
 
                     foreach($component_types as $component_type){
                         if($component_type['id'] == $component['id_component_type']){
