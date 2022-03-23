@@ -9,10 +9,91 @@
             </div>
         @endif
     </x-slot>
-    <div>
-        <form action="">
-            <h3>Добавление типа продукта</h3>
-        </form>
+    <div style="padding: 15px;">
+        <div style="display: grid; gap: 20px; grid-template-columns: auto auto auto;">
+            <div style="display: grid;">
+                <form action="" name="product" method="POST" style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;" enctype="multipart/form-data">
+                    <h2 style="text-align: center; font-size: 20px;">Добавление продукта</h2>
+                    <label for="prod_name">
+                        <h3>Название</h3>
+                    </label>
+                    <input type="text" name="title" id="prod_name">
+                    <label for="prod_descr">
+                        <h3>Описание</h3>
+                    </label>
+                    <input type="text" name="description" id="prod_descr">
+                    <label for="prod_img">
+                        <h3>Фото</h3>
+                    </label>
+                    <input type="file" name="img" id="prod_img">
+                    <label for="prod_price">
+                        <h3>Стоимость</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_price">
+                    <label for="prod_coef">
+                        <h3>Коэффициент бонусов</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_coef">
+                    <label for="prod_component">
+                        <h3>Компанент</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_component">
+                    <div style="text-align: center; margin: 20px auto 0px auto;">
+                        <button type="submit" style="text-decoration: underline;">Добавить</button>
+                    </div>
+                </form>
+            </div>
+            <div style="display: grid;">
+                <form action="" name="product" method="POST" style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;" enctype="multipart/form-data">
+                    <h2 style="text-align: center; font-size: 20px;">Добавление продукта</h2>
+                    <label for="prod_name">
+                        <h3>Название</h3>
+                    </label>
+                    <input type="text" name="title" id="prod_name">
+                    <label for="prod_descr">
+                        <h3>Описание</h3>
+                    </label>
+                    <input type="text" name="description" id="prod_descr">
+                    <label for="prod_img">
+                        <h3>Фото</h3>
+                    </label>
+                    <input type="file" name="img" id="prod_img">
+                    <label for="prod_price">
+                        <h3>Стоимость</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_price">
+                    <label for="prod_coef">
+                        <h3>Коэффициент бонусов</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_coef">
+                </form>
+            </div>
+            <div style="display: grid;">
+                <form action="" name="product" method="POST" style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;" enctype="multipart/form-data">
+                    <h2 style="text-align: center; font-size: 20px;">Добавление продукта</h2>
+                    <label for="prod_name">
+                        <h3>Название</h3>
+                    </label>
+                    <input type="text" name="title" id="prod_name">
+                    <label for="prod_descr">
+                        <h3>Описание</h3>
+                    </label>
+                    <input type="text" name="description" id="prod_descr">
+                    <label for="prod_img">
+                        <h3>Фото</h3>
+                    </label>
+                    <input type="file" name="img" id="prod_img">
+                    <label for="prod_price">
+                        <h3>Стоимость</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_price">
+                    <label for="prod_coef">
+                        <h3>Коэффициент бонусов</h3>
+                    </label>
+                    <input type="number" name="img" id="prod_coef">
+                </form>
+            </div>
+        </div>
     </div>
 </x-app-layout>
 {{var_dump($data['product_types'][0]['components'])}}

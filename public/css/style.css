@@ -616,3 +616,7 @@ div.adminOrders-grid-container{
 div.detail:nth-child(2n){
     background-color: #fdbcb5;
 }
+div#max{
+    text-align: center;
+    width: 100%;
+}

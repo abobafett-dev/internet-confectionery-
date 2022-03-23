@@ -111,7 +111,15 @@
             <div class="menuTotal">
                 <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
                     <ul>
-                        <li id="itog">Итого: <span id="summaryTotal"></span>₽</li>
+                        <li id="itog">
+                            Итого: <span id="summaryTotal"></span>₽ <br>
+                        </li>
+                        <li>Всего товаров в корзине:
+                            <div style="text-align: right;">
+                                <span id="have" style=""></span>
+                                шт
+                            </div>
+                        </li>
                         <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="dateForIntervals" id="minDate" @if(isset($old)>0) value="{{$old['dateForIntervals']}}" @endif></li></label>
                     </ul>
                 </div>
@@ -119,8 +127,6 @@
             <div id="max_count" class="menuTotal">
                 <h4 style="all: revert; margin: 5px auto;">Сколько товаров можно заказать на текущую дату:</h4>
                 <div id="max"></div>
-                <h4 style="all: revert; margin: 5px auto;">Сколько товаров у вас в корзине:</h4>
-                <div id="have"></div>
             </div>
             <div id="cart_intervals" class="menuTotal">
             </div>
@@ -315,9 +321,13 @@
 
         function summaryTotalCost() {
             let summary = 0;
-            for (let i = 0; i < document.getElementsByClassName('totalForProduct').length; i++)
+            let count = 0;
+            for (let i = 0; i < document.getElementsByClassName('totalForProduct').length; i++) {
                 summary -= -(document.getElementsByClassName('totalForProduct')[i].innerHTML);
+                count -= -(document.getElementsByClassName('countProd')[i].value);
+            }
             document.getElementById('summaryTotal').innerHTML = summary;
+            document.getElementById('have').innerHTML = count;
         }
 
         function minDate() {

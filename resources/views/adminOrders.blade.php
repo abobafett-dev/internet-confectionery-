@@ -10,9 +10,10 @@
         @endif
     </x-slot>
     <div style="padding: 20px;" id="">
-        <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date}}" onchange="dateOfBoard(this.value)"></div>
+        <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date['date']}}" onchange="dateOfBoard(this.value)"></div>
         <div id="container">
-            <h1 style="font-size: 26px; margin-left: 20px;">День недели: {{$data['orders'][0]['schedule_standard']['weekday']}}</h1>
+            <h1 style="font-size: 26px; margin-left: 20px;">День недели: {{$date['weekDay']}}</h1>
+            @if(count($data['orders']) > 0)
             <table class="border" style="width: 100%; border-radius: 10px;" id="table">
                 <tr class="border" style="text-align: center;" id="header">
                     <td class="border">Время</td>
@@ -88,8 +89,10 @@
                         </tr>
                     @endforeach
                 @endforeach
-
             </table>
+            @else
+                <h3>На данную дату нет заказов</h3>
+            @endif
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -103,7 +106,7 @@
                 data: {date: date},
                 success: function (data) {
                     if (data['data']['orders'].length > 0) {
-                        document.getElementById('container').innerHTML = '<table class="border" style="width: 100%; border-radius: 10px;" id="table"></table>'
+                        document.getElementById('container').innerHTML = '<h1 style="font-size: 26px; margin-left: 20px;">День недели: '+data['date']['weekDay']+'</h1><table class="border" style="width: 100%; border-radius: 10px;" id="table"></table>'
                         document.getElementById('table').innerHTML = '<tr class="border" style="text-align: center;" id="header"> <td class="border">Время</td> <td class="border">Статус</td> <td class="border">Вид</td> <td class="border" colspan="2">Подробнее</td><td class="border">Кг</td> <td class="border">Шт</td><td class="border" style="">Комменатрий</td><td class="border" style="">Оформление</td></tr>'
                         let dataForTable = '';
                         for(order of data['data']['orders']){
@@ -164,7 +167,7 @@
                         document.getElementById('table').innerHTML += dataForTable;
                     }
                     else {
-                        document.getElementById('container').innerHTML = '<h3>На данную дату нет заказов</h3>';
+                        document.getElementById('container').innerHTML = '<h1 style="font-size: 26px; margin-left: 20px;">День недели: '+data['date']['weekDay']+'</h1><h3>На данную дату нет заказов</h3>';
                     }
                 },
                 error: function () {
