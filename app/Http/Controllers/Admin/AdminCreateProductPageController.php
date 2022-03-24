@@ -51,10 +51,6 @@ class AdminCreateProductPageController extends Controller
             }
         }
 
-
-        var_dump($data['product_types'][0]['components']['начинка']);
-        return;
-
         return view('adminCreateProduct')->with(['data'=>$data]);
     }
 }
