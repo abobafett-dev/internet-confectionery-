@@ -20,10 +20,15 @@ class AdminCreateProductPageController extends Controller
 
         $data = [];
 
-        $data['product_types'] = Product_Type::all()->toArray();
+        $data['product_types'] = [];
+
+        $product_types = Product_Type::all()->toArray();
+
+        foreach($product_types as $product_type){
+            $data['product_types'][$product_type['id']] = $product_type;
+        }
 
         $product_types_components = Product_Type_Component::all()->toArray();
-
 
         $component_types = Component_Type::all()->toArray();
 
