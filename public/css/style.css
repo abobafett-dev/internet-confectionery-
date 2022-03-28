@@ -620,3 +620,7 @@ div#max{
     text-align: center;
     width: 100%;
 }
+.formAddAdmin input,textarea,select{
+    width: 100%;
+    margin-bottom: 10px;
+}
