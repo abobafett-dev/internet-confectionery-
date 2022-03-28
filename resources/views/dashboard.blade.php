@@ -68,51 +68,74 @@
                                 <div style="padding: 5px 15px; width: 160px;">
                                     <form action="" method="POST">
                                         <input type="text" hidden value="{{$order['id']}}">
-                                        <button style="color: #730101FF; text-decoration: underline #730101;">Удалить заказ</button>
+                                        <button style="color: #730101FF; text-decoration: underline #730101;">Удалить
+                                            заказ
+                                        </button>
                                     </form>
                                 </div>
                             </div>
                             @php $sum = 0 @endphp
                             @foreach($order['products'] as $product)
-                                @php $sum += ($product['data']['weight']/$product['product_type']['weight_initial'])*$product['price']*$product['data']['count']; @endphp
-                            <div style="display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(206,206,206,0.75);">
-                                <div>
-                                    <img src="{{$product['photo']}}" style="width:10em;">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; flex-direction: column; width: 400px;">
+                                @php if($product['data']['weight']) {$sum += ($product['data']['weight']/$product['product_type']['weight_initial'])*$product['price']*$product['data']['count'];} else {$sum += $product['price']*$product['data']['count'];} @endphp
+                                <div
+                                    style="display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid rgba(206,206,206,0.75);">
                                     <div>
-                                        <h2 style="font-weight: bold; font-size: 1.5em;">{{$product['name']}}</h2>
-                                        {{$product['description']}}
+                                        <img src="{{$product['photo']}}" style="width:10em;">
                                     </div>
-                                    <div style="font-weight: bold;">{{$product['price']}}₽ за {{$product['product_type']['weight_initial']}}кг</div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; flex-direction: column; width: 400px;">
+                                        <div>
+                                            <h2 style="font-weight: bold; font-size: 1.5em;">{{$product['name']}}</h2>
+                                            {{$product['description']}}
+                                        </div>
+                                        @if($product['data']['weight'])
+                                            <div style="font-weight: bold;">{{$product['price']}}₽
+                                                за {{$product['product_type']['weight_initial']}}кг
+                                            </div>@endif
+                                    </div>
+                                    <div
+                                        style="text-align: right; margin: 5px 10px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
+                                        @if($product['data']['weight'])
+                                            <div>
+                                                {{$product['data']['count']}} шт.
+                                                <br>
+                                                {{$product['data']['weight']}} кг
+                                            </div>
+                                            <div style="font-weight: bold;">
+                                                Сумма: {{$product['price']*$product['data']['count']*$product['data']['weight']/$product['product_type']['weight_initial']}}
+                                                ₽
+                                            </div>
+                                        @else
+                                            <div>
+                                                {{$product['data']['count']}} шт.
+                                                <br>
+                                            </div>
+                                            <div style="font-weight: bold;">
+                                                Сумма: {{$product['price']*$product['data']['count']}}
+                                                ₽
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div style="text-align: right; margin: 5px 10px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
-                                    <div>
-                                        {{$product['data']['count']}} шт.
-                                        <br>
-                                        {{$product['data']['weight']}} кг
-                                    </div>
-                                    <div style="font-weight: bold;">
-                                        Сумма: {{$product['price']*$product['data']['count']*$product['data']['weight']/$product['product_type']['weight_initial']}}₽
-                                    </div>
-                                </div>
-                            </div>
                             @endforeach
                             <div style="display: flex; justify-content: space-between;">
                                 <div style="width: 25%; text-align: left; padding: 5px 15px;">
                                     <a href="{{route('order',$order['id'])}}"
-                                        style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Подробнее
+                                       style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Подробнее
                                     </a>
                                 </div>
                                 <div style="width: 35%; text-align: right;">
                                     <form action="" method="">
                                         <button
-                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">Оставить
+                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">
+                                            Оставить
                                             отзыв
                                         </button>
                                     </form>
                                 </div>
-                                <div style="text-align: right; width: 42%; padding: 5px 25px; font-weight: bold;">Итого: {{$sum}}₽</div>
+                                <div style="text-align: right; width: 42%; padding: 5px 25px; font-weight: bold;">
+                                    Итого: {{$sum}}₽
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -202,14 +225,14 @@
                 {{ csrf_field() }}
             </form>
         @endif
-            @if($user['id_user_status'] == 2 && count($ordersToAdmin) > 0)
-                <div style="text-decoration: underline">
-                    <div><a href="{{route('adminOrders',date('Y-m-d'))}}">Расписание заказов</a></div>
-                    <div><a href="">Администрирование данных</a></div>
-                </div>
+        @if($user['id_user_status'] == 2 && count($ordersToAdmin) > 0)
+            <div style="text-decoration: underline">
+                <div><a href="{{route('adminOrders',date('Y-m-d'))}}">Расписание заказов</a></div>
+                <div><a href="">Администрирование данных</a></div>
+            </div>
 
 
-            @endif
+        @endif
     </div>
 </x-app-layout>
 <script>

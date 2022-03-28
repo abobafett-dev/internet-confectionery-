@@ -16,7 +16,7 @@
                 <h3 style="all:revert; margin: 5px;">Купленные товары</h3>
                 @php $sum = 0; @endphp
                 @foreach($order[0]['products'] as $product)
-                    @php $sum += $product['price']*$product['data']['count']*($product['data']['weight']/$product['product_type']['weight_initial']); @endphp
+                    @php if($product['data']['weight']) {$sum += ($product['data']['weight']/$product['product_type']['weight_initial'])*$product['price']*$product['data']['count'];} else {$sum += $product['price']*$product['data']['count'];} @endphp
                     <div class="order_products">
                         <div class="order-img-prod">
                             <img src="{{asset($product['photo'])}}" alt="">
@@ -99,12 +99,12 @@
             @endif
             <h3 style="all:revert; margin: 5px;">Сообщение, которое вам нужно отправить кондитеру</h3>
             <div id="message">
-                <textarea cols="55" style="resize: none; overflow: hidden;" readonly>Здравствуйте, я хочу сделать у вас покупку. &#10;Номер моего заказа на вашем сайте: {{$order[0]['id']}}
+                <textarea cols="55" style="resize: none; overflow: hidden;" readonly>Здравствуйте, я оформил заказ на сайте. &#10;Номер моего заказа: {{$order[0]['id']}}
                 </textarea>
             </div>
             <h3 style="all:revert; margin: 5px;">Ссылка на кондитера</h3>
             <div id="message">
-                <a style="color: #c08d87" href="https://www.instagram.com/cakemechtai.tmn/">@<span style="text-decoration: underline; ">cakemechtai.tmn</span></a>
+                <a target="_blank" style="color: #c08d87" href="https://vk.me/cakemechtai">VK: <span style="text-decoration: underline; ">cakemechtai.tmn</span></a>
             </div>
             <div style="width: 210px; margin: auto; padding:20px;">
                 <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную</a>
