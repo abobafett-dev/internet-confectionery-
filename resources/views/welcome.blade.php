@@ -107,6 +107,6 @@
         block.style.backgroundColor = 'rgb(222 151 163)';
     }
     window.onload = document.getElementsByClassName('main_cursor_hover')[0].click();
-    
+
 </script>
 </html>
