@@ -58,4 +58,24 @@ class AdminCreateProductPageController extends Controller
 
         return view('adminCreateProduct')->with(['data'=>$data]);
     }
+
+    function addProduct(Request $request){
+        var_dump($request);
+    }
+
+    function addProductType(Request $request){
+        var_dump($request);
+    }
+
+    function addComponent(Request $request){
+        var_dump($request);
+    }
+
+    function addComponentType(Request $request){
+        var_dump($request);
+    }
+
+    function addIngredient(Request $request){
+        var_dump($request);
+    }
 }

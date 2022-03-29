@@ -17,6 +17,9 @@ use App\Http\Controllers;
 Route::GET('/', [Controllers\User\UserMainPageController::class, 'createProducts'])
     ->name('main');
 
+Route::GET('/userAgreement', [Controllers\User\UserAgreementController::class, 'create'])
+    ->name('userAgreement');
+
 Route::GET('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
     ->middleware(['auth'])->name('dashboard');
 
@@ -68,8 +71,21 @@ Route::POST('admin/products/changeActiveAjax', [Controllers\Admin\AdminProductsP
 Route::GET('admin/products/add', [Controllers\Admin\AdminCreateProductPageController::class, 'create'])
     ->middleware(['auth'])->name('adminProductsAdd');
 
-Route::GET('/userAgreement', [Controllers\User\UserAgreementController::class, 'create'])
-    ->name('userAgreement');
+
+Route::POST('admin/products/add/addProduct', [Controllers\Admin\AdminCreateProductPageController::class, 'addProduct'])
+    ->middleware(['auth'])->name('adminProductsAddProduct');
+
+Route::POST('admin/products/add/addProductType', [Controllers\Admin\AdminCreateProductPageController::class, 'addProductType'])
+    ->middleware(['auth'])->name('adminProductsAddProductType');
+
+Route::POST('admin/products/add/addComponent', [Controllers\Admin\AdminCreateProductPageController::class, 'addComponent'])
+    ->middleware(['auth'])->name('adminProductsAddComponent');
+
+Route::POST('admin/products/add/addComponentType', [Controllers\Admin\AdminCreateProductPageController::class, 'addComponentType'])
+    ->middleware(['auth'])->name('adminProductsAddComponentType');
+
+Route::POST('admin/products/add/addIngredient', [Controllers\Admin\AdminCreateProductPageController::class, 'addIngredient'])
+    ->middleware(['auth'])->name('adminProductsAddIngredient');
 
 Route::GET('admin/products/update/{product}', [Controllers\Admin\AdminUpdateProductPageController::class, 'create'])
     ->middleware(['auth'])->name('adminProductsUpdate');
