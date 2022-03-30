@@ -225,9 +225,9 @@
                 {{ csrf_field() }}
             </form>
         @endif
-        @if($user['id_user_status'] == 2 && count($ordersToAdmin) > 0)
+        @if($user['id_user_status'] == 2)
             <div style="text-decoration: underline">
-                <div><a href="{{route('adminOrders',date('Y-m-d'))}}">Расписание заказов</a></div>
+                <div><a href="{{route('adminOrders',date('Y-m-d'))}}">График заказов</a></div>
                 <div><a href="">Администрирование данных</a></div>
             </div>
 
