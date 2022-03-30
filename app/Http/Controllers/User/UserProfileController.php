@@ -44,19 +44,11 @@ class UserProfileController extends Controller
                 unset($orders[$index]);
         }
 
-        $ordersToAdmin = $classUserProfileController->createOrders(Order::all()->toArray());
-
-        foreach ($ordersToAdmin as $index => $order) {
-            if ($order['id_status'] == 2)
-                unset($ordersToAdmin[$index]);
-        }
-
         return view('dashboard')
             ->with(['user' => $user,
                 'sources' => $sources,
                 'userStatus' => $userStatus,
-                'orders' => $orders,
-                'ordersToAdmin' => $ordersToAdmin]);
+                'orders' => $orders]);
     }
 
     public function createOrders(array $orders): array
