@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function PHPUnit\Framework\isEmpty;
 
 class UserProfileController extends Controller
 {
@@ -55,18 +56,46 @@ class UserProfileController extends Controller
     {
         $orders_products = [];
 
+        $intervals = ["sql"=>[],"array"=>[]];
+
+        $schedule_standards = ["sql"=>[],"array"=>[]];
+
+        $order_statuses = ["sql"=>Order_Status::all()->toArray(),"array"=>[]];
+        foreach ($order_statuses['sql'] as $order_status){
+            $order_statuses["array"][$order_status["id"]] = $order_status;
+        }
+
+        $product_types = ["sql"=>Product_Type::all()->toArray(),"array"=>[]];
+        foreach ($product_types['sql'] as $product_type){
+            $product_types["array"][$product_type['id']] = $product_type;
+        }
+
         foreach ($orders as $index => $order) {
-            if ($order['id_schedule_interval'] != null)
-                $orders[$index]['interval'] = Schedule_Interval::find($order['id_schedule_interval'])->toArray();
+            if ($order['id_schedule_interval'] != null) {
+                if (empty($intervals['sql'])){
+                    $intervals['sql'] = Schedule_Interval::all()->toArray();
+                    foreach ($intervals['sql'] as $interval){
+                        $intervals['array'][$interval['id']] = $interval;
+                    }
+                }
+                    $orders[$index]['interval'] = $intervals['array'][$order['id_schedule_interval']];
+            }
             else
                 $orders[$index]['interval'] = null;
 
-            if ($order['id_schedule_standard'] != null)
-                $orders[$index]['schedule_standard'] = Schedule_Standard::find($order['id_schedule_standard'])->toArray();
+            if ($order['id_schedule_standard'] != null){
+                if (empty($schedule_standards['sql'])){
+                    $schedule_standards['sql'] = Schedule_Standard::all()->toArray();
+                    foreach ($schedule_standards['sql'] as $schedule_standard){
+                        $schedule_standards['array'][$schedule_standard['id']] = $schedule_standard;
+                    }
+                }
+                $orders[$index]['schedule_standard'] = $schedule_standards['array'][$order['id_schedule_standard']];
+            }
             else
                 $orders[$index]['schedule_standard'] = null;
 
-            $orders[$index]['status'] = Order_Status::find($order['id_status'])->toArray();
+            $orders[$index]['status'] = $order_statuses["array"][$order['id_status']];
             $orders_products[$order['id']] = Order_Product::where('id_order', $order['id'])->get();
         }
 
@@ -78,7 +107,7 @@ class UserProfileController extends Controller
                             $orders[$index]['products'] = [];
                         $orders[$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
                         $orders[$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
-                        $orders[$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($orders[$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
+                        $orders[$index]['products'][$order_product['id_product']]['product_type'] = $product_types['array'][$orders[$index]['products'][$order_product['id_product']]['id_product_type']];
 
                         $orders[$index]['products'][$order_product['id_product']]['photo'] =
                             asset(Storage::url($orders[$index]['products'][$order_product['id_product']]['photo']) . "?r=" . rand(0, 1000));
