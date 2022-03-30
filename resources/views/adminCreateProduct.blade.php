@@ -18,7 +18,7 @@
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">продукта</span></h2>
                     <label for="prod_name">
-                        <h3>Название</h3>
+                        <h3>Название *</h3>
                     </label>
                     <input type="text" name="title" id="prod_name">
                     <label for="prod_descr">
@@ -32,7 +32,7 @@
                     </label>
                     <input type="file" name="img" id="prod_img">
                     <label for="prod_price">
-                        <h3>Стоимость</h3>
+                        <h3>Стоимость *</h3>
                     </label>
                     <input type="number" name="price" id="prod_price">
                     <label for="prod_coef">
@@ -40,7 +40,7 @@
                     </label>
                     <input type="number" name="bonus" id="prod_coef">
                     <label for="type_prod">
-                        <h3>Тип продукта</h3>
+                        <h3>Тип продукта *</h3>
                     </label>
                     <select type="number" name="type_prod" id="type_prod" onchange="makeFormForAddProduct(this.value)">
                         <option value="" disabled selected style="display: none;">Выберете значение</option>
@@ -63,7 +63,7 @@
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">типа продукта</span></h2>
                     <label for="type_prod_name">
-                        <h3>Название типа продукта</h3>
+                        <h3>Название типа продукта *</h3>
                     </label>
                     <input type="text" name="title_type_prod" id="type_prod_name">
                     <label for="type_prod_min_weight">
@@ -75,7 +75,7 @@
                     </label>
                     <input type="number" name="type_prod_max_weight" id="type_prod_max_weight">
                     <label for="type_prod_standard_weight">
-                        <h3>Стандартный вес(кг)</h3>
+                        <h3>Стандартный вес(кг) *</h3>
                     </label>
                     <input type="number" name="type_prod_standard_weight" id="type_prod_standard_weight">
                     <label for="type_prod_type_comp">
@@ -86,7 +86,7 @@
 {{--                        Сделать сюда список всех компанентов - добавить в компаненты поле "описание для кондитера" --}}
                     </select>
                     <label for="using_constr">
-                        <h3>Используется в конструкторе?</h3>
+                        <h3>Используется в конструкторе? *</h3>
                     </label>
                     <input type="checkbox" name="using_constr" id="using_constr" style="width: 16px;">
                     <div style="text-align: center; margin: 20px auto 0px auto;">
@@ -101,7 +101,7 @@
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">компонента</span></h2>
                     <label for="comp_name">
-                        <h3>Название</h3>
+                        <h3>Название *</h3>
                     </label>
                     <input type="text" name="comp_name" id="comp_name">
                     <label for="comp_descr">
@@ -119,11 +119,11 @@
                     </label>
                     <input type="file" name="comp" id="comp_img">
                     <label for="comp_price">
-                        <h3>Стоимость</h3>
+                        <h3>Стоимость *</h3>
                     </label>
                     <input type="number" name="comp_price" id="comp_price">
                     <label for="comp_coef">
-                        <h3>Коэффициент</h3>
+                        <h3>Коэффициент *</h3>
                     </label>
                     <input type="number" name="comp_coef" id="comp_coef">
                     <div style="text-align: center; margin: 20px auto 0px auto;">
@@ -138,7 +138,7 @@
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">типа компонента</span></h2>
                     <label for="type_comp_name">
-                        <h3>Название типа компонента</h3>
+                        <h3>Название типа компонента *</h3>
                     </label>
                     <input type="text" name="title_comp_prod" id="type_comp_name">
                     <label for="type_comp_description_for_confectioner">
@@ -157,7 +157,7 @@
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">ингредиента</span></h2>
                     <label for="ingredient_name">
-                        <h3>Название типа компонента</h3>
+                        <h3>Название типа компонента *</h3>
                     </label>
                     <input type="text" name="title_ingredient" id="ingredient_name">
                     <label for="ingredient_description">
