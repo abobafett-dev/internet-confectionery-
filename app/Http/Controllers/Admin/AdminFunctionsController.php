@@ -51,7 +51,7 @@ class AdminFunctionsController extends Controller
                         $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']] = Product::find($order_product['id_product'])->toArray();
                         $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['data'] = $order_product->toArray();
                         $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['product_type'] = Product_Type::find($ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['id_product_type'])->toArray();
-                        $countProducts += $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['data']['count'];
+                        $countProducts++;
 
                         $product_components = Product_Component::where('id_product', $ingredientsAndOrdersForDay['orders'][$index]['products'][$order_product['id_product']]['id'])->get()->toArray();
 
