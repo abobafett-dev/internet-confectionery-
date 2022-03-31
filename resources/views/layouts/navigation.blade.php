@@ -11,6 +11,7 @@
     }
 
     function OpenCloseMenu() {
+
         var elem = document.getElementById('menu');
         if (elem.style.display == 'block') {
             elem.style.display = 'none';
@@ -18,9 +19,20 @@
             elem.style.display = 'block';
         }
     }
+
+    // document.addEventListener('keydown', function(e) {
+    //     if( e.keyCode == 27 ){
+    //         document.getElementById('menu').style.display = 'block';
+    //     }
+    // });
+
+    document.onclick = function(e){
+        if((!(document.getElementById('hamb').contains(e.target))) && (document.getElementById('menu').style.display == 'block'))
+            document.getElementById('buttonMenu').click();
+    };
 </script>
 <header class="bg-white shadow">
-    <nav x-data="{ open: false }" class="bg-white border-b border-gray-100" style="background-color: #ffbeb5">
+    <nav x-data="{ open: false }" class="bg-white border-b border-gray-100" style="background-color: #ffbeb5; position: fixed; width: 100%; margin-top: -65px;">
         <!-- Primary Navigation Menu -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -226,7 +238,7 @@
         @auth
         @endauth
     </nav>
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex" style="min-height: 73px;">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex" style="min-height: 73px; margin-top: 65px;">
         @if(isset($header)) {{ $header }} @else
             <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="margin-right: -160px;">
                 Главная

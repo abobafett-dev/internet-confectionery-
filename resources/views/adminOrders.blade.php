@@ -33,15 +33,15 @@
                     @endphp
                     <tr class="border">
                         <td class="border" rowspan="{{$order['countProducts']}}">{{$order['interval']['start']}}</td>
-                        <td class="border" rowspan="{{$order['countProducts']}}">
+                        <td class="border" rowspan="{{$order['countProducts']}}" style="text-align: center;">
                             <select name="" id="" style="border: none;"
                                     onchange="changeStatus(this.value, {{$order['id']}})">
                                 <option value="" hidden selected>{{$order['status']['status']}}</option>
-                                <option value="1">Принят</option>
-                                <option value="3" style="background-color: yellow;">Готовится</option>
-                                <option value="4" style="background-color: limegreen;">Готов/Оплата</option>
-                                <option value="6" style="background-color: darkgreen;">Выдан</option>
-                                <option value="7" style="background-color: red;">Отменён</option>
+                                <option value="1" style="background-color: #edab23;">Принят</option>
+                                <option value="3" style="background-color: #88d792;">Готовится</option>
+                                <option value="4" style="background-color: #52b7ff;">Готов/Оплата</option>
+                                <option value="6" style="background-color: #24d53a;">Выдан</option>
+                                <option value="7" style="background-color: #df3535;">Отменён</option>
                             </select>
                         </td>
                         <td class="border">{{$firstProd['product_type']['name']}}</td>
@@ -64,8 +64,11 @@
 {{--                            @endforeach--}}
                         </td>
                         <td class="border">
+                            @isset($firstProd['data']['comment_photo'])
+                                <img src="{{$firstProd['data']['comment_photo']}}" alt="">
+                            @endisset
 {{--                            @foreach($firstProd['data']['comment_photo'] as $photo)--}}
-{{--                                <img src="{{$photo}}" alt="">--}}
+{{--                                <img src="{{$firstProd['data']['comment_photo']}}" alt="">--}}
 {{--                                <br>--}}
 {{--                            @endforeach--}}
                         </td>
@@ -76,13 +79,15 @@
                             <td class="border">{{$product['data']['weight']}}</td>
                             <td class="border">
 {{--                                @foreach($firstProd['data']['comment_text'] as $comment)--}}
-                                    {{$firstProd['data']['comment_text']}}
+                                    {{$product['data']['comment_text']}}
 {{--                                    <br>--}}
 {{--                                @endforeach--}}
                             </td>
                             <td class="border">
-{{--                                @foreach($firstProd['data']['comment_photo'] as $photo)--}}
-{{--                                    <img src="{{$photo}}" alt="">--}}
+{{--                                @foreach($product['data']['comment_photo'] as $photo)--}}
+                                @isset($product['data']['comment_photo'])
+                                    <img src="{{$product['data']['comment_photo']}}" alt="">
+                                @endisset
 {{--                                    <br>--}}
 {{--                                @endforeach--}}
                             </td>
@@ -136,19 +141,28 @@
                                 componentHTML += '<div class="detail">'+firstProd['components'][component]['name']+'</div>'
                             }
                             dataForTable += componentHTML+'</td>'
-                            dataForTable += '<td class="border">'+firstProd['data']['weight']+'</td>'
+                            if(firstProd['data']['weight'])
+                                dataForTable += '<td class="border">'+firstProd['data']['weight']+'</td>'
+                            else
+                                dataForTable += '<td class="border"></td>'
                             dataForTable += '<td class="border">'+firstProd['data']['count']+'</td>'
                             let comment =  '<td class="border">';
                             // for(var i = 0; i < firstProd['data']['comment_text'].length; i++){
                             //     comment += firstProd['data']['comment_text'][i]+'<br>'
                             // }
                             // comment += '</td>'
-                            comment += firstProd['data']['comment_text']+'</td>'
+                            if(firstProd['data']['comment_text'])
+                                comment += firstProd['data']['comment_text']
+                            comment += '</td>'
                             dataForTable += comment;
-                            dataForTable += '<td class="border">'+firstProd['data']['comment_photo']+'</td>'
+                            if(firstProd['data']['comment_photo'])
+                                dataForTable += '<td class="border">'+firstProd['data']['comment_photo']+'</td>'
+                            else
+                                dataForTable += '<td class="border"></td>'
                             dataForTable += '</tr>'
 
                             let product = order['products'];
+                            console.log(product)
                             for(id in product){
                                 componentHTML = '<td class="border" style="text-align: left;">';
                                 for(component in firstProd['components']){
@@ -160,7 +174,19 @@
                                     componentHTML += '<div class="detail">'+firstProd['components'][component]['name']+'</div>'
                                 }
                                 componentHTML += '</td>'
-                                dataForTable += '<tr class="border"> <td class="border">'+product[id]['product_type']['name']+'</td> '+componentHTML+' <td class="border">'+product[id]["data"]["weight"]+'<td class="border">'+firstProd['data']['count']+'</td></td><td class="border">'+product[id]["data"]["comment_text"]+'</td><td class="border">'+product[id]["data"]["comment_photo"]+'</td></tr>'
+                                dataForTable += '<tr class="border"> <td class="border">'+product[id]['product_type']['name']+'</td> '+componentHTML+' <td class="border">'
+                                if(product[id]["data"]["weight"])
+                                    dataForTable += product[id]["data"]["weight"]+'<td class="border">'+firstProd['data']['count']+'</td></td><td class="border">'
+                                else
+                                    dataForTable += '<td class="border">'+firstProd['data']['count']+'</td></td><td class="border">'
+                                if(product[id]["data"]["comment_text"])
+                                    dataForTable += product[id]["data"]["comment_text"]+'</td><td class="border">'+product[id]["data"]["comment_photo"]+'</td></tr>'
+                                else
+                                    dataForTable += '</td><td class="border">'
+                                if(product[id]["data"]["comment_photo"])
+                                    dataForTable += '<img src="'+product[id]["data"]["comment_photo"]+'"></td></tr>'
+                                else
+                                    dataForTable += '</td></tr>'
                             }
 
                         }

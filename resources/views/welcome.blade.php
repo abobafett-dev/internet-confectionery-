@@ -19,6 +19,7 @@
     <link rel="shortcut icon" href="/storage/logo/Logo.png" type="image/png">
 
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
 <body class="antialiased">
@@ -108,5 +109,10 @@
     }
     window.onload = document.getElementsByClassName('main_cursor_hover')[0].click();
 
+
+    @if(session()->exists('errorConstructor'))
+        alert("{{session('errorConstructor')}}");
+        scrollTo(0,900);
+    @endif
 </script>
 </html>

@@ -61,20 +61,18 @@
                     </div>
                 </div>
                 @if(!$iter['isActive'])
-                    <div
-                        style="padding: 10px 0px; border-top: 1px solid rgba(0,0,0,0.2);text-align: center; background-color:#f34d4d99; color: #028300">
-                        <form action="">
-                            <button>Восстановить к продаже</button>
+                    <div id="text_{{$iter['id']}}"
+                        style="padding: 10px 0px; border-top: 1px solid rgba(0,0,0,0.2);text-align: center; background-color:#f34d4d99; color: #028300;">
+
+                            <button onclick="changeStatus({{$iter['id']}})">Восстановить к продаже</button>
                             {{ csrf_field() }}
-                        </form>
+
                     </div>
                 @else
-                    <div
+                    <div id="text_{{$iter['id']}}"
                         style="padding: 10px 0px; border-top: 1px solid rgba(0,0,0,0.2); text-align: center; background-color: #7ed57e; color: red;">
-                        <form action="">
-                            <button>Убрать из продажи</button>
+                            <button onclick="changeStatus({{$iter['id']}})">Убрать из продажи</button>
                             {{ csrf_field() }}
-                        </form>
                     </div>
 
                 @endif
@@ -88,6 +86,33 @@
             } else {
                 document.getElementById('label_checkbox' + index).style = '';
             }
+        }
+
+        function changeStatus(id_prod) {
+            $.ajax({
+                url: '{{route('changeActiveAjax')}}',
+                type: "POST",
+                headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
+                data: {product: id_prod},
+                success: function () {
+                    console.log(document.getElementById('text_'+id_prod).style.backgroundColor)
+                    if(document.getElementById('text_'+id_prod).style.backgroundColor == 'rgba(243, 77, 77, 0.6)'){
+                        document.getElementById('text_'+id_prod).style.backgroundColor = '#7ed57e';
+                        document.getElementById('text_'+id_prod).style.color = 'red';
+                        document.getElementById('text_'+id_prod).innerHTML = '<button onclick="changeStatus('+id_prod+')">Убрать из продажи</button>{{ csrf_field() }}';
+                        console.log('first')
+                    }
+                    else{
+                        document.getElementById('text_'+id_prod).style.backgroundColor = '#f34d4d99';
+                        document.getElementById('text_'+id_prod).style.color = '#028300';
+                        document.getElementById('text_'+id_prod).innerHTML = '<button onclick="changeStatus('+id_prod+')">Восстановить к продаже</button>{{ csrf_field() }}';
+                        console.log('second')
+                    }
+                },
+                error: function () {
+                    alert('Невозможно изменить статус товара.');
+                }
+            });
         }
     </script>
 </x-app-layout>

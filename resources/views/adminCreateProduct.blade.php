@@ -10,9 +10,27 @@
         @endif
     </x-slot>
     <div style="padding: 15px;">
-        <div style="display: grid; gap: 20px; grid-template-columns: auto auto auto;">
+        <div style="float: left; width: 30%; text-align: center; padding: 10px;">
+            <h3 style="font-size: 1.17rem;">Добавление</h3>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;"class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this, 'div_tort')">
+                <h4 style="all:revert; margin: 0px; text-align: center;">Торт</h4>
+            </div>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_type_product')">
+                <h4 style="all:revert; margin: 0px; text-align: center;">Тип продукта</h4>
+            </div>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color: #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_comp')">
+                <h4 style="all:revert; margin: 0px; text-align: center;">Компонент</h4>
+            </div>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_type_comp')">
+                <h4 style="all:revert; margin: 0px; text-align: center;">Тип компонента</h4>
+            </div>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_ingredient')">
+                <h4 style="all:revert; margin: 0px; text-align: center;">Ингридиент</h4>
+            </div>
+        </div>
+        <div style="float: right; width: 65%; padding: 10px;">
             {{--      Форма добавления товара      --}}
-            <div style="display: grid;">
+            <div class="hidden_form" id="div_tort">
                 <form action="" name="product" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
@@ -57,7 +75,7 @@
                 </form>
             </div>
             {{--      Форма добавления типа продукта       --}}
-            <div style="display: grid;">
+            <div style="" class="hidden_form" id="div_type_product">
                 <form action="" name="type_product" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
@@ -78,13 +96,6 @@
                         <h3>Стандартный вес(кг) *</h3>
                     </label>
                     <input type="number" name="type_prod_standard_weight" id="type_prod_standard_weight">
-                    <label for="type_prod_type_comp">
-                        <h3>Какие входят типы компанента?</h3>
-                    </label>
-                    <select type="number" name="type_prod_type_comp" id="type_prod_type_comp">
-                        <option value="" disabled selected style="display: none;">Выберете значение</option>
-{{--                        Сделать сюда список всех компанентов - добавить в компаненты поле "описание для кондитера" --}}
-                    </select>
                     <label for="using_constr">
                         <h3>Используется в конструкторе? *</h3>
                     </label>
@@ -95,7 +106,7 @@
                 </form>
             </div>
             {{--      Форма добавления компонента      --}}
-            <div style="display: grid;">
+            <div style="" class="hidden_form" id="div_comp">
                 <form action="" name="component" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
@@ -109,10 +120,22 @@
                     </label>
                     <textarea type="text" name="comp_description" id="comp_descr"></textarea>
                     <label for="comp_type_comp">
-                        <h3>К какому компоненту относится</h3>
+                        <h3>К какому типу компонента относится *</h3>
                     </label>
                     <select type="number" name="comp_type_comp" id="comp_prod_type_comp">
                         <option value="" disabled selected style="display: none;">Выберете значение</option>
+                        @foreach($data['component_types'] as $type)
+                            <option value="{{$type['id']}}">{{$type['name']}}</option>
+                        @endforeach
+                    </select>
+                    <label for="comp_type_prod">
+                        <h3>К какому типу продукта относится *</h3>
+                    </label>
+                    <select type="number" name="comp_type_prod" id="comp_prod_type_prod">
+                        <option value="" disabled selected style="display: none;">Выберете значение</option>
+                        @foreach($data['product_types'] as $type)
+                            <option value="{{$type['id']}}">{{$type['name']}}</option>
+                        @endforeach
                     </select>
                     <label for="comp_img">
                         <h3>Фото</h3>
@@ -123,7 +146,7 @@
                     </label>
                     <input type="number" name="comp_price" id="comp_price">
                     <label for="comp_coef">
-                        <h3>Коэффициент *</h3>
+                        <h3>Вес данного компонента на кг изделия(кг) *</h3>
                     </label>
                     <input type="number" name="comp_coef" id="comp_coef">
                     <div style="text-align: center; margin: 20px auto 0px auto;">
@@ -132,7 +155,7 @@
                 </form>
             </div>
             {{--      Форма добавления типа компонента      --}}
-            <div style="display: grid;">
+            <div style="" class="hidden_form" id="div_type_comp">
                 <form action="" name="type_component" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
@@ -151,7 +174,7 @@
                 </form>
             </div>
             {{--      Форма добавления ингредиента      --}}
-            <div style="display: grid;">
+            <div style="" class="hidden_form" id="div_ingredient">
                 <form action="" name="ingredient" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
@@ -178,7 +201,7 @@
     function makeFormForAddProduct(id) {
         let htmlIn = '';
             for(var key in dataJS['product_types'][id]['components']){
-                htmlIn += '<label for="prod_component_'+key+'"><h3>'+key+'</h3></label><select type="number" name="component_'+dataJS['product_types'][id]['components'][key][0]['id_component_type']+'" id="prod_component_'+key+'">'
+                htmlIn += '<label for="prod_component_'+key+'"><h3>'+key+' *</h3></label><select type="number" name="component_'+dataJS['product_types'][id]['components'][key][0]['id_component_type']+'" id="prod_component_'+key+'">'
                 for(var compsKey in dataJS['product_types'][id]['components'][key]){
                     htmlIn += '<option value="'+dataJS['product_types'][id]['components'][key][compsKey]['id']+'">'+dataJS['product_types'][id]['components'][key][compsKey]['name']+'</option>'
                 }
@@ -186,4 +209,15 @@
             }
         document.getElementById('containerAddFormProduct').innerHTML = htmlIn;
     }
+
+    function hiddenFormAdd(but, id){
+        for(let i = 0; i < document.getElementsByClassName('hidden_form').length; i++){
+            document.getElementsByClassName('main_cursor_hover')[i].style.backgroundColor = '#ffbeb5';
+            document.getElementsByClassName('hidden_form')[i].style.display = 'none';
+        }
+        but.style.backgroundColor = 'rgb(222 151 163)';
+        document.getElementById(id).style.display = 'block';
+    }
+
+    window.onload = document.getElementsByClassName('main_cursor_hover')[0].click();
 </script>

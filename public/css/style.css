@@ -624,3 +624,6 @@ div#max{
     width: 100%;
     margin-bottom: 10px;
 }
+.hundredWidth{
+    width: 100% !important;
+}
