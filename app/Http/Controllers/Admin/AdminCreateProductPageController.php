@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Component;
 use App\Models\Component_Type;
+use App\Models\Ingredient;
 use App\Models\Product_Type;
 use App\Models\Product_Type_Component;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ class AdminCreateProductPageController extends Controller
         $data = [];
 
         $data['product_types'] = [];
+
+        $data['ingredients'] = Ingredient::all()->toArray();
 
         $product_types = Product_Type::all()->toArray();
 
