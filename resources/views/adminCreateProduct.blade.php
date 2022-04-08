@@ -5,27 +5,27 @@
         </h2>
         @if(session()->exists('was_updated'))
             <div
-                style="padding: 0px 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}
+                style="padding: 0 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_updated')}}
             </div>
         @endif
     </x-slot>
     <div style="padding: 15px;">
         <div style="float: left; width: 30%; text-align: center; padding: 10px;">
             <h3 style="font-size: 1.17rem;">Добавление</h3>
-            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;"class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this, 'div_tort')">
-                <h4 style="all:revert; margin: 0px; text-align: center;">Торт</h4>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this, 'div_tort')">
+                <h4 style="all:revert; margin: 0; text-align: center;">Продукт</h4>
             </div>
-            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_type_product')">
-                <h4 style="all:revert; margin: 0px; text-align: center;">Тип продукта</h4>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_type_product')">
+                <h4 style="all:revert; margin: 0; text-align: center;">Тип продукта</h4>
             </div>
-            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color: #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_comp')">
-                <h4 style="all:revert; margin: 0px; text-align: center;">Компонент</h4>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0; background-color: #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_comp')">
+                <h4 style="all:revert; margin: 0; text-align: center;">Компонент</h4>
             </div>
-            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_type_comp')">
-                <h4 style="all:revert; margin: 0px; text-align: center;">Тип компонента</h4>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_type_comp')">
+                <h4 style="all:revert; margin: 0; text-align: center;">Тип компонента</h4>
             </div>
-            <div style="border: 1px solid black; padding: 5px; margin: 10px 0px; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_ingredient')">
-                <h4 style="all:revert; margin: 0px; text-align: center;">Ингридиент</h4>
+            <div style="border: 1px solid black; padding: 5px; margin: 10px 0; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_ingredient')">
+                <h4 style="all:revert; margin: 0; text-align: center;">Ингредиент</h4>
             </div>
         </div>
         <div style="float: right; width: 65%; padding: 10px;">
@@ -69,7 +69,7 @@
                     <div id="containerAddFormProduct">
 
                     </div>
-                    <div style="text-align: center; margin: 20px auto 0px auto;">
+                    <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
                 </form>
@@ -100,7 +100,7 @@
                         <h3>Используется в конструкторе? *</h3>
                     </label>
                     <input type="checkbox" name="using_constr" id="using_constr" style="width: 16px;">
-                    <div style="text-align: center; margin: 20px auto 0px auto;">
+                    <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
                 </form>
@@ -149,7 +149,28 @@
                         <h3>Вес данного компонента на кг изделия(кг) *</h3>
                     </label>
                     <input type="number" name="comp_coef" id="comp_coef">
-                    <div style="text-align: center; margin: 20px auto 0px auto;">
+
+
+                    <div class="ingredient" style="text-align: center; border: 1px solid black; padding: 10px; border-radius: 5px;">
+                        <label for="comp_ingred">
+                            <h3 class="label_for_ingredient">Ингредиент 1 *</h3>
+                        </label>
+                        <select type="number" name="comp_ingred" id="comp_ingred">
+                            <option value="" disabled selected style="display: none;">Выберете значение</option>
+                            @foreach($data['ingredients'] as $ingredient)
+                                <option value="{{$ingredient['id']}}">{{$ingredient['name']}}</option>
+                            @endforeach
+                        </select>
+                        <label for="comp_ingred_weight">
+                            <h3>Доля ингредиента в компоненте (0 - 1) *</h3>
+                        </label>
+                        <input type="number" name="comp_ingred_weight" id="comp_ingred_weight">
+                    </div>
+
+                    <div id='addButton' style="text-align: center; margin: 20px auto 0 auto;">
+                        <button type="button" style="" onclick="addIngredient()">Добавить дополнительный ингредиент</button>
+                    </div>
+                    <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
                 </form>
@@ -168,7 +189,7 @@
                         <h3>Описание для кондитера</h3>
                     </label>
                     <input type="text" name="type_comp_description_for_confectioner" id="type_comp_description_for_confectioner">
-                    <div style="text-align: center; margin: 20px auto 0px auto;">
+                    <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
                 </form>
@@ -187,7 +208,7 @@
                         <h3>Описание для кондитера</h3>
                     </label>
                     <input type="text" name="ingredient_description" id="ingredient_description">
-                    <div style="text-align: center; margin: 20px auto 0px auto;">
+                    <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
                 </form>
@@ -201,7 +222,7 @@
     function makeFormForAddProduct(id) {
         let htmlIn = '';
             for(var key in dataJS['product_types'][id]['components']){
-                htmlIn += '<label for="prod_component_'+key+'"><h3>'+key+' *</h3></label><select type="number" name="component_'+dataJS['product_types'][id]['components'][key][0]['id_component_type']+'" id="prod_component_'+key+'">'
+                htmlIn += '<label for="prod_component_'+key+'"><h3>'+key+' *</h3></label><select type="number" name="component_'+dataJS['product_types'][id]['components'][key][0]['id_component_type']+'" id="prod_component_'+key+'"><option value="" disabled selected style="display: none;">Выберете значение</option>'
                 for(var compsKey in dataJS['product_types'][id]['components'][key]){
                     htmlIn += '<option value="'+dataJS['product_types'][id]['components'][key][compsKey]['id']+'">'+dataJS['product_types'][id]['components'][key][compsKey]['name']+'</option>'
                 }
@@ -217,6 +238,39 @@
         }
         but.style.backgroundColor = 'rgb(222 151 163)';
         document.getElementById(id).style.display = 'block';
+    }
+
+    function addIngredient() {
+        let ingredients = document.getElementsByClassName('ingredient').length;
+        document.getElementById('addButton').insertAdjacentHTML('beforebegin', '<div class="ingredient" style="text-align: center; border: 1px solid black; padding: 10px; border-radius: 5px;">'
+            +'<label for="comp_ingred">'
+            +'<h3 class="label_for_ingredient">Ингредиент '+(ingredients-(-1))+' *</h3>'
+            +'</label>'
+            +'<select type="number" name="comp_ingred" id="comp_ingred">'
+            +'<option value="" disabled selected style="display: none;">Выберете значение</option>'
+            @foreach($data['ingredients'] as $ingredient)
+            +'<option value="{{$ingredient['id']}}">{{$ingredient['name']}}</option>'
+            @endforeach
+            +'</select>'
+        +'<label for="comp_ingred_weight">'
+            +'<h3>Доля ингредиента в компоненте (0 - 1) *</h3>'
+        +'</label>'
+        +'<input type="number" name="comp_ingred_weight" id="comp_ingred_weight">'
+            +'<button class="deleteButton" type="button" style="" onclick="removeIngredient('+ingredients+')">Удалить ингредиент</button>'
+        +'</div>');
+    }
+
+    function removeIngredient(id) {
+        let ingredients = document.getElementsByClassName('ingredient');
+        let labels = document.getElementsByClassName('label_for_ingredient');
+        let buttons = document.getElementsByClassName('deleteButton');
+        for(let i = ingredients.length - 1 ; i > id; i--){
+            labels[i].innerHTML = labels[i-1].innerHTML;
+            console.log(buttons[i-1])
+            console.log(buttons[i-2].getAttribute('onclick'))
+            buttons[i-1].setAttribute('onclick', buttons[i-2].getAttribute('onclick'))
+        }
+        ingredients[id].remove();
     }
 
     window.onload = document.getElementsByClassName('main_cursor_hover')[0].click();

@@ -627,3 +627,6 @@ div#max{
 .hundredWidth{
     width: 100% !important;
 }
+div.ingredient{
+    margin-top: 15px;
+}

@@ -117,15 +117,14 @@
                         for(order of data['data']['orders']){
                             var keys = Object.keys(order['products'])
                             let firstProd = order['products'][keys[0]];
-                            console.log(firstProd);
                             delete order['products'][keys[0]];
                             dataForTable += '<tr class="border"> <td class="border" rowspan="'+order['countProducts']+'">'+order['interval']['start']+'</td><td class="border" rowspan="'+order['countProducts']+'"><select name="" id="" style="border: none;" onchange="changeStatus(this.value, '+order['id']+')">'
                             dataForTable += '<option value="" hidden selected>'+order['status']['status']+'</option>'
-                            dataForTable += '<option value="1">Принят</option>'
-                            dataForTable += '<option value="3" style="background-color: yellow;">Готовится</option>'
-                            dataForTable += '<option value="4" style="background-color: limegreen;">Готов/Оплата</option>'
-                            dataForTable += '<option value="6" style="background-color: darkgreen;">Выдан</option>'
-                            dataForTable += '<option value="7" style="background-color: red;">Отменён</option>'
+                            dataForTable += '<option value="1" style="background-color: #edab23;">Принят</option>'
+                            dataForTable += '<option value="3" style="background-color: #88d792;">Готовится</option>'
+                            dataForTable += '<option value="4" style="background-color: #52b7ff;">Готов/Оплата</option>'
+                            dataForTable += '<option value="6" style="background-color: #24d53a;">Выдан</option>'
+                            dataForTable += '<option value="7" style="background-color: #df3535;">Отменён</option>'
                             dataForTable += '</select>'
                             dataForTable += '</td>'
                             dataForTable += '<td class="border">'+firstProd['product_type']['name']+'</td>'
@@ -162,7 +161,6 @@
                             dataForTable += '</tr>'
 
                             let product = order['products'];
-                            console.log(product)
                             for(id in product){
                                 componentHTML = '<td class="border" style="text-align: left;">';
                                 for(component in firstProd['components']){
