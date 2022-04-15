@@ -27,11 +27,49 @@
             <div style="border: 1px solid black; padding: 5px; margin: 10px 0; background-color:  #ffbeb5;" class="main_cursor_hover hundredWidth" onclick="hiddenFormAdd(this,'div_ingredient')">
                 <h4 style="all:revert; margin: 0; text-align: center;">Ингредиент</h4>
             </div>
+            @if(count($errors)>0)
+                <div class="error" style="color:red; padding: 20px;">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @php
+                    $old = array();
+                    $old = old();
+                @endphp
+            @endif
+            @if(session()->exists('errorInDB'))
+                @php
+                    $old_data = session('data');
+                @endphp
+                <div class="error" style="color:red; padding: 20px;">
+                    <ul>
+                        <li>{{session('errorInDB')}}</li>
+                    </ul>
+                </div>
+            @endif
+            @if(session()->exists('errorWithWeight'))
+                @php
+                    $old_data = session('data');
+                @endphp
+                <div class="error" style="color:red; padding: 20px;">
+                    <ul>
+                        <li>{{session('errorWithWeight')}}</li>
+                    </ul>
+                </div>
+            @endif
+            @if(session()->exists('was_created'))
+                <div
+                    style="padding: 0 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_created')}}
+                </div>
+            @endif
         </div>
         <div style="float: right; width: 65%; padding: 10px;">
             {{--      Форма добавления товара      --}}
             <div class="hidden_form" id="div_tort">
-                <form action="" name="product" method="POST"
+                <form action="{{route('adminProductsAddProduct')}}" name="product" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">продукта</span></h2>
@@ -72,11 +110,12 @@
                     <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
+                    {{csrf_field()}}
                 </form>
             </div>
             {{--      Форма добавления типа продукта       --}}
             <div style="" class="hidden_form" id="div_type_product">
-                <form action="" name="type_product" method="POST"
+                <form action="{{route('adminProductsAddProductType')}}" name="type_product" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">типа продукта</span></h2>
@@ -103,11 +142,12 @@
                     <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
+                    {{csrf_field()}}
                 </form>
             </div>
             {{--      Форма добавления компонента      --}}
             <div style="" class="hidden_form" id="div_comp">
-                <form action="" name="component" method="POST"
+                <form action="{{route('adminProductsAddComponent')}}" name="component" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">компонента</span></h2>
@@ -173,11 +213,12 @@
                     <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
+                    {{csrf_field()}}
                 </form>
             </div>
             {{--      Форма добавления типа компонента      --}}
             <div style="" class="hidden_form" id="div_type_comp">
-                <form action="" name="type_component" method="POST"
+                <form action="{{route('adminProductsAddComponentType')}}" name="type_component" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">типа компонента</span></h2>
@@ -192,11 +233,12 @@
                     <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
+                    {{csrf_field()}}
                 </form>
             </div>
             {{--      Форма добавления ингредиента      --}}
             <div style="" class="hidden_form" id="div_ingredient">
-                <form action="" name="ingredient" method="POST"
+                <form action="{{route('adminProductsAddIngredient')}}" name="ingredient" method="POST"
                       style="border: 1px solid #6e6e6e; border-radius: 10px; padding: 10px;"
                       enctype="multipart/form-data" class="formAddAdmin">
                     <h2 style="text-align: center; font-size: 20px;">Добавление <span style="text-decoration: underline;">ингредиента</span></h2>
@@ -211,6 +253,7 @@
                     <div style="text-align: center; margin: 20px auto 0 auto;">
                         <button type="submit" style="text-decoration: underline;">Добавить</button>
                     </div>
+                    {{csrf_field()}}
                 </form>
             </div>
         </div>
