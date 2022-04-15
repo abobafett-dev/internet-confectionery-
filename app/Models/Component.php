@@ -17,6 +17,8 @@ class Component extends Model
         'description',
         'coefficient',
         'price',
-        'photo'
+        'photo',
+        'created_at',
+        'updated_at'
     ];
 }

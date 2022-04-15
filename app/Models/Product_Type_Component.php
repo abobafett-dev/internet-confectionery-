@@ -14,5 +14,7 @@ class Product_Type_Component extends Model
     protected $fillable = [
         'id_product_type',
         'id_component',
+        'created_at',
+        'updated_at'
     ];
 }

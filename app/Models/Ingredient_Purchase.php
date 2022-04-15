@@ -15,6 +15,8 @@ class Ingredient_Purchase extends Model
         'id_ingredient',
         'id_purchase',
         'weight',
-        'price'
+        'price',
+        'created_at',
+        'updated_at'
     ];
 }

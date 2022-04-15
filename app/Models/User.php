@@ -29,7 +29,9 @@ class User extends Authenticatable
         'phone',
         'avatar',
         'bonus',
-        'id_user_status'
+        'id_user_status',
+        'created_at',
+        'updated_at'
     ];
 
     /**

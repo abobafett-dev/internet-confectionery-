@@ -18,6 +18,8 @@ class Product extends Model
         'price',
         'photo',
         'bonus_coefficient',
-        'isActive'
+        'isActive',
+        'created_at',
+        'updated_at'
     ];
 }

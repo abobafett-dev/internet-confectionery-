@@ -16,6 +16,7 @@ class Product_Type extends Model
         'weight_min',
         'weight_initial',
         'weight_max',
-        ''
+        'created_at',
+        'updated_at'
     ];
 }

@@ -14,6 +14,8 @@ class Ingredient_Component extends Model
     protected $fillable = [
         'id_ingredient',
         'id_component',
-        'weight'
+        'weight',
+        'created_at',
+        'updated_at'
     ];
 }

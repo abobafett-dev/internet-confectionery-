@@ -12,6 +12,8 @@ class Source extends Model
     protected $table = 'source';
 
     protected $fillable = [
-        'source'
+        'source',
+        'created_at',
+        'updated_at'
     ];
 }

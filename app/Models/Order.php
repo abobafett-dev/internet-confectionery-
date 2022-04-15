@@ -18,6 +18,8 @@ class Order extends Model
         'address',
         'id_schedule_standard',
         'id_schedule_interval',
-        'paidByPoints'
+        'paidByPoints',
+        'created_at',
+        'updated_at'
     ];
 }

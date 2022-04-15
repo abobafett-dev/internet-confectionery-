@@ -13,6 +13,8 @@ class Product_Component extends Model
 
     protected $fillable = [
         'id_product',
-        'id_component'
+        'id_component',
+        'created_at',
+        'updated_at'
     ];
 }

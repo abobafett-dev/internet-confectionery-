@@ -16,6 +16,8 @@ class Schedule_Standard extends Model
         'start',
         'end',
         'orders_count',
-        'isActive'
+        'isActive',
+        'created_at',
+        'updated_at'
     ];
 }

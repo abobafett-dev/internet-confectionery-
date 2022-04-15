@@ -19,6 +19,8 @@ class Order_Product extends Model
         'review_text',
         'review_photo',
         'comment_text',
-        'comment_photo'
+        'comment_photo',
+        'created_at',
+        'updated_at'
     ];
 }

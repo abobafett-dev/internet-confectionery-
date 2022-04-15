@@ -138,6 +138,8 @@ class UserCartController extends Controller
 
     public function addOrderToUser(Request $request)
     {
+        $currentDate = date("Y-m-d H:i:s");
+
         if (Auth::user() != null) {
 
             $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
@@ -344,7 +346,9 @@ class UserCartController extends Controller
                             $isCount = true;
                         }
                         if ($isCount && $isWeight) {
-                            Order_Product::insert(['id_product' => (int)$cookie, 'id_order' => $currentOrder['id'], 'count' => $currentCount, 'weight' => $currentWeight]);
+                            Order_Product::insert(['id_product' => (int)$cookie, 'id_order' => $currentOrder['id'],
+                                'count' => $currentCount, 'weight' => $currentWeight,
+                                'created_at'=>$currentDate,'updated_at'=>$currentDate]);
                             break;
                         }
                     }
@@ -352,7 +356,9 @@ class UserCartController extends Controller
                     if (!($isCount && $isWeight)) {
                         $product = Product::find((int)$cookie)->toArray();
                         $product_type = Product_Type::find($product['id_product_type'])->toArray();
-                        Order_Product::insert(['id_product' => (int)$cookie, 'id_order' => $currentOrder['id'], 'count' => 1, 'weight' => $product_type['weight_initial']]);
+                        Order_Product::insert(['id_product' => (int)$cookie, 'id_order' => $currentOrder['id'],
+                            'count' => 1, 'weight' => $product_type['weight_initial'],
+                            'created_at'=>$currentDate,'updated_at'=>$currentDate]);
                     }
 
                     Cookie::queue(Cookie::forget('orderInCartProducts_' . $cookie));

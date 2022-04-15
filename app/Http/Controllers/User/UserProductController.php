@@ -48,14 +48,18 @@ class UserProductController extends Controller
 
     private function checkAndAddProductInChart($productId)
     {
+        $currentDate = date("Y-m-d H:i:s");
         $orderInCart = Order::where('id_user', Auth::id())->where('id_status', 2)->get()->toArray();
         if ($orderInCart == null) {
-            $orderId = Order::insertGetId(['id_user' => Auth::id(), 'id_status' => 2]);
-            Order_Product::insert(['id_order' => $orderId, 'id_product' => $productId, 'count' => 1]);
+            $orderId = Order::insertGetId(['id_user' => Auth::id(), 'id_status' => 2,
+                'created_at'=>$currentDate,'updated_at'=>$currentDate]);
+            Order_Product::insert(['id_order' => $orderId, 'id_product' => $productId, 'count' => 1,
+                'created_at'=>$currentDate,'updated_at'=>$currentDate]);
         } else {
             $order_product = Order_Product::where('id_order', $orderInCart[0]['id'])->where('id_product', $productId);
             if (count($order_product->get()->toArray()) == 0) {
-                Order_Product::insert(['id_order' => $orderInCart[0]['id'], 'id_product' => $productId, 'count' => 1]);
+                Order_Product::insert(['id_order' => $orderInCart[0]['id'], 'id_product' => $productId, 'count' => 1,
+                    'created_at'=>$currentDate,'updated_at'=>$currentDate]);
             }
         }
     }
@@ -71,6 +75,7 @@ class UserProductController extends Controller
         $products_components = array();
         $price = 0;
         $components = array();
+        $currentDate = date("Y-m-d H:i:s");
         $product_type = Product_Type::where('name', $request_copy['product_type'])->get()->toArray();
 
         foreach ($request_copy as $constructor => $component) {
@@ -120,9 +125,11 @@ class UserProductController extends Controller
 
         } elseif (Auth::user() == null && $productFromConstructor == null) {
             $productId = Product::insertGetId(['id_product_type' => $product_type[0]['id'], 'name' => 'Конструктор',
-                'photo' => $componentDecor['photo'], 'isActive' => true, 'bonus_coefficient' => 1, 'price' => $price]);
+                'photo' => $componentDecor['photo'], 'isActive' => true, 'bonus_coefficient' => 1, 'price' => $price,
+                'created_at'=>$currentDate,'updated_at'=>$currentDate]);
             foreach($components as $component){
-                Product_Component::insert(['id_product'=>$productId, 'id_component'=>$component['id']]);
+                Product_Component::insert(['id_product'=>$productId, 'id_component'=>$component['id'],
+                    'created_at'=>$currentDate,'updated_at'=>$currentDate]);
             }
             $cookie = cookie('orderInCartProducts_' . $productId, $productId, 2680000);
             return redirect($request->server()['HTTP_REFERER'])->cookie($cookie);
@@ -136,9 +143,11 @@ class UserProductController extends Controller
 
         } elseif (Auth::user() != null && $productFromConstructor == null) {
             $productId = Product::insertGetId(['id_product_type' => $product_type[0]['id'], 'name' => 'Конструктор',
-                'photo' => $componentDecor['photo'], 'isActive' => true, 'bonus_coefficient' => 1, 'price' => $price]);
+                'photo' => $componentDecor['photo'], 'isActive' => true, 'bonus_coefficient' => 1, 'price' => $price,
+                'created_at'=>$currentDate,'updated_at'=>$currentDate]);
             foreach($components as $component){
-                Product_Component::insert(['id_product'=>$productId, 'id_component'=>$component['id']]);
+                Product_Component::insert(['id_product'=>$productId, 'id_component'=>$component['id'],
+                    'created_at'=>$currentDate,'updated_at'=>$currentDate]);
             }
 
             $UserProductController = new UserProductController();

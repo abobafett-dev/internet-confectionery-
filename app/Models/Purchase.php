@@ -13,6 +13,8 @@ class Purchase extends Model
 
     protected $fillable = [
         'seller',
-        'purchased_at'
+        'purchased_at',
+        'created_at',
+        'updated_at'
     ];
 }

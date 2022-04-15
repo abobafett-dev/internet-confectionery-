@@ -12,6 +12,8 @@ class Component_Type extends Model
     protected $table = 'component_type';
 
     protected $fillable = [
-        'name'
+        'name',
+        'created_at',
+        'updated_at'
     ];
 }

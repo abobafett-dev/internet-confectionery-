@@ -17,6 +17,8 @@ class Schedule_Update extends Model
         'orders_count_update',
         'id_schedule_interval',
         'start',
-        'end'
+        'end',
+        'created_at',
+        'updated_at'
     ];
 }

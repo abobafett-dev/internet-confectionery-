@@ -14,6 +14,8 @@ class Schedule_Interval extends Model
     protected $fillable = [
         'start',
         'end',
-        'isActive'
+        'isActive',
+        'created_at',
+        'updated_at'
     ];
 }
