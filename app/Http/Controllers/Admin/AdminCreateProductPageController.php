@@ -129,8 +129,8 @@ class AdminCreateProductPageController extends Controller
         }
 
         $currentDate = date("Y-m-d H:i:s");
-        Product_Type::insert(['name' => $data['title_type_prod'],'weight_min' => $data['type_prod_min_weight'],
-            'weight_max' => $data['type_prod_max_weight'],'weight_initial' => $data['type_prod_standard_weight'],
+        Product_Type::insert(['name' => $data['title_type_prod'], 'weight_min' => $data['type_prod_min_weight'],
+            'weight_max' => $data['type_prod_max_weight'], 'weight_initial' => $data['type_prod_standard_weight'],
             'isConstructor' => $data['using_constr'],
             'created_at' => $currentDate, 'updated_at' => $currentDate]);
         return redirect('admin/products/add')->with(['was_created' => 'Тип Продукта с именем ' . $data['title_type_prod'] . ' был создан']);
@@ -142,13 +142,98 @@ class AdminCreateProductPageController extends Controller
         if (Auth::user()->id_user_status != 2)
             abort(403);
 
+        $request->validate([
+            'comp_name' => ['required', 'string', 'max:255'],
+            'comp_description' => ['nullable', 'string'],
+            'comp_type_comp' => ['required', 'integer'],
+            'comp_type_prod' => ['required', 'integer'],
+            'comp_price' => ['required', 'numeric', 'min:0'],
+            'comp_coef' => ['required', 'numeric', 'between:0,1'],
+            'comp' => ['filled', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
+        ]);
+
         $data = $request->toArray();
         $copyOfData = $request->toArray();
+        unset($copyOfData['_token']);
+        foreach ($copyOfData as $index => $copyOfDatum) {
+            if ($copyOfDatum == null) {
+                $copyOfData[$index] = "";
+            }
+        }
 
-        var_dump($data);
-        var_dump($copyOfData);
+        $componentType = Component_Type::find($data['comp_type_comp'])->get()->toArray();
+
+        if (empty($componentType))
+            return redirect('admin/products/add')->with(['errorInDB' => 'Тип компонента не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
+
+        $productType = Product_Type::find($data['comp_type_prod'])->get()->toArray();
+
+        if (empty($productType))
+            return redirect('admin/products/add')->with(['errorInDB' => 'Тип продукта не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
+
+        unset($data['comp_name']);
+        unset($data['comp_description']);
+        unset($data['comp_type_comp']);
+        unset($data['comp_type_prod']);
+        unset($data['comp_price']);
+        unset($data['comp_coef']);
+        unset($data['comp']);
+
+        $ingredients = [];
+        $weightOfAllIngredients = 0;
+
+        foreach ($data as $datum) {
+            if (strpos($datum, 'comp_ingred_')) {
+                $indexOfData = explode('_', $datum)[2];
+                if (!isset($data["comp_ingred_weight_" + $indexOfData])) {
+                    return redirect('admin/products/add')->with(['errorWithData' => 'Доля для ингредиента не найдена', 'data' => $copyOfData]);
+                }
+
+                $ingredient = Ingredient::find($datum)->get()->toArray();
+                if (empty($ingredient)) {
+                    return redirect('admin/products/add')->with(['errorInDB' => 'Ингредиент не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
+                }
+
+                array_push($ingredients, [$indexOfData => $ingredient]);
+                $weightOfAllIngredients += $data["comp_ingred_weight_" + $indexOfData];
+                if ($weightOfAllIngredients > 1) {
+                    return redirect('admin/products/add')->with(['errorWithWeight' => 'Общая сумма долей ингредиентов должна быть меньше или равна 1', 'data' => $copyOfData]);
+                }
+            }
+        }
+
+//        var_dump($data);
+//        var_dump($copyOfData);
 
         $currentDate = date("Y-m-d H:i:s");
+        $currentComponentId = Component::insertGetId(
+            [
+                'name' => $copyOfData['comp_name'], 'description' => $copyOfData['comp_description'],
+                'coefficient' => 1, 'id_component_type' => $componentType['id'],
+                'price' => $copyOfData['comp_price'], 'isActive' => true, 'photo' => 'Заглушка',
+                'created_at' => $currentDate, 'updated_at' => $currentDate
+            ]);
+
+        $path = Storage::putFileAs('public/component', $copyOfData['comp'], $currentComponentId . ".png");
+
+        Component::find($currentComponentId)->update(['photo' => $path]);
+
+        Product_Type_Component::insert(
+            [
+                'id_product_type' => $productType['id'],
+                'id_component' => $currentComponentId,
+                'created_at' => $currentDate, 'updated_at' => $currentDate
+            ]);
+        foreach ($ingredients as $index => $ingredient) {
+            Ingredient::insert([
+                'id_ingredient' => $ingredient['id'],
+                'id_component' => $currentComponentId,
+                'weight' => $data['comp_ingred_weight_' + $index],
+                'created_at' => $currentDate, 'updated_at' => $currentDate
+            ]);
+        }
+
+        return redirect('admin/products/add')->with(['was_created' => 'Компонент с именем ' . $data['comp_name'] . ' был создан']);
     }
 
     function addComponentType(Request $request)

@@ -60,6 +60,16 @@
                     </ul>
                 </div>
             @endif
+            @if(session()->exists('errorWithData'))
+                @php
+                    $old_data = session('data');
+                @endphp
+                <div class="error" style="color:red; padding: 20px;">
+                    <ul>
+                        <li>{{session('errorWithData')}}</li>
+                    </ul>
+                </div>
+            @endif
             @if(session()->exists('was_created'))
                 <div
                     style="padding: 0 10px; margin-left:auto; text-align: center; background-color: #9df99d; border-radius: 10px;">{{session('was_created')}}
