@@ -195,7 +195,7 @@
                         <label for="comp_ingred">
                             <h3 class="label_for_ingredient">Ингредиент 1 *</h3>
                         </label>
-                        <select type="number" name="comp_ingred" id="comp_ingred">
+                        <select type="number" name="comp_ingred_1" id="comp_ingred">
                             <option value="" disabled selected style="display: none;">Выберете значение</option>
                             @foreach($data['ingredients'] as $ingredient)
                                 <option value="{{$ingredient['id']}}">{{$ingredient['name']}}</option>
@@ -204,7 +204,7 @@
                         <label for="comp_ingred_weight">
                             <h3>Доля ингредиента в компоненте (0 - 1) *</h3>
                         </label>
-                        <input type="number" name="comp_ingred_weight" id="comp_ingred_weight">
+                        <input type="number" name="comp_ingred_weight_1" id="comp_ingred_weight">
                     </div>
 
                     <div id='addButton' style="text-align: center; margin: 20px auto 0 auto;">
