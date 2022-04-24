@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Component;
 use App\Models\Component_Type;
 use App\Models\Ingredient;
+use App\Models\Ingredient_Component;
 use App\Models\Product_Type;
 use App\Models\Product_Type_Component;
 use Illuminate\Http\Request;
@@ -225,7 +226,7 @@ class AdminCreateProductPageController extends Controller
                 'created_at' => $currentDate, 'updated_at' => $currentDate
             ]);
         foreach ($ingredients as $index => $ingredient) {
-            Ingredient::insert([
+            Ingredient_Component::insert([
                 'id_ingredient' => $ingredient['id'],
                 'id_component' => $currentComponentId,
                 'weight' => $data['comp_ingred_weight_' + $index],
