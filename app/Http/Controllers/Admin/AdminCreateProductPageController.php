@@ -217,8 +217,10 @@ class AdminCreateProductPageController extends Controller
             'created_at' => $currentDate,
             'updated_at' => $currentDate
         ]);
-
-        $path = Storage::putFileAs('public/product', $data['img'], $productId . ".png");
+        if(isset($data['img']))
+            $path = Storage::putFileAs('public/product', $data['img'], $productId . ".png");
+        else
+            $path = "";
 
         Product::find($productId)->update(['photo' => $path]);
 
@@ -365,9 +367,13 @@ class AdminCreateProductPageController extends Controller
         $weightOfAllIngredients = 0;
 
         foreach ($data as $index => $datum) {
-            if (strpos($index, 'comp_ingred_') !== false) {
+            if (strpos($index, 'comp_ingred_') !== false && strpos($index, 'comp_ingred_weight_') === false) {
                 $indexOfData = $datum;
                 if (!isset($data["comp_ingred_weight_" . explode('_', $index)[2]])) {
+//                    var_dump($index);
+//                    var_dump($data["comp_ingred_weight_" . explode('_', $index)[2]]);
+//                    var_dump($data);
+//                    return;
                     return redirect('admin/products/add')->with(['errorWithData' => 'Доля для ингредиента не найдена', 'data' => $copyOfData]);
                 }
 
@@ -406,7 +412,10 @@ class AdminCreateProductPageController extends Controller
                 'created_at' => $currentDate, 'updated_at' => $currentDate
             ]);
 
-        $path = Storage::putFileAs('public/component', $data['comp'], $currentComponentId . ".png");
+        if(isset($data['comp']))
+            $path = Storage::putFileAs('public/component', $data['comp'], $currentComponentId . ".png");
+        else
+            $path = "";
 
         Component::find($currentComponentId)->update(['photo' => $path]);
 
@@ -425,7 +434,7 @@ class AdminCreateProductPageController extends Controller
             ]);
         }
 
-        return redirect('admin/products/add')->with(['was_created' => 'Компонент с именем ' . $data['comp_name'] . ' был создан']);
+        return redirect('admin/products/add')->with(['was_created' => 'Компонент с именем ' . $copyOfData['comp_name'] . ' был создан']);
     }
 
     function addComponentType(Request $request)
