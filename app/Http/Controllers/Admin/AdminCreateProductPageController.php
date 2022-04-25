@@ -194,6 +194,9 @@ class AdminCreateProductPageController extends Controller
                 if (empty($ingredient)) {
                     return redirect('admin/products/add')->with(['errorInDB' => 'Ингредиент не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
                 }
+                if(in_array($ingredient, $ingredients)){
+                    return redirect('admin/products/add')->with(['errorWithData' => 'Нельзя дублировать ингредиенты', 'data' => $copyOfData]);
+                }
 
                 array_push($ingredients, [$indexOfData => $ingredient]);
                 $weightOfAllIngredients += $data["comp_ingred_weight_" + $indexOfData];
@@ -203,14 +206,13 @@ class AdminCreateProductPageController extends Controller
             }
         }
 
-//        var_dump($data);
-//        var_dump($copyOfData);
+        $componentCoefficient = round(round($copyOfData['comp_coef'], 2) * $productType['weight_initial'], 2);
 
         $currentDate = date("Y-m-d H:i:s");
         $currentComponentId = Component::insertGetId(
             [
                 'name' => $copyOfData['comp_name'], 'description' => $copyOfData['comp_description'],
-                'coefficient' => 1, 'id_component_type' => $componentType['id'],
+                'coefficient' => $componentCoefficient, 'id_component_type' => $componentType['id'],
                 'price' => $copyOfData['comp_price'], 'isActive' => true, 'photo' => 'Заглушка',
                 'created_at' => $currentDate, 'updated_at' => $currentDate
             ]);
