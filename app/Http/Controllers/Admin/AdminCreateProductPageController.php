@@ -186,7 +186,7 @@ class AdminCreateProductPageController extends Controller
         foreach ($data as $datum) {
             if (strpos($datum, 'comp_ingred_')) {
                 $indexOfData = explode('_', $datum)[2];
-                if (!isset($data["comp_ingred_weight_" + $indexOfData])) {
+                if (!isset($data["comp_ingred_weight_" . $indexOfData])) {
                     return redirect('admin/products/add')->with(['errorWithData' => 'Доля для ингредиента не найдена', 'data' => $copyOfData]);
                 }
 
@@ -198,13 +198,21 @@ class AdminCreateProductPageController extends Controller
                     return redirect('admin/products/add')->with(['errorWithData' => 'Нельзя дублировать ингредиенты', 'data' => $copyOfData]);
                 }
 
-                array_push($ingredients, [$indexOfData => $ingredient]);
-                $weightOfAllIngredients += $data["comp_ingred_weight_" + $indexOfData];
+                $ingredients[$indexOfData] = $ingredient;
+                $weightOfAllIngredients += $data["comp_ingred_weight_" . $indexOfData];
                 if ($weightOfAllIngredients > 1) {
                     return redirect('admin/products/add')->with(['errorWithWeight' => 'Общая сумма долей ингредиентов должна быть меньше или равна 1', 'data' => $copyOfData]);
                 }
             }
         }
+
+        $ingredientsValidate = [];
+        foreach($ingredients as $index => $ingredient){
+            $ingredientsValidate['comp_ingred_'.$index] = ['integer'];
+            $ingredientsValidate['comp_ingred_weight_'.$index] = ['numeric', 'between:0,1'];
+        }
+
+        $request->validate($ingredientsValidate);
 
         $componentCoefficient = round(round($copyOfData['comp_coef'], 2) * $productType['weight_initial'], 2);
 
@@ -231,7 +239,7 @@ class AdminCreateProductPageController extends Controller
             Ingredient_Component::insert([
                 'id_ingredient' => $ingredient['id'],
                 'id_component' => $currentComponentId,
-                'weight' => $data['comp_ingred_weight_' + $index],
+                'weight' => $data['comp_ingred_weight_'.$index],
                 'created_at' => $currentDate, 'updated_at' => $currentDate
             ]);
         }
