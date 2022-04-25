@@ -77,7 +77,7 @@ class AdminCreateProductPageController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
-            'bonus' => ['required', 'numeric', 'min:0.9'],
+            'bonus' => ['nullable', 'numeric', 'min:0.9'],
             'type_prod' => ['required', 'integer'],
             'img' => ['filled', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
         ]);
@@ -204,6 +204,11 @@ class AdminCreateProductPageController extends Controller
                 return redirect('admin/products/add')->with(['errorWithData' => 'Обнаружены дубликаты продукта по компонентам с именем '. $dublicateProduct['name'], 'data' => $copyOfData]);
             }
         }
+        $bonus_coefficient = null;
+        if($copyOfData['bonus'] == "")
+            $bonus_coefficient = 1;
+        else
+            $bonus_coefficient = $copyOfData['bonus'];
 
         $currentDate = date("Y-m-d H:i:s");
         $productId = Product::insertGetId([
@@ -212,7 +217,7 @@ class AdminCreateProductPageController extends Controller
             'description' => $copyOfData['description'],
             'photo' => "Заглушка",
             'price' => $copyOfData['price'],
-            'bonus_coefficient' => $copyOfData['bonus'],
+            'bonus_coefficient' => $bonus_coefficient,
             'isActive' => false,
             'created_at' => $currentDate,
             'updated_at' => $currentDate
