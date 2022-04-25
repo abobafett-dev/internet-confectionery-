@@ -123,7 +123,7 @@ class AdminCreateProductPageController extends Controller
             }
         }
 
-        $isProductTypeInDB = !empty(Ingredient::where('name', $data['title_type_prod'])->get()->toArray());
+        $isProductTypeInDB = !empty(Ingredient::where('name', $data['title_type_prod'])->toArray());
 
         if ($isProductTypeInDB) {
             return redirect('admin/products/add')->with(['errorInDB' => 'Тип Продукта с указанным именем уже создан', 'data' => $copyOfData]);
@@ -162,15 +162,41 @@ class AdminCreateProductPageController extends Controller
             }
         }
 
-        $componentType = Component_Type::find($data['comp_type_comp'])->get()->toArray();
+        $componentType = Component_Type::find($data['comp_type_comp'])->toArray();
 
         if (empty($componentType))
             return redirect('admin/products/add')->with(['errorInDB' => 'Тип компонента не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
 
-        $productType = Product_Type::find($data['comp_type_prod'])->get()->toArray();
+        $productType = Product_Type::find($data['comp_type_prod'])->toArray();
 
         if (empty($productType))
             return redirect('admin/products/add')->with(['errorInDB' => 'Тип продукта не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
+
+        $productTypeComponents = Product_Type_Component::where('id_product_type', $productType['id'])->where('id_component', $componentType['id'])->get()->toArray();
+        $componentTypesComponents = Component::where('id_component_type', $componentType['id'])->get()->toArray();
+
+        $componentTypes = [];
+        $indexToDelete = null;
+
+        foreach($productTypeComponents as $productTypeComponent){
+            foreach ($componentTypesComponents as $index=>$component){
+                if($component['id'] == $productTypeComponent['id_component']){
+                    $indexToDelete = $index;
+                    if(!in_array($component['id_component_type'], $componentTypes)){
+                        $componentTypes[count($componentTypes) - 1] = $component['id_component_type'];
+                    }
+                    break;
+                }
+            }
+            if(!is_null($indexToDelete)){
+                unset($componentTypes[$indexToDelete]);
+                $indexToDelete = null;
+            }
+        }
+
+        if(!in_array($componentType['id'], $componentTypes)){
+            return redirect('admin/products/add')->with(['errorInDB' => 'Тип компонента нельзя выбрать для этого типа продукта, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
+        }
 
         unset($data['comp_name']);
         unset($data['comp_description']);
@@ -190,7 +216,7 @@ class AdminCreateProductPageController extends Controller
                     return redirect('admin/products/add')->with(['errorWithData' => 'Доля для ингредиента не найдена', 'data' => $copyOfData]);
                 }
 
-                $ingredient = Ingredient::find($datum)->get()->toArray();
+                $ingredient = Ingredient::find($datum)->toArray();
                 if (empty($ingredient)) {
                     return redirect('admin/products/add')->with(['errorInDB' => 'Ингредиент не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
                 }
@@ -268,7 +294,7 @@ class AdminCreateProductPageController extends Controller
 
         $data['title_comp_prod'] = mb_strtolower($data['title_comp_prod']);
 
-        $isComponentTypeInDB = !empty(Ingredient::where('name', $data['title_comp_prod'])->get()->toArray());
+        $isComponentTypeInDB = !empty(Ingredient::where('name', $data['title_comp_prod'])->toArray());
         if ($isComponentTypeInDB) {
             return redirect('admin/products/add')->with(['errorInDB' => 'Тип Компонента уже создан', 'data' => $copyOfData]);
         }
@@ -303,7 +329,7 @@ class AdminCreateProductPageController extends Controller
         $data['title_ingredient'] = mb_strtolower($data['title_ingredient']);
         $data['ingredient_description'] = mb_strtolower($data['ingredient_description']);
 
-        $isIngredientInDB = !empty(Ingredient::where('name', $data['title_ingredient'])->get()->toArray());
+        $isIngredientInDB = !empty(Ingredient::where('name', $data['title_ingredient'])->toArray());
         if ($isIngredientInDB) {
             return redirect('admin/products/add')->with(['errorInDB' => 'Ингредиент уже создан', 'data' => $copyOfData]);
         }
