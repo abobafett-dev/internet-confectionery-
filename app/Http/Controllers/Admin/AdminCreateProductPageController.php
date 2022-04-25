@@ -104,7 +104,7 @@ class AdminCreateProductPageController extends Controller
 
         $components = [];
 
-        $productType = Product_Type::find($data['comp_type_prod'])->toArray();
+        $productType = Product_Type::find($copyOfData['type_prod'])->toArray();
 
         if (empty($productType))
             return redirect('admin/products/add')->with(['errorInDB' => 'Тип продукта не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
