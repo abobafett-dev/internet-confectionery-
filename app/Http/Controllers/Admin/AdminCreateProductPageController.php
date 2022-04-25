@@ -70,7 +70,6 @@ class AdminCreateProductPageController extends Controller
 
     function addProduct(Request $request)
     {
-
         if (Auth::user()->id_user_status != 2)
             abort(403);
 
@@ -100,7 +99,7 @@ class AdminCreateProductPageController extends Controller
         unset($data['price']);
         unset($data['bonus']);
         unset($data['type_prod']);
-        unset($data['img']);
+        unset($copyOfData['img']);
 
         $components = [];
 
@@ -110,7 +109,7 @@ class AdminCreateProductPageController extends Controller
             return redirect('admin/products/add')->with(['errorInDB' => 'Тип продукта не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
 
         foreach ($data as $index => $datum) {
-            if (strpos($index, 'component_') != false) {
+            if (strpos($index, 'component_') !== false) {
                 $component = Component::find($datum)->toArray();
                 if (empty($component)) {
                     return redirect('admin/products/add')->with(['errorInDB' => 'Компонент не обнаружен, перезагрузите страницу - ctrl+F5', 'data' => $copyOfData]);
@@ -119,7 +118,42 @@ class AdminCreateProductPageController extends Controller
             }
         }
 
-        $productTypeComponents = Product_Type_Component::where('id_product_type', $copyOfData['type_prod']);
+
+        $productTypeComponents = Product_Type_Component::where('id_product_type', $copyOfData['type_prod'])->get()->toArray();
+//        var_dump($productTypeComponents);
+        $componentsOfProductType = [];
+//        $componentsOfProductType = Component::where('id',array_shift($productTypeComponents)['id_component']);
+
+        foreach($productTypeComponents as $productTypeComponent){
+            $component = Component::find($productTypeComponent['id_component'])->toArray();
+            $componentsOfProductType[$productTypeComponent['id_component']] = $component;
+//            var_dump($component);
+//            $componentsOfProductType = $componentsOfProductType->orWhere('id', $productTypeComponent['id_component']);
+        }
+
+        $mustComponents = [];
+        foreach ($componentsOfProductType as $componentOfProductType){
+            if(!in_array($componentOfProductType['id_component_type'], $mustComponents)){
+                $mustComponents[$componentOfProductType['id_component_type']] = $componentOfProductType['id_component_type'];
+            }
+        }
+
+
+
+//        foreach($productTypeComponents as $productTypeComponent){
+//            if(!in_array($productTypeComponent['id_component'], $mustComponents)){
+//                $mustComponents[count($mustComponents)] = $productTypeComponent['id_component'];
+//            }
+//        }
+
+//        var_dump($productTypeComponents);
+//        var_dump($mustComponents);
+//        var_dump($components);
+
+
+        if(count($mustComponents) != count($components)){
+            return redirect('admin/products/add')->with(['errorWithData' => 'Компоненты не для всех типов компонентов были выбраны были выбраны', 'data' => $copyOfData]);
+        }
 
         $validatedComponents = [];
 
@@ -141,9 +175,33 @@ class AdminCreateProductPageController extends Controller
                 if ($firstComponent['id'] == $secondComponent['id']) {
                     continue;
                 }
-                if ($firstComponent['id_component_type'] = $secondComponent['id_component_type']) {
+                if ($firstComponent['id_component_type'] == $secondComponent['id_component_type']) {
                     return redirect('admin/products/add')->with(['errorWithData' => 'Обнаружены дубликаты компонентов', 'data' => $copyOfData]);
                 }
+            }
+        }
+
+        $dublicatedComponentsByProducts = [];
+        $firstComponent = array_shift($components);
+        $isDublicatedProducts = Product_Component::where('id_component',$firstComponent['id']);
+        array_unshift($components, $firstComponent);
+
+        foreach ($components as $component){
+            $isDublicatedProducts = $isDublicatedProducts->orWhere('id_component',$component['id']);
+        }
+
+        $isDublicatedProducts = $isDublicatedProducts->get()->toArray();
+
+        foreach($isDublicatedProducts as $isDublicatedProduct){
+            if(!isset($dublicatedComponentsByProducts[$isDublicatedProduct['id_product']]))
+                $dublicatedComponentsByProducts[$isDublicatedProduct['id_product']] = [];
+            $dublicatedComponentsByProducts[$isDublicatedProduct['id_product']][$isDublicatedProduct['id_component']] = $isDublicatedProduct['id_product'];
+        }
+
+        foreach($dublicatedComponentsByProducts as $index=>$dublicatedComponentsByProduct){
+            if(count($dublicatedComponentsByProduct) == count($components)){
+                $dublicateProduct = Product::find($index)->toArray();
+                return redirect('admin/products/add')->with(['errorWithData' => 'Обнаружены дубликаты продукта по компонентам с именем '. $dublicateProduct['name'], 'data' => $copyOfData]);
             }
         }
 
@@ -155,12 +213,12 @@ class AdminCreateProductPageController extends Controller
             'photo' => "Заглушка",
             'price' => $copyOfData['price'],
             'bonus_coefficient' => $copyOfData['bonus'],
-            'isActive' => true,
+            'isActive' => false,
             'created_at' => $currentDate,
             'updated_at' => $currentDate
         ]);
 
-        $path = Storage::putFileAs('public/product', $copyOfData['img'], $productId . ".png");
+        $path = Storage::putFileAs('public/product', $data['img'], $productId . ".png");
 
         Product::find($productId)->update(['photo' => $path]);
 
@@ -173,6 +231,7 @@ class AdminCreateProductPageController extends Controller
             ]);
         }
 
+        return redirect('admin/products/add')->with(['was_created' => 'Продукт с именем ' . $copyOfData['title'] . ' был создан']);
     }
 
     function addProductType(Request $request)
@@ -300,13 +359,13 @@ class AdminCreateProductPageController extends Controller
         unset($data['comp_type_prod']);
         unset($data['comp_price']);
         unset($data['comp_coef']);
-        unset($data['comp']);
+        unset($copyOfData['comp']);
 
         $ingredients = [];
         $weightOfAllIngredients = 0;
 
         foreach ($data as $index => $datum) {
-            if (strpos($index, 'comp_ingred_') != false) {
+            if (strpos($index, 'comp_ingred_') !== false) {
                 $indexOfData = $datum;
                 if (!isset($data["comp_ingred_weight_" . explode('_', $index)[2]])) {
                     return redirect('admin/products/add')->with(['errorWithData' => 'Доля для ингредиента не найдена', 'data' => $copyOfData]);
@@ -347,7 +406,7 @@ class AdminCreateProductPageController extends Controller
                 'created_at' => $currentDate, 'updated_at' => $currentDate
             ]);
 
-        $path = Storage::putFileAs('public/component', $copyOfData['comp'], $currentComponentId . ".png");
+        $path = Storage::putFileAs('public/component', $data['comp'], $currentComponentId . ".png");
 
         Component::find($currentComponentId)->update(['photo' => $path]);
 
