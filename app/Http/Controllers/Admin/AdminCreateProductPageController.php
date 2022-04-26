@@ -74,10 +74,10 @@ class AdminCreateProductPageController extends Controller
             abort(403);
 
         $request->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', 'unique:App\Models\Product,name'],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
-            'bonus' => ['nullable', 'numeric', 'min:0.9'],
+            'bonus' => ['nullable', 'numeric', 'min:0'],
             'type_prod' => ['required', 'integer'],
             'img' => ['filled', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
         ]);
@@ -85,8 +85,6 @@ class AdminCreateProductPageController extends Controller
         $data = $request->toArray();
         $copyOfData = $request->toArray();
 
-//        var_dump($data);
-//        var_dump($copyOfData);
         unset($copyOfData['_token']);
         foreach ($copyOfData as $index => $copyOfDatum) {
             if ($copyOfDatum == null) {
@@ -120,15 +118,11 @@ class AdminCreateProductPageController extends Controller
 
 
         $productTypeComponents = Product_Type_Component::where('id_product_type', $copyOfData['type_prod'])->get()->toArray();
-//        var_dump($productTypeComponents);
         $componentsOfProductType = [];
-//        $componentsOfProductType = Component::where('id',array_shift($productTypeComponents)['id_component']);
 
         foreach($productTypeComponents as $productTypeComponent){
             $component = Component::find($productTypeComponent['id_component'])->toArray();
             $componentsOfProductType[$productTypeComponent['id_component']] = $component;
-//            var_dump($component);
-//            $componentsOfProductType = $componentsOfProductType->orWhere('id', $productTypeComponent['id_component']);
         }
 
         $mustComponents = [];
@@ -137,18 +131,6 @@ class AdminCreateProductPageController extends Controller
                 $mustComponents[$componentOfProductType['id_component_type']] = $componentOfProductType['id_component_type'];
             }
         }
-
-
-
-//        foreach($productTypeComponents as $productTypeComponent){
-//            if(!in_array($productTypeComponent['id_component'], $mustComponents)){
-//                $mustComponents[count($mustComponents)] = $productTypeComponent['id_component'];
-//            }
-//        }
-
-//        var_dump($productTypeComponents);
-//        var_dump($mustComponents);
-//        var_dump($components);
 
 
         if(count($mustComponents) != count($components)){
