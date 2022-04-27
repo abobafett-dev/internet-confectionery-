@@ -79,7 +79,7 @@ class AdminCreateProductPageController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'bonus' => ['nullable', 'numeric', 'min:0'],
             'type_prod' => ['required', 'integer'],
-            'img' => ['filled', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
+            'img' => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
         ]);
 
         $data = $request->toArray();
@@ -294,7 +294,7 @@ class AdminCreateProductPageController extends Controller
             'comp_type_prod' => ['required', 'integer'],
             'comp_price' => ['required', 'numeric', 'min:0'],
             'comp_coef' => ['required', 'numeric', 'between:0,1'],
-            'comp' => ['filled', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
+            'comp' => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:5500'],
         ]);
 
         $data = $request->toArray();
