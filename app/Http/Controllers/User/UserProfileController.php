@@ -12,7 +12,7 @@ use App\Models\Schedule_Interval;
 use App\Models\Schedule_Standard;
 use App\Models\Source;
 use App\Models\User;
-use App\Models\User_status;
+use App\Models\User_Status;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -24,7 +24,7 @@ class UserProfileController extends Controller
 {
     public function create()
     {
-        $userStatus = User_status::find(Auth::user()->id_user_status);
+        $userStatus = User_Status::find(Auth::user()->id_user_status);
         $sources = Source::all();
         $user = Auth::user();
         if ($user['avatar'] != null)
