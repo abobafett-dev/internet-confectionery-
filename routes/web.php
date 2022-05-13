@@ -20,14 +20,23 @@ Route::GET('/', [Controllers\User\UserMainPageController::class, 'createProducts
 Route::GET('/userAgreement', [Controllers\User\UserAgreementController::class, 'create'])
     ->name('userAgreement');
 
-Route::GET('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
+Route::GET('/account', [Controllers\User\UserProfileController::class, 'create'])
     ->middleware(['auth'])->name('dashboard');
 
-Route::POST('/dashboard/update',[Controllers\User\UserProfileController::class, 'update'])
+Route::POST('/account/update',[Controllers\User\UserProfileController::class, 'update'])
     ->middleware(['auth'])->name('updateProfileUser');
 
-Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 'delete'])
+Route::POST('/account/delete',[Controllers\User\UserProfileController::class, 'delete'])
     ->middleware(['auth'])->name('deleteProfileUser');
+
+//Route::GET('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
+//    ->middleware(['auth'])->name('dashboard');
+//
+//Route::POST('/dashboard/update',[Controllers\User\UserProfileController::class, 'update'])
+//    ->middleware(['auth'])->name('updateProfileUser');
+//
+//Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 'delete'])
+//    ->middleware(['auth'])->name('deleteProfileUser');
 
 Route::POST('/product/addProductInCart/{product}', [Controllers\User\UserProductController::class, 'addProductInCart'])
     ->name('addProductInCart');
