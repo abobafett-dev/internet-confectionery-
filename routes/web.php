@@ -29,6 +29,15 @@ Route::POST('/dashboard/update',[Controllers\User\UserProfileController::class, 
 Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 'delete'])
     ->middleware(['auth'])->name('deleteProfileUser');
 
+//Route::GET('/dashboard', [Controllers\User\UserProfileController::class, 'create'])
+//    ->middleware(['auth'])->name('dashboard');
+//
+//Route::POST('/dashboard/update',[Controllers\User\UserProfileController::class, 'update'])
+//    ->middleware(['auth'])->name('updateProfileUser');
+//
+//Route::POST('/dashboard/delete',[Controllers\User\UserProfileController::class, 'delete'])
+//    ->middleware(['auth'])->name('deleteProfileUser');
+
 Route::POST('/product/addProductInCart/{product}', [Controllers\User\UserProductController::class, 'addProductInCart'])
     ->name('addProductInCart');
 
