@@ -83,8 +83,8 @@
                                     </div>
                                 @endforeach
                                     <div  style="margin-left: 10px; display: flex; justify-content: center; margin: 5px 0px; align-items: center;">
-                                        <button style="border: 1px solid black;">
-                                            <h4 style="all:revert; margin: 0px; text-align: center; margin-top: 10px;">Заказать!</h4>
+                                        <button style="border: 1px solid black; padding: 10px 5px;">
+                                            <h4 style="all:revert; margin: 0px; text-align: center;">Заказать!</h4>
                                         </button>
                                     </div>
                                 {{csrf_field()}}

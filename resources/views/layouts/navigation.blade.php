@@ -208,8 +208,8 @@
                             <a href="/" class="menu_a">
                                 <li>Главная</li>
                             </a><a href="{{route('catalog')}}" class="menu_a">
-                                <li>Каталог</li>
-                                {{--                            </a><a href="" class="menu_a">--}}
+                                <li>Каталог</li></a>
+                                {{--                            <a href="" class="menu_a">--}}
                                 {{--                                <li>Акции</li>--}}
 {{--                            </a><a href="" class="menu_a">--}}
 {{--                                <li>Для покупателя</li>--}}
