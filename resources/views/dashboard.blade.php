@@ -10,22 +10,22 @@
         @endif
     </x-slot>
     <div id="history">
-        <div class="items-center" id="nav">
-            <div>
-                История заказов:
-            </div>
-            <div id="filter">
-                <label>Поиск
-                    <input type="text" name="nameOfTort" onkeypress="">
-                </label>
-                <label>с
-                    <input type="date" name="from" onkeypress="">
-                </label>
-                <label>до
-                    <input type="date" name="to" onkeypress="">
-                </label>
-            </div>
-        </div>
+{{--        <div class="items-center" id="nav">--}}
+{{--            <div>--}}
+{{--                История заказов:--}}
+{{--            </div>--}}
+{{--            <div id="filter">--}}
+{{--                <label>Поиск--}}
+{{--                    <input type="text" name="nameOfTort" onkeypress="">--}}
+{{--                </label>--}}
+{{--                <label>с--}}
+{{--                    <input type="date" name="from" onkeypress="">--}}
+{{--                </label>--}}
+{{--                <label>до--}}
+{{--                    <input type="date" name="to" onkeypress="">--}}
+{{--                </label>--}}
+{{--            </div>--}}
+{{--        </div>--}}
         @if(count($orders) > 0)
             <div style="">
                 @foreach($orders as $order)
@@ -66,12 +66,12 @@
                                     {{$order['status']['status']}}
                                 </div>
                                 <div style="padding: 5px 15px; width: 160px;">
-                                    <form action="" method="POST">
-                                        <input type="text" hidden value="{{$order['id']}}">
-                                        <button style="color: #730101FF; text-decoration: underline #730101;">Удалить
-                                            заказ
-                                        </button>
-                                    </form>
+{{--                                    <form action="" method="POST">--}}
+{{--                                        <input type="text" hidden value="{{$order['id']}}">--}}
+{{--                                        <button style="color: #730101FF; text-decoration: underline #730101;">Удалить--}}
+{{--                                            заказ--}}
+{{--                                        </button>--}}
+{{--                                    </form>--}}
                                 </div>
                             </div>
                             @php $sum = 0 @endphp
@@ -125,13 +125,13 @@
                                     </a>
                                 </div>
                                 <div style="width: 35%; text-align: right;">
-                                    <form action="" method="">
-                                        <button
-                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">
-                                            Оставить
-                                            отзыв
-                                        </button>
-                                    </form>
+{{--                                    <form action="" method="">--}}
+{{--                                        <button--}}
+{{--                                            style="padding: 5px 15px; color: #3636e3; text-decoration: underline;">--}}
+{{--                                            Оставить--}}
+{{--                                            отзыв--}}
+{{--                                        </button>--}}
+{{--                                    </form>--}}
                                 </div>
                                 <div style="text-align: right; width: 42%; padding: 5px 25px; font-weight: bold;">
                                     Итого: {{$sum}}₽
@@ -225,14 +225,14 @@
                 {{ csrf_field() }}
             </form>
         @endif
-        @if($user['id_user_status'] == 2)
-            <div style="text-decoration: underline">
-                <div><a href="{{route('adminOrders',date('Y-m-d'))}}">График заказов</a></div>
-                <div><a href="">Администрирование данных</a></div>
-            </div>
+{{--        @if($user['id_user_status'] == 2)--}}
+{{--            <div style="text-decoration: underline">--}}
+{{--                <div><a href="{{route('adminOrders',date('Y-m-d'))}}">График заказов</a></div>--}}
+{{--                <div><a href="">Администрирование данных</a></div>--}}
+{{--            </div>--}}
 
 
-        @endif
+{{--        @endif--}}
     </div>
 </x-app-layout>
 <script>
