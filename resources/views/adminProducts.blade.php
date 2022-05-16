@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight" style="margin-right: -160px;">
-            {{ __('Каталог товаров') }}
+            {{ __('Ассортимент') }}
         </h2>
         @if(session()->exists('was_updated'))
             <div
@@ -9,44 +9,44 @@
             </div>
         @endif
     </x-slot>
-    <div id="catalog_right">
-        <a href="{{route('adminProductsAdd')}}" style="text-decoration: underline;">
-            <div
-                style="text-align: center; margin: auto auto 10px auto; box-shadow: 0px 0px 5px rgb(0 0 0 / 30%); padding: 10px 0px;">
-                Добавить новый товар
-            </div>
-        </a>
-        <div id="catalog_filter">
-            <div style="width: 100%;">
-                <h3 style="all: revert; margin: 5px;">Поиск по каталогу</h3><input placeholder="Введите ключевые слова"
-                                                                                   type="text" id="catalog_search">
-            </div>
-            <div>
-                <h3 style="all: revert; margin: 5px;">Тип продукта</h3>
-                @foreach($product_types as $type)
-                    <label>
-                        <div id="div_checkbox{{$type['id']}}">
-                            <input onclick="catalog_textColor({{$type['id']}})" class="hidCheckBox" type="checkbox"
-                                   name="type" value="{{$type['id']}}" id="checkbox{{$type['id']}}">
-                            <label for="checkbox{{$type['id']}}" id="label_checkbox{{$type['id']}}">
-                                {{$type['name']}}
-                            </label>
-                        </div>
-                    </label>
-                @endforeach
-            </div>
-            <div style="width: 100%;">
-                <h3 style="all: revert; margin: 5px;">Вес</h3>
-                <input placeholder="Введите вес в кг" type="text" id="catalog_search">
-                <div style="display: flex; justify-content: space-around;">
-                    <label class="catalog-custom-radio"><input type="radio" name="weight" id=""
-                                                               style="margin-right: 15px;"><span>До</span></label>
-                    <label class="catalog-custom-radio"><input type="radio" name="weight" id=""
-                                                               style="margin-right: 15px;"><span>От</span></label>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--    <div id="catalog_right">--}}
+{{--        <a href="{{route('adminProductsAdd')}}" style="text-decoration: underline;">--}}
+{{--            <div--}}
+{{--                style="text-align: center; margin: auto auto 10px auto; box-shadow: 0px 0px 5px rgb(0 0 0 / 30%); padding: 10px 0px;">--}}
+{{--                Добавить новый товар--}}
+{{--            </div>--}}
+{{--        </a>--}}
+{{--        <div id="catalog_filter">--}}
+{{--            <div style="width: 100%;">--}}
+{{--                <h3 style="all: revert; margin: 5px;">Поиск по каталогу</h3><input placeholder="Введите ключевые слова"--}}
+{{--                                                                                   type="text" id="catalog_search">--}}
+{{--            </div>--}}
+{{--            <div>--}}
+{{--                <h3 style="all: revert; margin: 5px;">Тип продукта</h3>--}}
+{{--                @foreach($product_types as $type)--}}
+{{--                    <label>--}}
+{{--                        <div id="div_checkbox{{$type['id']}}">--}}
+{{--                            <input onclick="catalog_textColor({{$type['id']}})" class="hidCheckBox" type="checkbox"--}}
+{{--                                   name="type" value="{{$type['id']}}" id="checkbox{{$type['id']}}">--}}
+{{--                            <label for="checkbox{{$type['id']}}" id="label_checkbox{{$type['id']}}">--}}
+{{--                                {{$type['name']}}--}}
+{{--                            </label>--}}
+{{--                        </div>--}}
+{{--                    </label>--}}
+{{--                @endforeach--}}
+{{--            </div>--}}
+{{--            <div style="width: 100%;">--}}
+{{--                <h3 style="all: revert; margin: 5px;">Вес</h3>--}}
+{{--                <input placeholder="Введите вес в кг" type="text" id="catalog_search">--}}
+{{--                <div style="display: flex; justify-content: space-around;">--}}
+{{--                    <label class="catalog-custom-radio"><input type="radio" name="weight" id=""--}}
+{{--                                                               style="margin-right: 15px;"><span>До</span></label>--}}
+{{--                    <label class="catalog-custom-radio"><input type="radio" name="weight" id=""--}}
+{{--                                                               style="margin-right: 15px;"><span>От</span></label>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
     <div id="catalog_left">
         @foreach($productsWithTypesAndCount as $iter)
             <div class="catalog_products" style="padding-bottom: 0px; overflow: hidden;">
