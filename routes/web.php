@@ -13,9 +13,6 @@ use App\Http\Controllers;
 | contains the "web" middleware group. Now create something great!
 |
 */
-if (env('APP_ENV') === 'production') {
-    URL::forceSchema('https');
-}
 
 Route::GET('/', [Controllers\User\UserMainPageController::class, 'createProducts'])
     ->name('main');
