@@ -163,6 +163,12 @@ class UserCartController extends Controller
             foreach($scheduleIntervals as $scheduleInterval){
                 if(isset($scheduleInterval['id']) && $scheduleInterval['id'] == (int)($request['schedule_interval'])){
                     $isTrueInterval = true;
+                    $timeOfInterval = explode(":", $scheduleInterval['end']);
+                    $currentDate_plus_day  = mktime(date($timeOfInterval[0]), date($timeOfInterval[1]), date($timeOfInterval[2]), date("m"),   date("d")+1,   date("Y"));
+                    $dateForIntervals = strtotime($request['dateForIntervals']);
+                    if($dateForIntervals < $currentDate_plus_day){
+                        return redirect('cart')->with(['errorInterval' => 'Дата не доступна для выбора, необходимо выбрать дату на день больше текущей', $propertiesFromRequest]);
+                    }
                 }
             }
             if (!isset($isTrueInterval)) {
@@ -254,6 +260,7 @@ class UserCartController extends Controller
 
             $propertiesFromRequest = $request->toArray();
 
+
             $UserCartController = new UserCartController();
             $scheduleIntervals = $UserCartController->createIntervalsAjax($request);
             $countForDay = $scheduleIntervals[count($scheduleIntervals) - 1];
@@ -262,6 +269,12 @@ class UserCartController extends Controller
             foreach($scheduleIntervals as $scheduleInterval){
                 if(isset($scheduleInterval['id']) && $scheduleInterval['id'] == (int)($request['schedule_interval'])){
                     $isTrueInterval = true;
+                    $timeOfInterval = explode(":", $scheduleInterval['end']);
+                    $currentDate_plus_day  = mktime(date($timeOfInterval[0]), date($timeOfInterval[1]), date($timeOfInterval[2]), date("m"),   date("d")+1,   date("Y"));
+                    $dateForIntervals = strtotime($request['dateForIntervals']);
+                    if($dateForIntervals < $currentDate_plus_day){
+                        return redirect('cart')->with(['errorInterval' => 'Дата не доступна для выбора, необходимо выбрать дату на день больше текущей', $propertiesFromRequest]);
+                    }
                 }
             }
             if (!isset($isTrueInterval)) {
@@ -286,6 +299,8 @@ class UserCartController extends Controller
                     }
                 }
             }
+
+
 
             $orderDate = $propertiesFromRequest['dateForIntervals'];
 
