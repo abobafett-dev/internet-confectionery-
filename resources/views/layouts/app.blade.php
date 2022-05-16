@@ -27,12 +27,13 @@ use Illuminate\Support\Facades\URL;
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body class="font-sans antialiased" style="">
-        <div class="min-h-screen bg-gray-100" style="padding-bottom: 325px;">
+        <div class="min-h-screen bg-gray-100">
+{{--        <div class="min-h-screen bg-gray-100" style="padding-bottom: 325px;">--}}
             <!-- Page Heading -->
             @include('layouts.navigation')
 
             <!-- Page Content -->
-            <main style="padding-bottom: 40px;">
+            <main style="">
                 <div class="py-12">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -45,8 +46,8 @@ use Illuminate\Support\Facades\URL;
             </main>
         </div>
         <!-- Page Footer -->
-        <div style="margin-top: -325px;">
+{{--        <div style="margin-top: -325px;">--}}
         @include('layouts.footer')
-        </div>
+{{--        </div>--}}
     </body>
 </html>

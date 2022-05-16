@@ -1,6 +1,6 @@
 <footer>
     <div id="footer-box-up">
-        <a href="https://docs.google.com/forms/d/1fRQnxlc4e-bSWsyoeXMThWhBmMLoUWwjMz5WZGMv-gU/viewform?edit_requested=true" style="color: white;">Оставить отзыв о сайте</a>
+        <a href="https://docs.google.com/forms/d/1fRQnxlc4e-bSWsyoeXMThWhBmMLoUWwjMz5WZGMv-gU/viewform?edit_requested=true" style="color: white; text-decoration: underline; margin-left: 50px;">Оставить отзыв о сайте</a>
 {{--        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="footer-box-up-flex">--}}
 {{--            <div id="contacts">--}}
 {{--                <h2 style="all:revert;margin: 10px; font-weight: normal; border-bottom: 1px solid white;">Контакты</h2>--}}
