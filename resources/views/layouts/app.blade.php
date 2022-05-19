@@ -15,15 +15,29 @@ use Illuminate\Support\Facades\URL;
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/normalize.css')}}" type="text/css">
-        <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/app.css') }}" type="text/css">
-        <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/style.css')}}" type="text/css">
+        @if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/normalize.css')}}" type="text/css">
+            <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/app.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/style.css')}}" type="text/css">
+        @endif
+
+        @if(config('app.env') === 'local')
+            <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/normalize.css')}}" type="text/css">
+            <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/app.css') }}" type="text/css">
+            <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/style.css')}}" type="text/css">
+        @endif
 
         <!-- Logo -->
         <link rel="shortcut icon" href="{{\Illuminate\Support\Facades\Storage::url('logo/Logo.png')}}" type="image/png">
 
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        @if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            <script src="{{ Illuminate\Support\Facades\URL::secureAsset('js/app.js') }}" defer></script>
+        @endif
+
+        @if(config('app.env') === 'local')
+            <script src="{{ Illuminate\Support\Facades\URL::asset('js/app.js') }}" defer></script>
+        @endif
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body class="font-sans antialiased" style="">
