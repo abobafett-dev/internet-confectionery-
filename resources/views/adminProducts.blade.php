@@ -48,34 +48,41 @@
 {{--        </div>--}}
 {{--    </div>--}}
     <div id="catalog_left">
+        <a href="{{route('adminProductsAdd')}}" style="text-decoration: underline;">
+            <div class="catalog_products" style="padding-bottom: 0px; overflow: hidden;" id="assortAddNew">
+                <div style="display: flex; justify-content: center; padding: 10px 0;"><h4
+                        style="all: revert; margin: 5px;">Новый товар</h4>
+                </div>
+                <div style="display: flex; justify-content: center;width:15em; height: 15em; align-items: center;">
+                    <img src="{{\Illuminate\Support\Facades\Storage::url("logo/iconAdd.png")}}" alt="" style="width:10em; height: 10em;">
+                </div>
+                <div style="display: flex; justify-content: center; margin-bottom: 10px;"><h4
+                        style="all: revert; margin: 5px;">Добавить</h4>
+                </div>
+            </div>
+        </a>
         @foreach($productsWithTypesAndCount as $iter)
             <div class="catalog_products" style="padding-bottom: 0px; overflow: hidden;">
-                <div style="display: flex; justify-content: center; margin-bottom: 10px;"><h4
+
+                <div style="display: flex; justify-content: center; padding: 10px 0; @if(!$iter['isActive'])background-color:#f34d4d99; @else background-color: #7ed57e; @endif"  id="header_{{$iter['id']}}"><h4
                         style="all: revert; margin: 5px;">{{$iter['name']}}</h4></div>
                 <div style="display: flex; justify-content: center;"><img src="{{$iter['photo']}}" alt=""
                                                                           style="width:15em; height: 15em;"></div>
+
                 <div style="display: none; max-width: 100%;">{{$iter['description']}}
                     <div style="display: none;">{{$iter['price']}}
                         <input type="text" value="{{$product_types[$iter['id_product_type']]['weight_min']}}" hidden>
                         <input type="text" value="{{$product_types[$iter['id_product_type']]['weight_max']}}" hidden>
                     </div>
                 </div>
-                @if(!$iter['isActive'])
+
                     <div id="text_{{$iter['id']}}"
-                        style="padding: 10px 0px; border-top: 1px solid rgba(0,0,0,0.2);text-align: center; background-color:#f34d4d99; color: #028300;">
+                        style="padding: 10px 0px; text-align: center; @if(!$iter['isActive']) background-color:#f34d4d99; @else  background-color: #7ed57e; @endif">
 
                             <button onclick="changeStatus({{$iter['id']}})">Восстановить к продаже</button>
                             {{ csrf_field() }}
 
                     </div>
-                @else
-                    <div id="text_{{$iter['id']}}"
-                        style="padding: 10px 0px; border-top: 1px solid rgba(0,0,0,0.2); text-align: center; background-color: #7ed57e; color: red;">
-                            <button onclick="changeStatus({{$iter['id']}})">Убрать из продажи</button>
-                            {{ csrf_field() }}
-                    </div>
-
-                @endif
             </div>
         @endforeach
     </div>
@@ -98,15 +105,13 @@
                     console.log(document.getElementById('text_'+id_prod).style.backgroundColor)
                     if(document.getElementById('text_'+id_prod).style.backgroundColor == 'rgba(243, 77, 77, 0.6)'){
                         document.getElementById('text_'+id_prod).style.backgroundColor = '#7ed57e';
-                        document.getElementById('text_'+id_prod).style.color = 'red';
+                        document.getElementById('header_'+id_prod).style.backgroundColor = '#7ed57e';
                         document.getElementById('text_'+id_prod).innerHTML = '<button onclick="changeStatus('+id_prod+')">Убрать из продажи</button>{{ csrf_field() }}';
-                        console.log('first')
                     }
                     else{
                         document.getElementById('text_'+id_prod).style.backgroundColor = '#f34d4d99';
-                        document.getElementById('text_'+id_prod).style.color = '#028300';
+                        document.getElementById('header_'+id_prod).style.backgroundColor = '#f34d4d99';
                         document.getElementById('text_'+id_prod).innerHTML = '<button onclick="changeStatus('+id_prod+')">Восстановить к продаже</button>{{ csrf_field() }}';
-                        console.log('second')
                     }
                 },
                 error: function () {

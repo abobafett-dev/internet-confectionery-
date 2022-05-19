@@ -205,7 +205,7 @@
                         <label for="comp_ingred">
                             <h3 class="label_for_ingredient">Ингредиент 1 *</h3>
                         </label>
-                        <select type="number" name="comp_ingred_1" id="comp_ingred">
+                        <select type="number" name="comp_ingred_0" id="comp_ingred" class="selectsOfIngrid">
                             <option value="" disabled selected style="display: none;">Выберете значение</option>
                             @foreach($data['ingredients'] as $ingredient)
                                 <option value="{{$ingredient['id']}}">{{$ingredient['name']}}</option>
@@ -214,7 +214,7 @@
                         <label for="comp_ingred_weight">
                             <h3>Доля ингредиента в компоненте (0 - 1) *</h3>
                         </label>
-                        <input type="number" name="comp_ingred_weight_1" id="comp_ingred_weight">
+                        <input type="number" name="comp_ingred_weight_0" id="comp_ingred_weight" class="inputsOfIngrid">
                     </div>
 
                     <div id='addButton' style="text-align: center; margin: 20px auto 0 auto;">
@@ -299,7 +299,7 @@
             +'<label for="comp_ingred">'
             +'<h3 class="label_for_ingredient">Ингредиент '+(ingredients-(-1))+' *</h3>'
             +'</label>'
-            +'<select type="number" name="comp_ingred" id="comp_ingred">'
+            +'<select type="number" name="comp_ingred_'+ingredients+'" id="comp_ingred" class="selectsOfIngrid">'
             +'<option value="" disabled selected style="display: none;">Выберете значение</option>'
             @foreach($data['ingredients'] as $ingredient)
             +'<option value="{{$ingredient['id']}}">{{$ingredient['name']}}</option>'
@@ -308,7 +308,7 @@
         +'<label for="comp_ingred_weight">'
             +'<h3>Доля ингредиента в компоненте (0 - 1) *</h3>'
         +'</label>'
-        +'<input type="number" name="comp_ingred_weight" id="comp_ingred_weight">'
+        +'<input type="number" name="comp_ingred_weight_'+ingredients+'" id="comp_ingred_weight" class="inputsOfIngrid">'
             +'<button class="deleteButton" type="button" style="" onclick="removeIngredient('+ingredients+')">Удалить ингредиент</button>'
         +'</div>');
     }
@@ -317,11 +317,13 @@
         let ingredients = document.getElementsByClassName('ingredient');
         let labels = document.getElementsByClassName('label_for_ingredient');
         let buttons = document.getElementsByClassName('deleteButton');
+        let selects = document.getElementsByClassName('selectsOfIngrid');
+        let inputs = document.getElementsByClassName('inputsOfIngrid');
         for(let i = ingredients.length - 1 ; i > id; i--){
             labels[i].innerHTML = labels[i-1].innerHTML;
-            console.log(buttons[i-1])
-            console.log(buttons[i-2].getAttribute('onclick'))
             buttons[i-1].setAttribute('onclick', buttons[i-2].getAttribute('onclick'))
+            selects[i].name = selects[i-1].name
+            inputs[i].name = inputs[i-1].name
         }
         ingredients[id].remove();
     }
