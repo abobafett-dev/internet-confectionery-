@@ -12,14 +12,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/normalize.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/app.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::asset('css/style.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/normalize.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/app.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/style.css')}}" type="text/css">
 
     <!-- Logo -->
     <link rel="shortcut icon" href="/storage/logo/Logo.png" type="image/png">
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ Illuminate\Support\Facades\URL::secureAsset('js/app.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
