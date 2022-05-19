@@ -74,17 +74,19 @@
                                         Вес
                                         <div class="changes_position">
                                             <button type="button"
-                                                    onclick="one_weight('weight{{$key}}', -0.5, {{$loop->index}})">–
+                                                    onclick="one_weight('weight{{$key}}', -0.5, {{$loop->index}}, {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})">–
                                             </button>
-                                            <input onkeyup="range(this.value, 'weight{{$key}}')"
+                                            <input onkeyup="range(this.value, 'weight{{$key}}', {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})"
                                                    onkeypress="doubleOnly(this.value)" name="productWeight_{{$product['id']}}"
                                                    id="weight{{$key}}"
                                                    @if(isset($old)>0) value="{{$old['productWeight_'.$product['id']]}}" @else value="{{$product['product_type']['weight_initial']}}" @endif>
                                             <button type="button"
-                                                    onclick="one_weight('weight{{$key}}', 0.5, {{$loop->index}})">+
+                                                    onclick="one_weight('weight{{$key}}', 0.5, {{$loop->index}}, {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})">+
                                             </button>
                                         </div>
                                     </div>
+                                @php
+                                @endphp
                                 @else
                                     <input type="" id="weight{{$key}}" hidden disabled value="{{$product['product_type']['weight_initial']}}">
                                 @endif
@@ -92,11 +94,11 @@
                             <div class="cart_product_price">
                                 <div style="font-weight: bold; font-size: 18px;">
                                 <span class="totalForProduct"
-                                      id="total{{$key}}">{{$product['product_type']['weight_initial']*$product['price']}}</span>₽
+                                      id="total{{$key}}">{{round($product['product_type']['weight_initial']*$product['price'], 2)}}</span>₽
                                 </div>
                                 <div style="font-size: 14px;">
                                 <span
-                                    id="forOne{{$key}}">{{$product['product_type']['weight_initial']*$product['price']}}</span>₽/шт
+                                    id="forOne{{$key}}">{{round($product['product_type']['weight_initial']*$product['price'], 2)}}</span>₽/шт
                                 </div>
                             </div>
                         </div>
@@ -245,13 +247,12 @@
                 }
             });
         }
-        @if($product['product_type']['weight_min'] != $product['product_type']['weight_max'])
-        function one_weight(index, difference, number) {
+        function one_weight(index, difference, number, minWeight, maxWeight) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
-            if (document.getElementById(index).getAttribute('value') - (-difference) < {{$product['product_type']['weight_min']}}) {
-                alert('Минимальный вес продукта {{$product['product_type']['weight_min']}}кг')
-            } else if (document.getElementById(index).getAttribute('value') - (-difference) > {{$product['product_type']['weight_max']}}) {
-                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}кг')
+            if (document.getElementById(index).getAttribute('value') - (-difference) < minWeight) {
+                alert('Минимальный вес продукта '+minWeight+'кг')
+            } else if (document.getElementById(index).getAttribute('value') - (-difference) > maxWeight) {
+                alert('Максимальный вес продукта '+maxWeight+'кг')
             } else {
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
@@ -259,18 +260,17 @@
             document.getElementById('cart_product_counts_'+number).dispatchEvent(new Event('change'));
             document.getElementsByName('cart')[0].dispatchEvent(new Event('change'));
         }
-        function range(x, index) {
-            if ((x != '') && (x < {{$product['product_type']['weight_min']}})) {
-                alert('Минимальный вес продукта {{$product['product_type']['weight_min']}}кг');
-                document.getElementById(index).value = {{$product['product_type']['weight_min']}};
-                document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_min']}});
-            } else if ((x != '') && (x > {{$product['product_type']['weight_max']}})) {
-                alert('Максимальный вес продукта {{$product['product_type']['weight_max']}}кг');
-                document.getElementById(index).value = {{$product['product_type']['weight_max']}};
-                document.getElementById(index).setAttribute('value', {{$product['product_type']['weight_max']}});
+        function range(x, index, minWeight, maxWeight) {
+            if ((x != '') && (x < minWeight)) {
+                alert('Минимальный вес продукта '+minWeight+'кг');
+                document.getElementById(index).value = minWeight;
+                document.getElementById(index).setAttribute('value', minWeight);
+            } else if ((x != '') && (x > maxWeight)) {
+                alert('Максимальный вес продукта '+maxWeight+'кг');
+                document.getElementById(index).value = maxWeight;
+                document.getElementById(index).setAttribute('value', maxWeight);
             }
         }
-        @endif
         function one_count(index, difference, number) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < 1) {
@@ -315,8 +315,8 @@
             // weight_init na ed
             // document.getElementById('count'+index).value // kol-vo
             // document.getElementById('weight'+index).value // ves
-            document.getElementById('total' + index).innerHTML = (document.getElementById('weight' + index).value / weight_init) * price * document.getElementById('count' + index).value;
-            document.getElementById('forOne' + index).innerHTML = (document.getElementById('weight' + index).value / weight_init) * price;
+            document.getElementById('total' + index).innerHTML = ((document.getElementById('weight' + index).value / weight_init) * price * document.getElementById('count' + index).value).toFixed(2);
+            document.getElementById('forOne' + index).innerHTML = ((document.getElementById('weight' + index).value / weight_init) * price).toFixed(2);
         }
 
         function summaryTotalCost() {
@@ -326,7 +326,7 @@
                 summary -= -(document.getElementsByClassName('totalForProduct')[i].innerHTML);
                 count -= -(document.getElementsByClassName('countProd')[i].value);
             }
-            document.getElementById('summaryTotal').innerHTML = summary;
+            document.getElementById('summaryTotal').innerHTML = summary.toFixed(2);
             document.getElementById('have').innerHTML = count;
         }
 

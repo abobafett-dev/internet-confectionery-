@@ -48,6 +48,17 @@
 {{--        </div>--}}
 {{--    </div>--}}
     <div id="catalog_left">
+        <div class="catalog_products" style="padding-bottom: 0px; overflow: hidden;">
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;"><h4
+                    style="all: revert; margin: 5px;">Новый товар</h4>
+            </div>
+            <div style="display: flex; justify-content: center;width:15em; height: 15em; align-items: center;">
+                <img src="{{\Illuminate\Support\Facades\Storage::url("logo/iconAdd.png")}}" alt="" style="width:10em; height: 10em;">
+            </div>
+            <div style="display: flex; justify-content: center; margin-bottom: 10px;"><h4
+                    style="all: revert; margin: 5px;">Добавить</h4>
+            </div>
+        </div>
         @foreach($productsWithTypesAndCount as $iter)
             <div class="catalog_products" style="padding-bottom: 0px; overflow: hidden;">
                 <div style="display: flex; justify-content: center; margin-bottom: 10px;"><h4

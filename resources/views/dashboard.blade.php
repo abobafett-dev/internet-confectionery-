@@ -83,37 +83,51 @@
                                         <img src="{{$product['photo']}}" style="width:10em;">
                                     </div>
                                     <div
-                                        style="display: flex; justify-content: space-between; flex-direction: column; width: 400px;">
+                                        style="display: flex; justify-content: space-between; flex-direction: column; width: 470px;">
                                         <div>
                                             <h2 style="font-weight: bold; font-size: 1.5em;">{{$product['name']}}</h2>
-                                            {{$product['description']}}
+                                            <div style="text-align: justify;">{{$product['description']}}</div>
                                         </div>
-                                        @if($product['data']['weight'])
-                                            <div style="font-weight: bold;">{{$product['price']}}₽
-                                                за {{$product['product_type']['weight_initial']}}кг
-                                            </div>@endif
+{{--                                        @if($product['data']['weight'])--}}
+{{--                                            <div style="font-weight: bold;">{{$product['price']}}₽--}}
+{{--                                                за {{$product['product_type']['weight_initial']}}кг--}}
+{{--                                            </div>@endif--}}
                                     </div>
                                     <div
-                                        style="text-align: right; margin: 5px 10px; width: 200px;display: flex; justify-content: space-around; flex-direction: column;">
+                                        style="text-align: right; margin: 5px 10px; width: 150px;display: flex; justify-content: center; flex-direction: column;">
                                         @if($product['data']['weight'])
-                                            <div>
-                                                {{$product['data']['count']}} шт.
-                                                <br>
-                                                {{$product['data']['weight']}} кг
-                                            </div>
-                                            <div style="font-weight: bold;">
-                                                Сумма: {{$product['price']*$product['data']['count']*$product['data']['weight']/$product['product_type']['weight_initial']}}
-                                                ₽
-                                            </div>
+                                                <div style="font-weight: bold; margin-bottom: 10px;">
+                                                    Цена: {{$product['price']*$product['data']['count']*$product['data']['weight']/$product['product_type']['weight_initial']}}
+                                                    ₽
+                                                </div>
+                                                <div style="">
+                                                    {{$product['data']['count']}} шт. x {{$product['data']['weight']}} кг<br>x {{$product['price']/$product['product_type']['weight_initial']}} ₽/кг
+                                                </div>
+{{--                                            <div>--}}
+{{--                                                {{$product['data']['count']}} шт.--}}
+{{--                                                <br>--}}
+{{--                                                {{$product['data']['weight']}} кг--}}
+{{--                                            </div>--}}
+{{--                                            <div style="font-weight: bold;">--}}
+{{--                                                Сумма: {{$product['price']*$product['data']['count']*$product['data']['weight']/$product['product_type']['weight_initial']}}--}}
+{{--                                                ₽--}}
+{{--                                            </div>--}}
                                         @else
-                                            <div>
-                                                {{$product['data']['count']}} шт.
-                                                <br>
-                                            </div>
-                                            <div style="font-weight: bold;">
-                                                Сумма: {{$product['price']*$product['data']['count']}}
+                                            <div style="font-weight: bold; margin-bottom: 10px;">
+                                                Цена: {{$product['price']*$product['data']['count']}}
                                                 ₽
                                             </div>
+                                            <div style="">
+                                                {{$product['data']['count']}} шт. <br>х {{$product['price']}} ₽
+                                            </div>
+{{--                                            <div>--}}
+{{--                                                {{$product['data']['count']}} шт.--}}
+{{--                                                <br>--}}
+{{--                                            </div>--}}
+{{--                                            <div style="font-weight: bold;">--}}
+{{--                                                Сумма: {{$product['price']*$product['data']['count']}}--}}
+{{--                                                ₽--}}
+{{--                                            </div>--}}
                                         @endif
                                     </div>
                                 </div>
