@@ -6,13 +6,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>«Мечтай»</title>
+    <title>«Мечтай» \request()->getScheme()</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    @if(\request()->getScheme() == "https")
+    @if(\request()->getScheme() === "https")
         <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/normalize.css')}}" type="text/css">
         <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/app.css') }}" type="text/css">
         <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/style.css')}}" type="text/css">
@@ -27,7 +27,7 @@
     <!-- Logo -->
     <link rel="shortcut icon" href="/storage/logo/Logo.png" type="image/png">
 
-    @if(\request()->getScheme() == "https")
+    @if(\request()->getScheme() === "https")
         <script src="{{ Illuminate\Support\Facades\URL::secureAsset('js/app.js') }}" defer></script>
     @endif
 

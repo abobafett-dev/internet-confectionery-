@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\URL;
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        @if(\request()->getScheme() == "https")
+        @if(\request()->getScheme() === "https")
             <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/normalize.css')}}" type="text/css">
             <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/app.css') }}" type="text/css">
             <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/style.css')}}" type="text/css">
@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\URL;
         <link rel="shortcut icon" href="{{\Illuminate\Support\Facades\Storage::url('logo/Logo.png')}}" type="image/png">
 
         <!-- Scripts -->
-        @if(\request()->getScheme() == "https")
+        @if(\request()->getScheme() === "https")
             <script src="{{ Illuminate\Support\Facades\URL::secureAsset('js/app.js') }}" defer></script>
         @endif
 
