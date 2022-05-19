@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' && config('app.env') !== 'local') {
+        if (\request()->getSchemeAndHttpHost() == "https" && config('app.env') !== 'local') {
             $this->app['request']->server->set('HTTPS', true);
         }
 //        if (config('app.env') !== 'local') {
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' && config('app.env') !== 'local') {
+        if (\request()->getSchemeAndHttpHost() == "https" && config('app.env') !== 'local') {
             URL::forceScheme('https');
         }
 //        if (config('app.env') !== 'local') {
