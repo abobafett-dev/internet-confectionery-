@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    @if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' && config('app.env') !== 'local')
+    @if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
         <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/normalize.css')}}" type="text/css">
         <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/app.css') }}" type="text/css">
         <link rel="stylesheet" href="{{ Illuminate\Support\Facades\URL::secureAsset('css/style.css')}}" type="text/css">
@@ -27,7 +27,7 @@
     <!-- Logo -->
     <link rel="shortcut icon" href="/storage/logo/Logo.png" type="image/png">
 
-    @if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' && config('app.env') !== 'local')
+    @if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
         <script src="{{ Illuminate\Support\Facades\URL::secureAsset('js/app.js') }}" defer></script>
     @endif
 
