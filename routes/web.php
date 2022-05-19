@@ -14,10 +14,6 @@ use App\Http\Controllers;
 |
 */
 
-if(config('app.env') === "production"){
-    $this->app['request']->server->set('HTTPS', true);
-}
-
 Route::GET('/', [Controllers\User\UserMainPageController::class, 'createProducts'])
     ->name('main');
 
