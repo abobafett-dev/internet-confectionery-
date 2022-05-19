@@ -12,7 +12,23 @@
     <div style="padding: 20px;" id="">
         <div style="text-align: center; padding: 0px 0px 20px 0px;"><input type="date" value="{{$date['date']}}" onchange="dateOfBoard(this.value)"></div>
         <div id="container">
-            <h1 style="font-size: 26px; margin-left: 20px;">День недели: {{$date['weekDay']}}</h1>
+            <div style="font-size: 26px; margin-left: 20px;">День недели: {{$date['weekDay']}}</div>
+            <div style="font-size: 20px; margin-left: 40px;">Ингредиенты</div>
+            @if(count($data['ingregients']) > 0)
+                <table class="border ingredient" style="padding: 5px; margin: 0 0 20px 40px; border-radius: 10px;" id="tableIngredients">
+                    <tr class="border ingredient" style="text-align: center;">
+                        <td class="border ingredient">Ингредиент</td>
+                        <td class="border ingredient">кг</td>
+                    </tr>
+                    @foreach($data['ingregients'] as $key => $ingredient)
+                        <tr class="border ingredient" style="text-align: center;">
+                            <td class="border ingredient">{{$key}}</td>
+                            <td class="border ingredient">{{$ingredient}}</td>
+                        </tr>
+                    @endforeach
+                </table>
+            @endif
+            <div style="font-size: 20px; margin-left: 40px;">Заказы</div>
             @if(count($data['orders']) > 0)
             <table class="border" style="width: 100%; border-radius: 10px;" id="table">
                 <tr class="border" style="text-align: center;" id="header">
@@ -103,7 +119,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         function dateOfBoard(date) {
-            document.getElementById('container').innerHTML = '<h3 style="text-align: center; width: 100%;">Загрузка</h3>';
+            document.getElementById('container').innerHTML = '<div style="text-align: center; width: 100%;">Загрузка</div>';
             $.ajax({
                 url: "{{route('createAjax')}}",
                 type: "POST",
@@ -111,9 +127,18 @@
                 data: {date: date},
                 success: function (data) {
                     if (data['data']['orders'].length > 0) {
-                        document.getElementById('container').innerHTML = '<h1 style="font-size: 26px; margin-left: 20px;">День недели: '+data['date']['weekDay']+'</h1><table class="border" style="width: 100%; border-radius: 10px;" id="table"></table>'
+                        document.getElementById('container').innerHTML = '<div style="font-size: 26px; margin-left: 20px;">День недели: '+data['date']['weekDay']+'</div><div style="font-size: 20px; margin-left: 40px;">Ингредиенты</div><table class="border ingredient" style="padding: 5px; margin: 0 0 20px 40px; border-radius: 10px;" id="tableIngredients"></table><div style="font-size: 20px; margin-left: 40px;">Заказы</div><table class="border" style="width: 100%; border-radius: 10px;" id="table"></table>'
                         document.getElementById('table').innerHTML = '<tr class="border" style="text-align: center;" id="header"> <td class="border">Время</td> <td class="border">Статус</td> <td class="border">Вид</td> <td class="border" colspan="2">Подробнее</td><td class="border">Кг</td> <td class="border">Шт</td><td class="border" style="">Комменатрий</td><td class="border" style="">Оформление</td></tr>'
                         let dataForTable = '';
+                        let dataForIngredients = '<tr class="border" style="text-align: center;"><td class="border ingredient">Ингредиент</td><td class="border ingredient">кг</td></tr>';
+
+                            for(ingredient in data['data']['ingregients']){
+                                dataForIngredients += '<tr class="border" style="text-align: center;">'
+                                dataForIngredients += '<td class="border ingredient">'+ingredient+'</td>'
+                                dataForIngredients += '<td class="border ingredient">'+data['data']['ingregients'][ingredient].toFixed(2)+'</td></tr>'
+                                document.getElementById('tableIngredients').innerHTML = dataForIngredients;
+
+                            }
                         for(order of data['data']['orders']){
                             var keys = Object.keys(order['products'])
                             let firstProd = order['products'][keys[0]];
@@ -199,7 +224,6 @@
                 }
             });
         }
-
         function changeStatus(value, id) {
             $.ajax({
                 url: "{{route('changeStatusAjax')}}",
@@ -213,6 +237,7 @@
                     alert('Невозможно изменить статус заказа!');
                 }
             });
+
         }
     </script>
 </x-app-layout>
