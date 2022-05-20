@@ -78,8 +78,11 @@
 
                     <div id="text_{{$iter['id']}}"
                         style="padding: 10px 0px; text-align: center; @if(!$iter['isActive']) background-color:#f34d4d99; @else  background-color: #7ed57e; @endif">
-
+                        @if($iter['isActive'])
+                            <button onclick="changeStatus({{$iter['id']}})">Убрать из продажи</button>
+                        @else
                             <button onclick="changeStatus({{$iter['id']}})">Восстановить к продаже</button>
+                        @endif
                             {{ csrf_field() }}
 
                     </div>
