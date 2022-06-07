@@ -9,19 +9,21 @@
             </div>
         @endif
     </x-slot>
-    @if(count($errors)>0)
-        <div class="error" style="color:red; padding: 20px;">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{$error}}</li>
-                @endforeach
-            </ul>
-        </div>
-        @php
-            $old = array();
-            $old= old();
-        @endphp
-    @endif
+    @isset($errors)
+        @if(count($errors)>0)
+            <div class="error" style="color:red; padding: 20px;">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @php
+                $old = array();
+                $old= old();
+            @endphp
+        @endif
+    @endisset
     @if(session()->exists('errorInterval'))
         <div class="error" style="color:red; padding: 20px;">
             <ul>
@@ -49,7 +51,9 @@
                                     {{$product['description']}}
                                 </div>
                                 <div>
-                                    <button type="button" class="button_delete" onclick="deleteFromCart({{$product['id']}}@isset($orderInCart[0]['id']),{{$orderInCart[0]['id']}}@endisset)">Удалить
+                                    <button type="button" class="button_delete"
+                                            onclick="deleteFromCart({{$product['id']}}@isset($orderInCart[0]['id']),{{$orderInCart[0]['id']}}@endisset)">
+                                        Удалить
                                         из корзины
                                     </button>
                                 </div>
@@ -62,8 +66,10 @@
                                         <button type="button"
                                                 onclick="one_count('count{{$key}}', -1, {{$loop->index}})">–
                                         </button>
-                                        <input onkeypress="numbersOnly()" name="productCount_{{$product['id']}}" id="count{{$key}}" class="countProd"
-                                               @if(isset($old)>0) value="{{$old['productCount_'.$product['id']]}}" @else value="1" @endif>
+                                        <input onkeypress="numbersOnly()" name="productCount_{{$product['id']}}"
+                                               id="count{{$key}}" class="countProd"
+                                               @if(isset($old)>0) value="{{$old['productCount_'.$product['id']]}}"
+                                               @else value="1" @endif>
                                         <button type="button" onclick="one_count('count{{$key}}', 1, {{$loop->index}})">
                                             +
                                         </button>
@@ -74,21 +80,27 @@
                                         Вес
                                         <div class="changes_position">
                                             <button type="button"
-                                                    onclick="one_weight('weight{{$key}}', -0.5, {{$loop->index}}, {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})">–
+                                                    onclick="one_weight('weight{{$key}}', -0.5, {{$loop->index}}, {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})">
+                                                –
                                             </button>
-                                            <input onkeyup="range(this.value, 'weight{{$key}}', {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})"
-                                                   onkeypress="doubleOnly(this.value)" name="productWeight_{{$product['id']}}"
-                                                   id="weight{{$key}}"
-                                                   @if(isset($old)>0) value="{{$old['productWeight_'.$product['id']]}}" @else value="{{$product['product_type']['weight_initial']}}" @endif>
+                                            <input
+                                                onkeyup="range(this.value, 'weight{{$key}}', {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})"
+                                                onkeypress="doubleOnly(this.value)"
+                                                name="productWeight_{{$product['id']}}"
+                                                id="weight{{$key}}"
+                                                @if(isset($old)>0) value="{{$old['productWeight_'.$product['id']]}}"
+                                                @else value="{{$product['product_type']['weight_initial']}}" @endif>
                                             <button type="button"
-                                                    onclick="one_weight('weight{{$key}}', 0.5, {{$loop->index}}, {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})">+
+                                                    onclick="one_weight('weight{{$key}}', 0.5, {{$loop->index}}, {{$product['product_type']['weight_min']}}, {{$product['product_type']['weight_max']}})">
+                                                +
                                             </button>
                                         </div>
                                     </div>
-                                @php
-                                @endphp
+                                    @php
+                                        @endphp
                                 @else
-                                    <input type="" id="weight{{$key}}" hidden disabled value="{{$product['product_type']['weight_initial']}}">
+                                    <input type="" id="weight{{$key}}" hidden disabled
+                                           value="{{$product['product_type']['weight_initial']}}">
                                 @endif
                             </div>
                             <div class="cart_product_price">
@@ -104,10 +116,10 @@
                         </div>
                     </div>
                 @endforeach
-{{--                <div id="notes">--}}
-{{--                    <h3 style="all:revert; margin: 5px;">Комментарий к заказу</h3>--}}
-{{--                    <textarea name="notesForOrder" id="notesText" cols="120" rows="4">@if(isset($old)>0) {{$old['notesForOrder']}} @endif</textarea>--}}
-{{--                </div>--}}
+                {{--                <div id="notes">--}}
+                {{--                    <h3 style="all:revert; margin: 5px;">Комментарий к заказу</h3>--}}
+                {{--                    <textarea name="notesForOrder" id="notesText" cols="120" rows="4">@if(isset($old)>0) {{$old['notesForOrder']}} @endif</textarea>--}}
+                {{--                </div>--}}
         </div>
         <div style="margin-top: 20px; padding: 0px 15px 15px 15px; width: 21%; display: inline-block; float: right;">
             <div class="menuTotal">
@@ -122,7 +134,13 @@
                                 шт
                             </div>
                         </li>
-                        <label><li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)" type="date" name="dateForIntervals" id="minDate" @if(isset($old)>0) value="{{$old['dateForIntervals']}}" @endif></li></label>
+                        <label>
+                            <li id="pickTime">Выбрать дату и время<input onchange="dropIntervals(this.value)"
+                                                                         type="date" name="dateForIntervals"
+                                                                         id="minDate"
+                                                                         @if(isset($old)>0) value="{{$old['dateForIntervals']}}" @endif>
+                            </li>
+                        </label>
                     </ul>
                 </div>
             </div>
@@ -134,7 +152,7 @@
             </div>
             @if(!Auth::user())
                 <div id="regInForm">
-                <!-- Name -->
+                    <!-- Name -->
                     <div class="mt-4">
                         <x-label for="name" :value="__('Имя')"/>
 
@@ -208,11 +226,10 @@
                 data: {order: id_ord, product: id_prod},
                 success: function (data) {
                     if (data == "ok") {
-                        if( document.getElementsByClassName('cart_product_block').length > 1) {
+                        if (document.getElementsByClassName('cart_product_block').length > 1) {
                             $('#div' + id_prod).remove();
                             summaryTotalCost();
-                        }
-                        else {
+                        } else {
                             document.getElementsByTagName('form')[0].parentNode.innerHTML =
                                 '<div style="padding: 20px 15px 15px 15px;">Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за покупками</a></div>';
                         }
@@ -223,7 +240,8 @@
                 }
             });
         }
-        function dropIntervals(dateForIntervals){
+
+        function dropIntervals(dateForIntervals) {
             $.ajax({
                 url: '{{route('cartIntervals')}}',
                 type: "POST",
@@ -238,8 +256,8 @@
                     // document.getElementById('summaryTotal').innerHTML = summary;
                     document.getElementById('max').innerHTML = data[data.length - 1];
                     document.getElementById('cart_intervals').innerHTML = '<h4 style="all: revert; margin: 5px auto;">Свободное время</h4>';
-                    for(let i = 0; i < data.length - 1; i++) {
-                        setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend','<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="'+data[i]["id"]+'"><span>'+data[i]["start"]+'</span></label></div>'),200);
+                    for (let i = 0; i < data.length - 1; i++) {
+                        setTimeout(() => document.getElementById('cart_intervals').insertAdjacentHTML('beforeend', '<div><label class="cart-custom-radio"><input type="radio" name="schedule_interval" value="' + data[i]["id"] + '"><span>' + data[i]["start"] + '</span></label></div>'), 200);
                     }
                 },
                 error: function () {
@@ -247,30 +265,33 @@
                 }
             });
         }
+
         function one_weight(index, difference, number, minWeight, maxWeight) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < minWeight) {
-                alert('Минимальный вес продукта '+minWeight+'кг')
+                alert('Минимальный вес продукта ' + minWeight + 'кг')
             } else if (document.getElementById(index).getAttribute('value') - (-difference) > maxWeight) {
-                alert('Максимальный вес продукта '+maxWeight+'кг')
+                alert('Максимальный вес продукта ' + maxWeight + 'кг')
             } else {
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             }
-            document.getElementById('cart_product_counts_'+number).dispatchEvent(new Event('change'));
+            document.getElementById('cart_product_counts_' + number).dispatchEvent(new Event('change'));
             document.getElementsByName('cart')[0].dispatchEvent(new Event('change'));
         }
+
         function range(x, index, minWeight, maxWeight) {
             if ((x != '') && (x < minWeight)) {
-                alert('Минимальный вес продукта '+minWeight+'кг');
+                alert('Минимальный вес продукта ' + minWeight + 'кг');
                 document.getElementById(index).value = minWeight;
                 document.getElementById(index).setAttribute('value', minWeight);
             } else if ((x != '') && (x > maxWeight)) {
-                alert('Максимальный вес продукта '+maxWeight+'кг');
+                alert('Максимальный вес продукта ' + maxWeight + 'кг');
                 document.getElementById(index).value = maxWeight;
                 document.getElementById(index).setAttribute('value', maxWeight);
             }
         }
+
         function one_count(index, difference, number) {
             document.getElementById(index).setAttribute('value', document.getElementById(index).value);
             if (document.getElementById(index).getAttribute('value') - (-difference) < 1) {
@@ -278,7 +299,7 @@
             } else {
                 document.getElementById(index).value -= (-difference);
                 document.getElementById(index).setAttribute('value', document.getElementById(index).value);
-                document.getElementById('cart_product_counts_'+number).dispatchEvent(new Event('change'));
+                document.getElementById('cart_product_counts_' + number).dispatchEvent(new Event('change'));
                 document.getElementsByName('cart')[0].dispatchEvent(new Event('change'));
             }
         }
@@ -288,7 +309,6 @@
             if (prov1 == false)
                 event.returnValue = false;
         }
-
 
 
         function doubleOnly(x) {
@@ -340,7 +360,7 @@
         window.onload = function load() {
             let div_prod_counts = document.getElementsByClassName('cart_product_counts')
             var change = new Event('change');
-            for(let i = 0; i < div_prod_counts.length; i++)
+            for (let i = 0; i < div_prod_counts.length; i++)
                 div_prod_counts[i].dispatchEvent(change);
             @isset($old['dateForIntervals'])
             dropIntervals('{{$old['dateForIntervals']}}');
@@ -350,61 +370,62 @@
         };
 
         function LogInCart() {
-            document.getElementById('regInForm').innerHTML = '<div class="mt-4">'+
-                '<label class="block font-medium text-sm text-gray-700" for="email">'+
-                'Email'+
-                '</label>'+
-                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">'+
-                '</div>'+
-                '<div class="flex items-center justify-center mt-4" id="hiddenNon">'+
-                '<button type="button" onclick="RegInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">'+
-                'Нет учётной записи?'+
-                '</button>'+
+            document.getElementById('regInForm').innerHTML = '<div class="mt-4">' +
+                '<label class="block font-medium text-sm text-gray-700" for="email">' +
+                'Email' +
+                '</label>' +
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">' +
+                '</div>' +
+                '<div class="flex items-center justify-center mt-4" id="hiddenNon">' +
+                '<button type="button" onclick="RegInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">' +
+                'Нет учётной записи?' +
+                '</button>' +
                 '</div>'
 
         }
 
         function RegInCart() {
-            document.getElementById('regInForm').innerHTML = '<div class="mt-4 ">'+
-                '<label class="block font-medium text-sm text-gray-700" for="name">'+
-                'Имя'+
-                '</label>'+
-                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="name" type="text" name="name" required="required">'+
-                '</div>'+
-                '<div class="mt-4">'+
-                '<label class="block font-medium text-sm text-gray-700" for="email">'+
-                'Email'+
-                '</label>'+
-                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">'+
-                '</div>'+
-                '<div class="mt-4">'+
-                '<label class="block font-medium text-sm text-gray-700" for="phone">'+
-                'Номер телефона'+
-                '</label>'+
-                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="phone" type="text" name="phone" placeholder="88005553535">'+
-                '</div>'+
-                '<div class="mt-4">'+
-                '<label class="block font-medium text-sm text-gray-700" for="password">'+
-                'Пароль'+
-                '</label>'+
-                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password" aria-autocomplete="list">'+
-                '</div>'+
-                '<div class="mt-4">'+
-                '<label class="block font-medium text-sm text-gray-700" for="password_confirmation">'+
-                'Подверждение пароля'+
-                '</label>'+
-                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="password_confirmation" type="password" name="password_confirmation" required="required">'+
-                '</div>'+
-                '<div class="flex items-center justify-center mt-4">'+
-                '<button type="button" onclick="LogInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">'+
-                'Уже зарегистрированы?'+
-                '</button>'+
+            document.getElementById('regInForm').innerHTML = '<div class="mt-4 ">' +
+                '<label class="block font-medium text-sm text-gray-700" for="name">' +
+                'Имя' +
+                '</label>' +
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="name" type="text" name="name" required="required">' +
+                '</div>' +
+                '<div class="mt-4">' +
+                '<label class="block font-medium text-sm text-gray-700" for="email">' +
+                'Email' +
+                '</label>' +
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="email" type="email" name="email" required="required">' +
+                '</div>' +
+                '<div class="mt-4">' +
+                '<label class="block font-medium text-sm text-gray-700" for="phone">' +
+                'Номер телефона' +
+                '</label>' +
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="phone" type="text" name="phone" placeholder="88005553535">' +
+                '</div>' +
+                '<div class="mt-4">' +
+                '<label class="block font-medium text-sm text-gray-700" for="password">' +
+                'Пароль' +
+                '</label>' +
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password" aria-autocomplete="list">' +
+                '</div>' +
+                '<div class="mt-4">' +
+                '<label class="block font-medium text-sm text-gray-700" for="password_confirmation">' +
+                'Подверждение пароля' +
+                '</label>' +
+                '<input class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="password_confirmation" type="password" name="password_confirmation" required="required">' +
+                '</div>' +
+                '<div class="flex items-center justify-center mt-4">' +
+                '<button type="button" onclick="LogInCart()" class="underline text-sm text-gray-600 hover:text-gray-900">' +
+                'Уже зарегистрированы?' +
+                '</button>' +
                 '</div>'
-            }
+        }
     </script>
     @else
-    <div style="padding-top: 20px;">
-        Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за покупками</a>
-    </div>
+        <div style="padding-top: 20px;">
+            Корзина пуста! <a href="{{route('main')}}" style="text-decoration: underline;">Вернуться на главную за
+                покупками</a>
+        </div>
     @endif
 </x-app-layout>
